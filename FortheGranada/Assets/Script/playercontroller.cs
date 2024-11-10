@@ -45,17 +45,26 @@ public class playercontroller : MonoBehaviour
         bool player_y_up = Input.GetButtonUp("Vertical");
 
         //상하좌우 이동을 위한 조건
-        if (player_x_down || player_y_up)
-        {
+        if (player_x_down)
             is_horizon_move = true; //좌우 이동
 
-            animator.SetFloat("player_move_x", player_x);
-
-        }
-        else if (player_y_down || player_x_up)
-        {
+        else if (player_y_down)
             is_horizon_move = false; //상하 이동
-            animator.SetFloat("player_move_y", player_y);
+        else if (player_x_up || player_y_up)
+            is_horizon_move = player_x != 0;
+
+        //애니메이션
+        if (animator.GetInteger("player_move_x") != player_x) //좌우
+        {
+            animator.SetBool("is_change", true);
+            animator.SetInteger("player_move_x", (int)player_x);
         }
+        else if (animator.GetInteger("player_move_y") != player_y) //상하
+        {
+            animator.SetBool("is_change", true);
+            animator.SetInteger("player_move_y", (int)player_y);
+        }
+        else //idle
+            animator.SetBool("is_change", false);
     }
 }
