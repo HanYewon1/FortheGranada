@@ -41,3 +41,21 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Water
+    uniqueID: 1179594277
+    locked: 0
+  - name: Border
+    uniqueID: 3702581223
+    locked: 0
+  - name: Object
+    uniqueID: 4210546659
+    locked: 0
+  - name: Deco
+    uniqueID: 3817691155
+    locked: 0
+  - name: Item
+    uniqueID: 4101757699
+    locked: 0
+  - name: Player
+    uniqueID: 3748239345
+    locked: 0
