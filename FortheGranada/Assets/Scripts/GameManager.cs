@@ -19,7 +19,18 @@ public class GameManager : MonoBehaviour
     public int ressurectiom_item;
     public bool is_attacked_speed;
     public bool is_preview;
+    public RectTransform[] ui_list;
 
+    void Awake()
+    {
+        ui_list = new RectTransform[3];
+        ui_list[0] = GameObject.Find("InGameUI").GetComponent<RectTransform>();
+        ui_list[1] = GameObject.Find("MiniGameUI").GetComponent<RectTransform>();
+        ui_list[2] = GameObject.Find("PauseMenuUI").GetComponent<RectTransform>();
+
+        ui_list[1].gameObject.SetActive(false);
+        ui_list[2].gameObject.SetActive(false);
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -31,26 +42,33 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            // ë©”ë‰´ê°€ í™œì„±í™”ë˜ì–´ ìˆìœ¼ë©´ ë¹„í™œì„±í™”í•˜ê³ , ë¹„í™œì„±í™”ë˜ì—ˆìœ¼ë©´ í™œì„±í™”
+            if (ui_list[2] != null)
+            {
+                ui_list[2].gameObject.SetActive(!ui_list[2].gameObject.activeSelf); // ë©”ë‰´ì˜ í™œì„±í™”/ë¹„í™œì„±í™” ìƒíƒœ ì „í™˜
+            }
+        }
     }
 
     public void getItem(Item item)
     {
         if (item.GetItemType == ItemType.Expendables)
         {
-            if (item.GetItemID == 1)//Ã¼·Â ¾ÆÀÌÅÛ
+            if (item.GetItemID == 1)//Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             {
                 if (health_item < item.GetNumNesting)
                 {
                     maxHealth++;
                     health++;
                 }
-                else if (maxHealth > health)//ÃÖ´ë °¹¼ö ÃÊ°ú½Ã È¸º¹ ¾ÆÀÌÅÛ°ú °°Àº È¿°ú
+                else if (maxHealth > health)//ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ê°ï¿½ï¿½ï¿½ È¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Û°ï¿½ ï¿½ï¿½ï¿½ï¿½ È¿ï¿½ï¿½
                 {
                     health++;
                 }
             }
-            else if (item.GetItemID == 2)//È¸º¹ ¾ÆÀÌÅÛ
+            else if (item.GetItemID == 2)//È¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             {
                 if (maxHealth > health)
                 {
@@ -60,40 +78,40 @@ public class GameManager : MonoBehaviour
         }
         else if (item.GetItemType == ItemType.Passive)
         {
-            if (item.GetItemID == 4 && speed_item < item.GetNumNesting)//¼Óµµ ¾ÆÀÌÅÛ
+            if (item.GetItemID == 4 && speed_item < item.GetNumNesting)//ï¿½Óµï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             {
                 speed += 0.1f;
             }
-            else if (item.GetItemID == 6)//ÇÇ°İ ¾ÆÀÌÅÛ
+            else if (item.GetItemID == 6)//ï¿½Ç°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             {
                 is_attacked_speed = true;
             }
-            else if (item.GetItemID == 7 && stealthTime < item.GetNumNesting)//°¨Áö ¾ÆÀÌÅÛ
+            else if (item.GetItemID == 7 && stealthTime < item.GetNumNesting)//ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             {
                 stealthTime++;
             }
-            else if (item.GetItemID == 8)//Åõ½Ã ¾ÆÀÌÅÛ
+            else if (item.GetItemID == 8)//ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             {
                 is_preview = true;
             }
         }
         else if (item.GetItemType == ItemType.Temporary)
         {
-            if (item.GetItemID == 3)//°©¿Ê ¾ÆÀÌÅÛ
+            if (item.GetItemID == 3)//ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             {
                 armor++;
             }
         }
         else if (item.GetItemType == ItemType.Resurrection)
         {
-            if (item.GetItemID == 5 && ressurectiom_item < item.GetNumNesting)//ºÎÈ° ¾ÆÀÌÅÛ
+            if (item.GetItemID == 5 && ressurectiom_item < item.GetNumNesting)//ï¿½ï¿½È° ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             {
                 ressurection++;
             }
         }
         else if (item.GetItemType == ItemType.Key)
         {
-            if (item.GetItemID == 9)//¿­¼è Á¶°¢
+            if (item.GetItemID == 9)//ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             {
                 key++;
             }

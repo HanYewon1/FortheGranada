@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class submenuUI : MonoBehaviour
 {
@@ -11,5 +12,10 @@ public class submenuUI : MonoBehaviour
 #else
         Application.Quit();
 #endif
+    }
+
+    public void OnClickSaveAndReturnButton()
+    {
+        SceneManager.LoadScene("MainMenuScene");
     }
 }
