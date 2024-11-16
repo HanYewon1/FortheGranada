@@ -21,6 +21,7 @@ public class GameManager : MonoBehaviour
     public int key_item;
     public int speed_item;
     public int ressurectiom_item;
+    public int level = 1;
     public bool is_attacked_speed;
     public bool is_preview;
     public bool is_ingame = false;
@@ -71,14 +72,20 @@ public class GameManager : MonoBehaviour
         {
             player = GameObject.Find("Player").GetComponent<Transform>();
 
-            ui_list = new RectTransform[3];
+            ui_list = new RectTransform[6];
             ui_list[0] = GameObject.Find("InGameUI").GetComponent<RectTransform>();
             ui_list[1] = GameObject.Find("MiniGameUI").GetComponent<RectTransform>();
             ui_list[2] = GameObject.Find("PauseMenuUI").GetComponent<RectTransform>();
+            ui_list[3] = GameObject.Find("GRayout5X5").GetComponent<RectTransform>();
+            ui_list[4] = GameObject.Find("GRayout6X6").GetComponent<RectTransform>();
+            ui_list[5] = GameObject.Find("GRayout7X7").GetComponent<RectTransform>();
 
             // ë¶ˆí•„?š”?•œ ui ë¹„í™œ?„±
             ui_list[1].gameObject.SetActive(false);
             ui_list[2].gameObject.SetActive(false);
+            ui_list[3].gameObject.SetActive(false);
+            ui_list[4].gameObject.SetActive(false);
+            ui_list[5].gameObject.SetActive(false);
         }
     }
 
@@ -92,12 +99,48 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+        if (is_ingame = true)
         {
-            // ë©”ë‰´ê°? ?™œ?„±?™”?˜?–´ ?ˆ?œ¼ë©? ë¹„í™œ?„±?™”?•˜ê³?, ë¹„í™œ?„±?™”?˜?—ˆ?œ¼ë©? ?™œ?„±?™”
-            if (ui_list[2] != null)
+            if (Input.GetKeyDown(KeyCode.Escape))
             {
-                ui_list[2].gameObject.SetActive(!ui_list[2].gameObject.activeSelf); // ë©”ë‰´?˜ ?™œ?„±?™”/ë¹„í™œ?„±?™” ?ƒ?ƒœ ? „?™˜
+                // ë©”ë‰´ê°? ?™œ?„±?™”?˜?–´ ?ˆ?œ¼ë©? ë¹„í™œ?„±?™”?•˜ê³?, ë¹„í™œ?„±?™”?˜?—ˆ?œ¼ë©? ?™œ?„±?™”
+                if (ui_list[2] != null)
+                {
+                    ui_list[2].gameObject.SetActive(!ui_list[2].gameObject.activeSelf); // ë©”ë‰´?˜ ?™œ?„±?™”/ë¹„í™œ?„±?™” ?ƒ?ƒœ ? „?™˜
+                }
+            }
+
+            if (Input.GetKeyDown(KeyCode.M))
+            {
+                // ·¹º§ ¹× ³­ÀÌµµ º° Ç¥½ÃÇÒ ¸Ê
+                switch (level)
+                {
+                    case 1:
+                        // °ª1ÀÏ ¶§ ½ÇÇàÇÒ ÄÚµå
+                    if (ui_list[3] != null)
+                    {
+                        ui_list[3].gameObject.SetActive(!ui_list[3].gameObject.activeSelf);
+                    }
+                        break;
+                    case 2:
+                        // °ª2ÀÏ ¶§ ½ÇÇàÇÒ ÄÚµå
+                    if (ui_list[4] != null)
+                    {
+                        ui_list[4].gameObject.SetActive(!ui_list[4].gameObject.activeSelf);
+                    }
+                        break;
+                    case 3:
+                        // °ª3ÀÏ ¶§ ½ÇÇàÇÒ ÄÚµå
+                    if (ui_list[5] != null)
+                    {
+                        ui_list[5].gameObject.SetActive(!ui_list[5].gameObject.activeSelf);
+                    }
+                        break;
+                    default:
+                        // ¸ğµç case¿¡ ÇØ´çÇÏÁö ¾ÊÀ» ¶§ ½ÇÇàÇÒ ÄÚµå
+                        break;
+                }
+                
             }
         }
     }
