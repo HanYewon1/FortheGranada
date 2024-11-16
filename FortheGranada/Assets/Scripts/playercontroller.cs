@@ -31,6 +31,7 @@ public class playercontroller : MonoBehaviour
         if (player_x_down || player_y_up)
         {
             is_horizon_move = true; //좌우 이동
+<<<<<<< HEAD:FortheGranada/Assets/Scripts/playercontroller.cs
         }
         else if (player_y_down || player_x_up)
         {
@@ -41,5 +42,16 @@ public class playercontroller : MonoBehaviour
     {
         Vector2 move_vec = is_horizon_move ? new Vector2(player_x, 0) : new Vector2(0, player_y);
         rigidbody2d.linearVelocity = move_vec * player_speed;
+=======
+
+            animator.SetFloat("player_move_x", player_x);
+
+        }
+        else if (player_y_down || player_x_up)
+        {
+            is_horizon_move = false; //상하 이동
+            animator.SetFloat("player_move_y", player_y);
+        }
+>>>>>>> parent of 51f330be2 (플레이어 이동 구현 완료 -예원):FortheGranada/Assets/Script/playercontroller.cs
     }
 }
