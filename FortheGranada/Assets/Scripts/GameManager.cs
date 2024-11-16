@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    // ì‹±ê¸€í†¤ ì¸ìŠ¤í„´ìŠ¤
+    // ?‹±ê¸??†¤ ?¸?Š¤?„´?Š¤
     public static GameManager Instance { get; private set; }
 
     public int health;
@@ -29,27 +29,27 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
-        // ì‹±ê¸€í†¤ ì¸ìŠ¤í„´ìŠ¤ ì„¤ì •
+        // ?‹±ê¸??†¤ ?¸?Š¤?„´?Š¤ ?„¤? •
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject); // ì”¬ ì „í™˜ ì‹œ ì‚­ì œë˜ì§€ ì•Šë„ë¡ ì„¤ì •
+            DontDestroyOnLoad(gameObject); // ?”¬ ? „?™˜ ?‹œ ?‚­? œ?˜ì§? ?•Š?„ë¡? ?„¤? •
         }
         else
         {
-            Destroy(gameObject); // ì¤‘ë³µëœ GameManagerê°€ ìƒì„±ë˜ì§€ ì•Šë„ë¡ ì‚­ì œ
+            Destroy(gameObject); // ì¤‘ë³µ?œ GameManagerê°? ?ƒ?„±?˜ì§? ?•Š?„ë¡? ?‚­? œ
         }
     }
 
     private void OnEnable()
     {
-        // ì”¬ì´ ë¡œë“œë  ë•Œ í˜¸ì¶œ
+        // ?”¬?´ ë¡œë“œ?  ?•Œ ?˜¸ì¶?
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
     private void OnDisable()
     {
-        // ì”¬ ë¡œë“œ ì´ë²¤íŠ¸ í•´ì œ
+        // ?”¬ ë¡œë“œ ?´ë²¤íŠ¸ ?•´? œ
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
@@ -57,26 +57,26 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log($"Scene Loaded: {scene.name}");
 
-        // ì”¬ ë¡œë“œ í›„ í•„ìš”í•œ ì´ˆê¸°í™” ë¡œì§
+        // ?”¬ ë¡œë“œ ?›„ ?•„?š”?•œ ì´ˆê¸°?™” ë¡œì§
         InitializeScene(scene);
     }
 
     private void InitializeScene(Scene scene)
     {
-        // ì”¬ë³„ ì´ˆê¸°í™” ë¡œì§
+        // ?”¬ë³? ì´ˆê¸°?™” ë¡œì§
         Debug.Log($"Initializing scene: {scene.name}");
-        
+
         //StartCoroutine(WaitOneSecond());
         if (is_ingame = true)
         {
             player = GameObject.Find("Player").GetComponent<Transform>();
-            
+
             ui_list = new RectTransform[3];
             ui_list[0] = GameObject.Find("InGameUI").GetComponent<RectTransform>();
             ui_list[1] = GameObject.Find("MiniGameUI").GetComponent<RectTransform>();
             ui_list[2] = GameObject.Find("PauseMenuUI").GetComponent<RectTransform>();
-            
-            // ë¶ˆí•„ìš”í•œ ui ë¹„í™œì„±
+
+            // ë¶ˆí•„?š”?•œ ui ë¹„í™œ?„±
             ui_list[1].gameObject.SetActive(false);
             ui_list[2].gameObject.SetActive(false);
         }
@@ -94,17 +94,17 @@ public class GameManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            // ë©”ë‰´ê°€ í™œì„±í™”ë˜ì–´ ìˆìœ¼ë©´ ë¹„í™œì„±í™”í•˜ê³ , ë¹„í™œì„±í™”ë˜ì—ˆìœ¼ë©´ í™œì„±í™”
+            // ë©”ë‰´ê°? ?™œ?„±?™”?˜?–´ ?ˆ?œ¼ë©? ë¹„í™œ?„±?™”?•˜ê³?, ë¹„í™œ?„±?™”?˜?—ˆ?œ¼ë©? ?™œ?„±?™”
             if (ui_list[2] != null)
             {
-                ui_list[2].gameObject.SetActive(!ui_list[2].gameObject.activeSelf); // ë©”ë‰´ì˜ í™œì„±í™”/ë¹„í™œì„±í™” ìƒíƒœ ì „í™˜
+                ui_list[2].gameObject.SetActive(!ui_list[2].gameObject.activeSelf); // ë©”ë‰´?˜ ?™œ?„±?™”/ë¹„í™œ?„±?™” ?ƒ?ƒœ ? „?™˜
             }
         }
     }
 
     private IEnumerator WaitOneSecond()
     {
-        // 1ì´ˆ ëŒ€ê¸°
+        // 1ì´? ???ê¸?
         yield return new WaitForSeconds(1f);
     }
 
