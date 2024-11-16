@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class submenuUI : MonoBehaviour
+public class minigameUI : MonoBehaviour
 {
+
     void Awake()
     {
         this.enabled = true;
@@ -25,21 +26,6 @@ public class submenuUI : MonoBehaviour
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         //this.gameObject.SetActive(true);
-    }
-
-    public void OnClickSaveAndReturnButton()
-    {
-        SceneManager.LoadScene("MainMenuScene");
-        GameManager.Instance.is_ingame = false;
-    }
-
-    public void OnClickCloseButton()
-    {
-#if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false;
-#else
-        Application.Quit();
-#endif
     }
     
 }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -22,6 +23,7 @@ public class GameManager : MonoBehaviour
     public int ressurectiom_item;
     public bool is_attacked_speed;
     public bool is_preview;
+    public bool is_ingame = false;
     public RectTransform[] ui_list;
     public Transform player;
 
@@ -37,15 +39,47 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject); // 중복된 GameManager가 생성되지 않도록 삭제
         }
-        
-        player = GameObject.Find("Player").GetComponent<Transform>();
-        ui_list = new RectTransform[3];
-        ui_list[0] = GameObject.Find("InGameUI").GetComponent<RectTransform>();
-        ui_list[1] = GameObject.Find("MiniGameUI").GetComponent<RectTransform>();
-        ui_list[2] = GameObject.Find("PauseMenuUI").GetComponent<RectTransform>();
+    }
 
-        ui_list[1].gameObject.SetActive(false);
-        ui_list[2].gameObject.SetActive(false);
+    private void OnEnable()
+    {
+        // 씬이 로드될 때 호출
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        // 씬 로드 이벤트 해제
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        Debug.Log($"Scene Loaded: {scene.name}");
+
+        // 씬 로드 후 필요한 초기화 로직
+        InitializeScene(scene);
+    }
+
+    private void InitializeScene(Scene scene)
+    {
+        // 씬별 초기화 로직
+        Debug.Log($"Initializing scene: {scene.name}");
+        
+        //StartCoroutine(WaitOneSecond());
+        if (is_ingame = true)
+        {
+            player = GameObject.Find("Player").GetComponent<Transform>();
+            
+            ui_list = new RectTransform[3];
+            ui_list[0] = GameObject.Find("InGameUI").GetComponent<RectTransform>();
+            ui_list[1] = GameObject.Find("MiniGameUI").GetComponent<RectTransform>();
+            ui_list[2] = GameObject.Find("PauseMenuUI").GetComponent<RectTransform>();
+            
+            // 불필요한 ui 비활성
+            ui_list[1].gameObject.SetActive(false);
+            ui_list[2].gameObject.SetActive(false);
+        }
     }
 
     // Start is called before the first frame update
@@ -66,6 +100,12 @@ public class GameManager : MonoBehaviour
                 ui_list[2].gameObject.SetActive(!ui_list[2].gameObject.activeSelf); // 메뉴의 활성화/비활성화 상태 전환
             }
         }
+    }
+
+    private IEnumerator WaitOneSecond()
+    {
+        // 1초 대기
+        yield return new WaitForSeconds(1f);
     }
 
     public void getItem(Item item)

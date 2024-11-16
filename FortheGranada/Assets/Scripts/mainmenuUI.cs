@@ -5,6 +5,35 @@ using UnityEngine.SceneManagement;
 
 public class mainmenuUI : MonoBehaviour
 {
+
+    void Awake()
+    {
+        this.enabled = true;
+    }
+
+    private void OnEnable()
+    {
+        // 씬이 로드될 때 호출
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        // 씬 로드 이벤트 해제
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        //this.gameObject.SetActive(true);
+    }
+
+    public void OnClickStartButton()
+    {
+        SceneManager.LoadScene("PlayScene");
+        GameManager.Instance.is_ingame = true;
+    }
+
     public void OnClickQuitButton()
     {
 #if UNITY_EDITOR
@@ -13,9 +42,5 @@ public class mainmenuUI : MonoBehaviour
         Application.Quit();
 #endif
     }
-
-    public void OnClickStartButton()
-    {
-        SceneManager.LoadScene("PlayScene");
-    }
+    
 }
