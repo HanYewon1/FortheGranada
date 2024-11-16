@@ -58,11 +58,11 @@ public class playercontroller : MonoBehaviour
             animator.SetBool("is_change", true);
             animator.SetInteger("player_move_x", (int)player_x);
         }
-        else if (animator.GetInteger("player_move_y") != player_y)
+        else if (animator.GetInteger("player_move_y") != player_y) //상하
         {
             animator.SetBool("is_change", true);
             animator.SetInteger("player_move_y", (int)player_y);
-        }//상하
+        }
         else //idle
                     animator.SetBool("is_change", false);
     }
