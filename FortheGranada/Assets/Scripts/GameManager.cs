@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    // 싱글톤 인스턴스
+    public static GameManager Instance { get; private set; }
+
     public int health;
     public float speed;
     public int maxHealth;
@@ -20,9 +23,22 @@ public class GameManager : MonoBehaviour
     public bool is_attacked_speed;
     public bool is_preview;
     public RectTransform[] ui_list;
+    public Transform player;
 
     void Awake()
     {
+        // 싱글톤 인스턴스 설정
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject); // 씬 전환 시 삭제되지 않도록 설정
+        }
+        else
+        {
+            Destroy(gameObject); // 중복된 GameManager가 생성되지 않도록 삭제
+        }
+        
+        player = GameObject.Find("Player").GetComponent<Transform>();
         ui_list = new RectTransform[3];
         ui_list[0] = GameObject.Find("InGameUI").GetComponent<RectTransform>();
         ui_list[1] = GameObject.Find("MiniGameUI").GetComponent<RectTransform>();
