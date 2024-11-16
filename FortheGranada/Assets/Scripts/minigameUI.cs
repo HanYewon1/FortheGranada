@@ -13,13 +13,13 @@ public class minigameUI : MonoBehaviour
 
     private void OnEnable()
     {
-        // ì”¬ì´ ë¡œë“œë  ë•Œ í˜¸ì¶œ
+        // ?”¬?´ ë¡œë“œ?  ?•Œ ?˜¸ì¶?
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
     private void OnDisable()
     {
-        // ì”¬ ë¡œë“œ ì´ë²¤íŠ¸ í•´ì œ
+        // ?”¬ ë¡œë“œ ?´ë²¤íŠ¸ ?•´? œ
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
@@ -28,4 +28,34 @@ public class minigameUI : MonoBehaviour
         //this.gameObject.SetActive(true);
     }
     
+    public void OnClickRandomButton()
+    {
+        if (GameManager.Instance.is_minigame)
+        {
+            GameManager.Instance.is_minigame = false;
+        }
+        GameManager.Instance.is_delay = true;
+        GameManager.Instance.ui_list[1].gameObject.SetActive(false);
+    }
+
+    public void OnClickCorrectButton()
+    {
+        if (GameManager.Instance.is_minigame)
+        {
+            GameManager.Instance.is_minigame = false;
+        }
+
+        GameManager.Instance.ui_list[1].gameObject.SetActive(false);
+    }
+
+    public void OnClickIncorrectButton()
+    {
+        if (GameManager.Instance.is_minigame)
+        {
+            GameManager.Instance.is_minigame = false;
+        }
+
+        GameManager.Instance.ui_list[1].gameObject.SetActive(false);
+    }
+
 }

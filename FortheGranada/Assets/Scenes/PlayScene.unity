@@ -276,7 +276,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 10181695}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1260679746}
+        m_TargetAssemblyTypeName: minigameUI, Assembly-CSharp
+        m_MethodName: OnClickRandomButton
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &10181695
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3436,7 +3448,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 303234404}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1260679746}
+        m_TargetAssemblyTypeName: minigameUI, Assembly-CSharp
+        m_MethodName: OnClickRandomButton
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &303234404
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8031,7 +8055,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 854754629}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1260679746}
+        m_TargetAssemblyTypeName: minigameUI, Assembly-CSharp
+        m_MethodName: OnClickRandomButton
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &854754629
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9086,7 +9122,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 975324604}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1260679746}
+        m_TargetAssemblyTypeName: minigameUI, Assembly-CSharp
+        m_MethodName: OnClickRandomButton
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &975324604
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9502,9 +9550,11 @@ MonoBehaviour:
   key_item: 0
   speed_item: 0
   ressurectiom_item: 0
+  level: 0
   is_attacked_speed: 0
   is_preview: 0
-  is_ingame: 0
+  is_closebox: 0
+  is_minigame: 0
   ui_list: []
   player: {fileID: 0}
 --- !u!4 &1029089537

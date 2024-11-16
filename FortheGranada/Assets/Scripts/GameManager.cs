@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     // ?떛湲??넠 ?씤?뒪?꽩?뒪
-    public static GameManager Instance { get; private set; }
+    public static GameManager Instance;
 
     public int health;
     public float speed;
@@ -21,12 +21,26 @@ public class GameManager : MonoBehaviour
     public int key_item;
     public int speed_item;
     public int ressurectiom_item;
-    public int level = 1;
+    public int level = 0;
     public bool is_attacked_speed;
     public bool is_preview;
-    public bool is_ingame = false;
+    public bool is_closebox = false;
+    public bool is_minigame = false;
+    public bool is_delay = false;
+    public bool is_CoroutineRunning = false;
+    private bool _is_ingame = false;
     public RectTransform[] ui_list;
     public Transform player;
+
+    public bool is_ingame
+    {
+        get => _is_ingame;
+        set
+        {
+            _is_ingame = value;
+            Debug.Log($"is_ingame 값 변경됨: {_is_ingame}");
+        }
+    }
 
     void Awake()
     {
@@ -68,7 +82,7 @@ public class GameManager : MonoBehaviour
         Debug.Log($"Initializing scene: {scene.name}");
 
         //StartCoroutine(WaitOneSecond());
-        if (is_ingame = true)
+        if (is_ingame == true)
         {
             player = GameObject.Find("Player").GetComponent<Transform>();
 
@@ -92,6 +106,7 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Debug.Log("GameManager is initialized");
         is_attacked_speed = false;
         is_preview = false;
     }
@@ -99,7 +114,7 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (is_ingame = true)
+        if (is_ingame == true)
         {
             if (Input.GetKeyDown(KeyCode.Escape))
             {
@@ -140,7 +155,18 @@ public class GameManager : MonoBehaviour
                         // 모든 case에 해당하지 않을 때 실행할 코드
                         break;
                 }
-                
+            }
+
+            if (is_closebox == true && is_minigame == false && is_delay == false)
+            {
+                if (Input.GetKeyDown(KeyCode.V))
+                {
+                    ui_list[1].gameObject.SetActive(true);
+                }
+            }
+            if(is_delay && is_CoroutineRunning == false)
+            {
+                StartCoroutine(SelectedIncurrect());
             }
         }
     }
@@ -149,6 +175,16 @@ public class GameManager : MonoBehaviour
     {
         // 1珥? ???湲?
         yield return new WaitForSeconds(1f);
+    }
+
+    public IEnumerator SelectedIncurrect()
+    {
+        is_CoroutineRunning = true;
+        // 미니게임 오답 패널티
+        yield return new WaitForSeconds(5f);
+        is_delay = false;
+        is_CoroutineRunning = false;
+        Debug.Log("패널티 해제");
     }
 
     public void getItem(Item item)

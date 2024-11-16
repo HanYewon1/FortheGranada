@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class playercontroller : MonoBehaviour
 {
-    public float player_speed;//í”Œë ˆì´ì–´ ì´ë™ì†ë„
+    public float player_speed;//?”Œ? ˆ?´?–´ ?´?™?†?„
 
     Rigidbody2D rigidbody2d;
     Animator animator;
 
-    float player_x;//ì¢Œìš° ì›€ì§ì„
-    float player_y;//ìƒí•˜ ì›€ì§ì„
+    float player_x;//ì¢Œìš° ???ì§ì„
+    float player_y;//?ƒ?•˜ ???ì§ì„
 
     bool is_horizon_move; //4ë°©í–¥ ê²°ì •
 
@@ -22,7 +22,6 @@ public class playercontroller : MonoBehaviour
     void Update()
     {
         PlayerMove();   
-
     }
 
     private void FixedUpdate()
@@ -33,37 +32,37 @@ public class playercontroller : MonoBehaviour
 
     private void PlayerMove()
     {
-        player_x = Input.GetAxisRaw("Horizontal"); //ì¢Œìš° ì´ë™
-        player_y = Input.GetAxisRaw("Vertical"); //ìƒí•˜ ì´ë™
+        player_x = Input.GetAxisRaw("Horizontal"); //ì¢Œìš° ?´?™
+        player_y = Input.GetAxisRaw("Vertical"); //?ƒ?•˜ ?´?™
 
-        //ëˆŒë¦° ë²„íŠ¼ ì²´í¬
+        //?ˆŒë¦? ë²„íŠ¼ ì²´í¬
         bool player_x_down = Input.GetButtonDown("Horizontal");
         bool player_x_up = Input.GetButtonUp("Horizontal");
         bool player_y_down = Input.GetButtonDown("Vertical");
         bool player_y_up = Input.GetButtonUp("Vertical");
 
-        //ìƒí•˜ì¢Œìš° ì´ë™ì„ ìœ„í•œ ì¡°ê±´
+        //?ƒ?•˜ì¢Œìš° ?´?™?„ ?œ„?•œ ì¡°ê±´
         if (player_x_down)
         {
-            is_horizon_move = true; //ì¢Œìš° ì´ë™
+            is_horizon_move = true; //ì¢Œìš° ?´?™
         }
         else if (player_y_down)
-            is_horizon_move = false; //ìƒí•˜ ì´ë™
+            is_horizon_move = false; //?ƒ?•˜ ?´?™
         else if (player_x_up || player_y_up)
             is_horizon_move = player_x != 0;
 
-        //ì• ë‹ˆë©”ì´ì…˜
+        //?• ?‹ˆë©”ì´?…˜
         if (animator.GetInteger("player_move_x") != player_x) //ì¢Œìš°
         {
             animator.SetBool("is_change", true);
             animator.SetInteger("player_move_x", (int)player_x);
         }
-        else if (animator.GetInteger("player_move_y") != player_y) //ìƒí•˜
+        else if (animator.GetInteger("player_move_y") != player_y) //?ƒ?•˜
         {
             animator.SetBool("is_change", true);
             animator.SetInteger("player_move_y", (int)player_y);
         }
         else //idle
-                    animator.SetBool("is_change", false);
+            animator.SetBool("is_change", false);
     }
 }

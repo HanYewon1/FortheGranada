@@ -13,25 +13,19 @@ public class mainmenuUI : MonoBehaviour
 
     private void OnEnable()
     {
-        // ì”¬ì´ ë¡œë“œë  ë•Œ í˜¸ì¶œ
+        // ?”¬?´ ë¡œë“œ?  ?•Œ ?˜¸ì¶?
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
     private void OnDisable()
     {
-        // ì”¬ ë¡œë“œ ì´ë²¤íŠ¸ í•´ì œ
+        // ?”¬ ë¡œë“œ ?´ë²¤íŠ¸ ?•´? œ
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         //this.gameObject.SetActive(true);
-    }
-
-    public void OnClickStartButton()
-    {
-        SceneManager.LoadScene("PlayScene");
-        GameManager.Instance.is_ingame = true;
     }
 
     public void OnClickQuitButton()

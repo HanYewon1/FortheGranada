@@ -12,13 +12,13 @@ public class submenuUI : MonoBehaviour
 
     private void OnEnable()
     {
-        // ì”¬ì´ ë¡œë“œë  ë•Œ í˜¸ì¶œ
+        // ?”¬?´ ë¡œë“œ?  ?•Œ ?˜¸ì¶?
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
     private void OnDisable()
     {
-        // ì”¬ ë¡œë“œ ì´ë²¤íŠ¸ í•´ì œ
+        // ?”¬ ë¡œë“œ ?´ë²¤íŠ¸ ?•´? œ
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
@@ -29,8 +29,8 @@ public class submenuUI : MonoBehaviour
 
     public void OnClickSaveAndReturnButton()
     {
-        SceneManager.LoadScene("MainMenuScene");
         GameManager.Instance.is_ingame = false;
+        SceneManager.LoadScene("MainMenuScene");
     }
 
     public void OnClickCloseButton()
