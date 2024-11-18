@@ -147,7 +147,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Den_of_evil_0: 5612710364360515085
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

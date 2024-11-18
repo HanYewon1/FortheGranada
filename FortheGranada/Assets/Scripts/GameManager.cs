@@ -5,9 +5,10 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    // ?‹±ê¸??†¤ ?¸?Š¤?„´?Š¤
+    // ½Ì±ÛÅæ ÆĞÅÏ Àû¿ë
     public static GameManager Instance;
-
+    
+    [Header("Player Settings")]
     public int health;
     public float speed;
     public int maxHealth;
@@ -21,16 +22,23 @@ public class GameManager : MonoBehaviour
     public int key_item;
     public int speed_item;
     public int ressurectiom_item;
+
+    [Header("Game Settings")]
     public int level = 0;
+
+    [Header("Flags")]
     public bool is_attacked_speed;
     public bool is_preview;
     public bool is_closebox = false;
     public bool is_minigame = false;
     public bool is_delay = false;
     public bool is_CoroutineRunning = false;
+    [SerializeField]
     private bool _is_ingame = false;
-    public RectTransform[] ui_list;
+    
+    [Header("GetComponents")]
     public Transform player;
+    public RectTransform[] ui_list;
 
     public bool is_ingame
     {
