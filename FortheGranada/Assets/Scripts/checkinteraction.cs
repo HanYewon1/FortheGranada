@@ -36,6 +36,7 @@ public class checkinteraction : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
             inRange = true;
+            GameManager.Instance.is_closebox = true;
             Debug.Log("in range");
         }
     }
@@ -45,6 +46,7 @@ public class checkinteraction : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
             inRange = false;
+            GameManager.Instance.is_closebox = false;
             Debug.Log("not in range");
         }
     }
