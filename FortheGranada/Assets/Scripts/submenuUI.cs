@@ -27,10 +27,15 @@ public class submenuUI : MonoBehaviour
         //this.gameObject.SetActive(true);
     }
 
-    public void OnClickSaveAndReturnButton()
+    public void OnClickReturnButton()
     {
         GameManager.Instance.is_ingame = false;
         SceneManager.LoadScene("MainMenuScene");
+    }
+
+    public void OnClickSaveButton()
+    {
+        Debug.Log("저장되었습니다!");
     }
 
     public void OnClickCloseButton()
@@ -41,5 +46,5 @@ public class submenuUI : MonoBehaviour
         Application.Quit();
 #endif
     }
-    
+
 }
