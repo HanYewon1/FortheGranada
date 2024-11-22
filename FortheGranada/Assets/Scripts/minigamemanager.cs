@@ -10,13 +10,13 @@ public class minigamemanager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public int[] RanNumGen()
@@ -24,9 +24,93 @@ public class minigamemanager : MonoBehaviour
         HashSet<int> uniqueNumbers = new HashSet<int>();
         while (uniqueNumbers.Count < 3)
         {
-            uniqueNumbers.Add(Random.Range(1, 41));
+            uniqueNumbers.Add(Random.Range(1, 67));
         }
         return uniqueNumbers.ToArray();
+    }
+
+    public void FailRequest()
+    {
+        int r = Random.Range(1, 13);
+
+        switch (r)
+        {
+            case 1:
+                GameManager.Instance.rannum3[0] = 1;
+                GameManager.Instance.rannum3[1] = 2;
+                GameManager.Instance.rannum3[2] = 3;
+                GameManager.Instance.APIResponse = "동물";
+                break;
+            case 2:
+                GameManager.Instance.rannum3[0] = 4;
+                GameManager.Instance.rannum3[1] = 5;
+                GameManager.Instance.rannum3[2] = 6;
+                GameManager.Instance.APIResponse = "동물";
+                break;
+            case 3:
+                GameManager.Instance.rannum3[0] = 7;
+                GameManager.Instance.rannum3[1] = 8;
+                GameManager.Instance.rannum3[2] = 9;
+                GameManager.Instance.APIResponse = "동물";
+                break;
+            case 4:
+                GameManager.Instance.rannum3[0] = 11;
+                GameManager.Instance.rannum3[1] = 12;
+                GameManager.Instance.rannum3[2] = 13;
+                GameManager.Instance.APIResponse = "음식";
+                break;
+            case 5:
+                GameManager.Instance.rannum3[0] = 14;
+                GameManager.Instance.rannum3[1] = 15;
+                GameManager.Instance.rannum3[2] = 16;
+                GameManager.Instance.APIResponse = "음식";
+                break;
+            case 6:
+                GameManager.Instance.rannum3[0] = 17;
+                GameManager.Instance.rannum3[1] = 18;
+                GameManager.Instance.rannum3[2] = 19;
+                GameManager.Instance.APIResponse = "음식";
+                break;
+            case 7:
+                GameManager.Instance.rannum3[0] = 21;
+                GameManager.Instance.rannum3[1] = 22;
+                GameManager.Instance.rannum3[2] = 23;
+                GameManager.Instance.APIResponse = "괴물";
+                break;
+            case 8:
+                GameManager.Instance.rannum3[0] = 24;
+                GameManager.Instance.rannum3[1] = 25;
+                GameManager.Instance.rannum3[2] = 26;
+                GameManager.Instance.APIResponse = "괴물";
+                break;
+            case 9:
+                GameManager.Instance.rannum3[0] = 27;
+                GameManager.Instance.rannum3[1] = 28;
+                GameManager.Instance.rannum3[2] = 29;
+                GameManager.Instance.APIResponse = "괴물";
+                break;
+            case 10:
+                GameManager.Instance.rannum3[0] = 31;
+                GameManager.Instance.rannum3[1] = 32;
+                GameManager.Instance.rannum3[2] = 33;
+                GameManager.Instance.APIResponse = "종족";
+                break;
+            case 11:
+                GameManager.Instance.rannum3[0] = 34;
+                GameManager.Instance.rannum3[1] = 35;
+                GameManager.Instance.rannum3[2] = 36;
+                GameManager.Instance.APIResponse = "종족";
+                break;
+            case 12:
+                GameManager.Instance.rannum3[0] = 37;
+                GameManager.Instance.rannum3[1] = 38;
+                GameManager.Instance.rannum3[2] = 39;
+                GameManager.Instance.APIResponse = "종족";
+                break;
+            default:
+                Debug.LogError("OutOfRange");
+                break;
+        }
     }
 
     public string[] AnswerSet()
@@ -36,14 +120,14 @@ public class minigamemanager : MonoBehaviour
         ansset[1] = "바위";
         ansset[2] = "가위";
         ansset[3] = "나무";
-        ansset[4] = "동물";
+        ansset[4] = "세모";
         ansset[5] = "식물";
         ansset[6] = "종족";
         ansset[7] = "괴물";
         ansset[8] = "풍경";
         ansset[9] = "원";
         ansset[10] = "네모";
-        ansset[11] = "세모";
+        ansset[11] = "동물";
         ansset[12] = "벽";
         ansset[13] = "액체";
         ansset[14] = "고체";
@@ -73,6 +157,36 @@ public class minigamemanager : MonoBehaviour
         ansset[38] = "남색";
         ansset[39] = "흰색";
         ansset[40] = "검은색";
+        ansset[41] = "갈색";
+        ansset[42] = "둥글다";
+        ansset[43] = "네모나다";
+        ansset[44] = "동그랗다";
+        ansset[45] = "가깝다";
+        ansset[46] = "멀다";
+        ansset[47] = "뜨겁다";
+        ansset[48] = "차갑다";
+        ansset[49] = "판타지";
+        ansset[50] = "환타지";
+        ansset[51] = "픽셀";
+        ansset[52] = "픽셀아트";
+        ansset[53] = "픽셀 아트";
+        ansset[54] = "정물화";
+        ansset[55] = "음식";
+        ansset[56] = "갑옷";
+        ansset[57] = "점묘화";
+        ansset[58] = "그림";
+        ansset[59] = "괴물입니다";
+        ansset[60] = "전설";
+        ansset[61] = "없음";
+        ansset[62] = "쪼그맣다";
+        ansset[63] = "큼직하다";
+        ansset[64] = "싱그럽다";
+        ansset[65] = "징그럽다";
+        ansset[66] = "무지개색";
+        ansset[67] = "픽셀화";
+        ansset[68] = "중세";
+        ansset[69] = "고무적";
+        ansset[70] = "테두리";
 
         return ansset;
     }
@@ -162,6 +276,13 @@ public class minigamemanager : MonoBehaviour
         img_list[39] = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
         texture = Resources.Load<Texture2D>("MG_1_040");
         img_list[40] = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
+
+        for (int i = 41; i < 67; i++)
+        {
+            string imgname = "MG_1_0" + i;
+            texture = Resources.Load<Texture2D>(imgname);
+            img_list[i] = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
+        }
 
         return img_list;
     }

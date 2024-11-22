@@ -21,14 +21,15 @@ public class minigameUI : MonoBehaviour
 
     public void UpdateMinigame()
     {
-        if (GameManager.Instance.is_mgset == true && GameManager.Instance.APIRequest != null)
+        GameManager.Instance.is_minigame = true;
+        if (GameManager.Instance.is_mgset == true && GameManager.Instance.APIResponse != null)
         {
             img_list[2].sprite = GameManager.Instance.spr_list[GameManager.Instance.rannum3[0]];
             img_list[3].sprite = GameManager.Instance.spr_list[GameManager.Instance.rannum3[1]];
             img_list[4].sprite = GameManager.Instance.spr_list[GameManager.Instance.rannum3[2]];
         }
 
-        if (GameManager.Instance.is_mgset == true && GameManager.Instance.APIRequest != null)
+        if (GameManager.Instance.is_mgset == true && GameManager.Instance.APIResponse != null)
         {
             for (int k = 1; k < 5; k++)
             {
@@ -47,16 +48,16 @@ public class minigameUI : MonoBehaviour
                     }
                     else if (j == LLM)
                     {
-                        txt_list[j].text = GameManager.Instance.APIRequest;
+                        txt_list[j].text = GameManager.Instance.APIResponse.Length > 6 ? GameManager.Instance.APIResponse.Substring(0, 6).Trim() : GameManager.Instance.APIResponse.Trim();
                     }
                     else
                     {
-                        txt_list[j].text = GameManager.Instance.ans_list[GameManager.Instance.rannum3[i]];
+                        txt_list[j].text = GameManager.Instance.ans_list[GameManager.Instance.rannum3_2[i]];
                         break;
                     }
                 }
             }
-            if (txt_list[4].text == "NULL" && LLM == 4) txt_list[4].text = GameManager.Instance.APIRequest;
+            if (txt_list[4].text == "NULL" && LLM == 4) txt_list[4].text = GameManager.Instance.APIResponse.Length > 6 ? GameManager.Instance.APIResponse.Substring(0, 6).Trim() : GameManager.Instance.APIResponse.Trim();
 
             for (int i = 1; i < 5; i++)
             {
@@ -124,6 +125,7 @@ public class minigameUI : MonoBehaviour
 
         GameManager.Instance.is_catch = false;
         GameManager.Instance.is_rannum = true;
+        GameManager.Instance.is_rannum2 = true;
         GameManager.Instance.ui_list[1].gameObject.SetActive(false);
     }
 
@@ -146,6 +148,7 @@ public class minigameUI : MonoBehaviour
 
         GameManager.Instance.is_catch = false;
         GameManager.Instance.is_rannum = true;
+        GameManager.Instance.is_rannum2 = true;
         GameManager.Instance.is_delay = true;
         GameManager.Instance.ui_list[1].gameObject.SetActive(false);
     }
