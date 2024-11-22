@@ -47,7 +47,7 @@ public class minigameUI : MonoBehaviour
                     }
                     else if (j == LLM)
                     {
-                        txt_list[j].text = GameManager.Instance.APIResponse.Length > 6 ? GameManager.Instance.APIResponse.Substring(0, 6) : GameManager.Instance.APIResponse;
+                        txt_list[j].text = GameManager.Instance.APIResponse.Length > 6 ? GameManager.Instance.APIResponse.Substring(0, 6).Trim() : GameManager.Instance.APIResponse.Trim();
                     }
                     else
                     {
@@ -56,7 +56,7 @@ public class minigameUI : MonoBehaviour
                     }
                 }
             }
-            if (txt_list[4].text == "NULL" && LLM == 4) txt_list[4].text = GameManager.Instance.APIResponse.Length > 6 ? GameManager.Instance.APIResponse.Substring(0, 6) : GameManager.Instance.APIResponse;
+            if (txt_list[4].text == "NULL" && LLM == 4) txt_list[4].text = GameManager.Instance.APIResponse.Length > 6 ? GameManager.Instance.APIResponse.Substring(0, 6).Trim() : GameManager.Instance.APIResponse.Trim();
 
             for (int i = 1; i < 5; i++)
             {
