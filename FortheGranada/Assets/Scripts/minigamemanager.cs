@@ -10,13 +10,13 @@ public class minigamemanager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public int[] RanNumGen()
@@ -24,7 +24,7 @@ public class minigamemanager : MonoBehaviour
         HashSet<int> uniqueNumbers = new HashSet<int>();
         while (uniqueNumbers.Count < 3)
         {
-            uniqueNumbers.Add(Random.Range(1, 41));
+            uniqueNumbers.Add(Random.Range(1, 67));
         }
         return uniqueNumbers.ToArray();
     }
@@ -36,14 +36,14 @@ public class minigamemanager : MonoBehaviour
         ansset[1] = "바위";
         ansset[2] = "가위";
         ansset[3] = "나무";
-        ansset[4] = "동물";
+        ansset[4] = "세모";
         ansset[5] = "식물";
         ansset[6] = "종족";
         ansset[7] = "괴물";
         ansset[8] = "풍경";
         ansset[9] = "원";
         ansset[10] = "네모";
-        ansset[11] = "세모";
+        ansset[11] = "동물";
         ansset[12] = "벽";
         ansset[13] = "액체";
         ansset[14] = "고체";
@@ -73,6 +73,32 @@ public class minigamemanager : MonoBehaviour
         ansset[38] = "남색";
         ansset[39] = "흰색";
         ansset[40] = "검은색";
+        ansset[41] = "갈색";
+        ansset[42] = "둥글다";
+        ansset[43] = "네모나다";
+        ansset[44] = "동그랗다";
+        ansset[45] = "가깝다";
+        ansset[46] = "멀다";
+        ansset[47] = "뜨겁다";
+        ansset[48] = "차갑다";
+        ansset[49] = "판타지";
+        ansset[50] = "환타지";
+        ansset[51] = "픽셀";
+        ansset[52] = "픽셀아트";
+        ansset[53] = "픽셀 아트";
+        ansset[54] = "정물화";
+        ansset[55] = "음식";
+        ansset[56] = "갑옷";
+        ansset[57] = "점묘화";
+        ansset[58] = "그림";
+        ansset[59] = "괴물입니다";
+        ansset[60] = "Error";
+        ansset[61] = "없음";
+        ansset[62] = "쪼그맣다";
+        ansset[63] = "큼직하다";
+        ansset[64] = "싱그럽다";
+        ansset[65] = "징그럽다";
+        ansset[66] = "무지개색";
 
         return ansset;
     }
@@ -162,6 +188,13 @@ public class minigamemanager : MonoBehaviour
         img_list[39] = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
         texture = Resources.Load<Texture2D>("MG_1_040");
         img_list[40] = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
+
+        for (int i = 41; i < 67; i++)
+        {
+            string imgname = "MG_1_0" + i;
+            texture = Resources.Load<Texture2D>(imgname);
+            img_list[i] = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
+        }
 
         return img_list;
     }

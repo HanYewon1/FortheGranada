@@ -33,9 +33,9 @@ public class GameManager : MonoBehaviour
 
     [Header("Game Settings")]
     public int level = 0;
-    public int maxtokens = 3;
-    public string promptmessage = "3개의 이미지 공통점을 너무 포괄적이지 않은 단어로 단 1개만 출력해 입니다 금지";
-    public string APIRequest = null;
+    public int maxtokens = 5;
+    public string promptmessage = "3개의 이미지 공통점을 너무 포괄적이지 않은 단어로 단 1개만 출력해! 뒤에 입니다. 붙이지 마!";
+    public string APIResponse = null;
     private string apiUrl;
     private string apiKey;
     [System.Serializable]
@@ -167,6 +167,14 @@ public class GameManager : MonoBehaviour
             {
                 rannum3 = mg.RanNumGen();
                 is_rannum = false;
+            }
+
+            if (is_catch)
+            {
+                foreach (var rannum in rannum3)
+                {
+                    if (APIResponse == ans_list[rannum]) is_rannum = true;
+                }
             }
 
             if (is_mgset == false)
@@ -301,7 +309,7 @@ public class GameManager : MonoBehaviour
         {
             Debug.LogError("Error: " + request.error);
             Debug.LogError("Response: " + request.downloadHandler.text);
-            APIRequest = "Error";
+            APIResponse = "Error";
             is_catch = true;
         }
     }
@@ -317,7 +325,7 @@ public class GameManager : MonoBehaviour
         if (modelResponse != null)
         {
             Debug.Log("Model Response: " + modelResponse);
-            APIRequest = modelResponse;
+            APIResponse = modelResponse;
             is_catch = true;
         }
         else

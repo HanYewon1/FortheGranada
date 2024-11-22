@@ -21,14 +21,14 @@ public class minigameUI : MonoBehaviour
 
     public void UpdateMinigame()
     {
-        if (GameManager.Instance.is_mgset == true && GameManager.Instance.APIRequest != null)
+        if (GameManager.Instance.is_mgset == true && GameManager.Instance.APIResponse != null)
         {
             img_list[2].sprite = GameManager.Instance.spr_list[GameManager.Instance.rannum3[0]];
             img_list[3].sprite = GameManager.Instance.spr_list[GameManager.Instance.rannum3[1]];
             img_list[4].sprite = GameManager.Instance.spr_list[GameManager.Instance.rannum3[2]];
         }
 
-        if (GameManager.Instance.is_mgset == true && GameManager.Instance.APIRequest != null)
+        if (GameManager.Instance.is_mgset == true && GameManager.Instance.APIResponse != null)
         {
             for (int k = 1; k < 5; k++)
             {
@@ -47,7 +47,7 @@ public class minigameUI : MonoBehaviour
                     }
                     else if (j == LLM)
                     {
-                        txt_list[j].text = GameManager.Instance.APIRequest;
+                        txt_list[j].text = GameManager.Instance.APIResponse.Length > 5 ? GameManager.Instance.APIResponse.Substring(0, 5) : GameManager.Instance.APIResponse;
                     }
                     else
                     {
@@ -56,7 +56,7 @@ public class minigameUI : MonoBehaviour
                     }
                 }
             }
-            if (txt_list[4].text == "NULL" && LLM == 4) txt_list[4].text = GameManager.Instance.APIRequest;
+            if (txt_list[4].text == "NULL" && LLM == 4) txt_list[4].text = GameManager.Instance.APIResponse.Length > 5 ? GameManager.Instance.APIResponse.Substring(0, 5) : GameManager.Instance.APIResponse;
 
             for (int i = 1; i < 5; i++)
             {
