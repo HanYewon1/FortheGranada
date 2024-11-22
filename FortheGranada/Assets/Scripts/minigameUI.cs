@@ -47,16 +47,16 @@ public class minigameUI : MonoBehaviour
                     }
                     else if (j == LLM)
                     {
-                        txt_list[j].text = GameManager.Instance.APIResponse.Length > 5 ? GameManager.Instance.APIResponse.Substring(0, 5) : GameManager.Instance.APIResponse;
+                        txt_list[j].text = GameManager.Instance.APIResponse.Length > 6 ? GameManager.Instance.APIResponse.Substring(0, 6) : GameManager.Instance.APIResponse;
                     }
                     else
                     {
-                        txt_list[j].text = GameManager.Instance.ans_list[GameManager.Instance.rannum3[i]];
+                        txt_list[j].text = GameManager.Instance.ans_list[GameManager.Instance.rannum3_2[i]];
                         break;
                     }
                 }
             }
-            if (txt_list[4].text == "NULL" && LLM == 4) txt_list[4].text = GameManager.Instance.APIResponse.Length > 5 ? GameManager.Instance.APIResponse.Substring(0, 5) : GameManager.Instance.APIResponse;
+            if (txt_list[4].text == "NULL" && LLM == 4) txt_list[4].text = GameManager.Instance.APIResponse.Length > 6 ? GameManager.Instance.APIResponse.Substring(0, 6) : GameManager.Instance.APIResponse;
 
             for (int i = 1; i < 5; i++)
             {
@@ -124,6 +124,7 @@ public class minigameUI : MonoBehaviour
 
         GameManager.Instance.is_catch = false;
         GameManager.Instance.is_rannum = true;
+        GameManager.Instance.is_rannum2 = true;
         GameManager.Instance.ui_list[1].gameObject.SetActive(false);
     }
 
@@ -146,6 +147,7 @@ public class minigameUI : MonoBehaviour
 
         GameManager.Instance.is_catch = false;
         GameManager.Instance.is_rannum = true;
+        GameManager.Instance.is_rannum2 = true;
         GameManager.Instance.is_delay = true;
         GameManager.Instance.ui_list[1].gameObject.SetActive(false);
     }

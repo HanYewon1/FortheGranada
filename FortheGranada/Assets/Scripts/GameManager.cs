@@ -34,7 +34,7 @@ public class GameManager : MonoBehaviour
     [Header("Game Settings")]
     public int level = 0;
     public int maxtokens = 5;
-    public string promptmessage = "3개의 이미지 공통점을 너무 포괄적이지 않은 단어로 단 1개만 출력해! 뒤에 입니다. 붙이지 마!";
+    public string promptmessage = "3개의 이미지 공통점을 너무 포괄적이지 않은 단어로 단 1개만 출력해! 뒤에 입니다 붙이지 마! 판타지, 픽셀아트 금지!";
     public string APIResponse = null;
     private string apiUrl;
     private string apiKey;
@@ -54,6 +54,7 @@ public class GameManager : MonoBehaviour
     public bool is_mgset = false;
     public bool is_catch = false;
     public bool is_rannum = true;
+    public bool is_rannum2 = true;
     [SerializeField]
     private bool _is_ingame = false;
 
@@ -62,6 +63,7 @@ public class GameManager : MonoBehaviour
     public Transform player;
     public RectTransform[] ui_list;
     public int[] rannum3;
+    public int[] rannum3_2;
     public Sprite[] spr_list;
     public string[] ans_list;
 
@@ -169,11 +171,17 @@ public class GameManager : MonoBehaviour
                 is_rannum = false;
             }
 
+            if (is_rannum2)
+            {
+                rannum3_2 = mg.RanNumGen();
+                is_rannum2 = false;
+            }
+
             if (is_catch)
             {
-                foreach (var rannum in rannum3)
+                foreach (var rannum in rannum3_2)
                 {
-                    if (APIResponse == ans_list[rannum]) is_rannum = true;
+                    if (APIResponse == ans_list[rannum]) is_rannum2 = true;
                 }
             }
 

@@ -92,13 +92,17 @@ public class minigamemanager : MonoBehaviour
         ansset[57] = "점묘화";
         ansset[58] = "그림";
         ansset[59] = "괴물입니다";
-        ansset[60] = "Error";
+        ansset[60] = "전설";
         ansset[61] = "없음";
         ansset[62] = "쪼그맣다";
         ansset[63] = "큼직하다";
         ansset[64] = "싱그럽다";
         ansset[65] = "징그럽다";
         ansset[66] = "무지개색";
+        ansset[67] = "픽셀화";
+        ansset[68] = "중세";
+        ansset[69] = "고무적";
+        ansset[70] = "테두리";
 
         return ansset;
     }
