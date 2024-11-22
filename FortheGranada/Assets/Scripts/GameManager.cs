@@ -147,6 +147,8 @@ public class GameManager : MonoBehaviour
             ui_list[4].gameObject.SetActive(false);
             ui_list[5].gameObject.SetActive(false);
 
+            is_minigame = false;
+
             if (spr_list.Length == 0) spr_list = mg.ImageSet();
             if (ans_list.Length == 0) ans_list = mg.AnswerSet();
         }
@@ -235,7 +237,7 @@ public class GameManager : MonoBehaviour
 
             if (is_closebox == true && is_minigame == false && is_delay == false && is_mgset == true && is_catch == true)
             {
-                if (Input.GetKeyDown(KeyCode.V))
+                if (Input.GetKeyDown(KeyCode.F))
                 {
                     ui_list[1].gameObject.SetActive(true);
                 }
@@ -317,7 +319,7 @@ public class GameManager : MonoBehaviour
         {
             Debug.LogError("Error: " + request.error);
             Debug.LogError("Response: " + request.downloadHandler.text);
-            APIResponse = "Error";
+            mg.FailRequest();
             is_catch = true;
         }
     }
@@ -339,6 +341,8 @@ public class GameManager : MonoBehaviour
         else
         {
             Debug.LogError("Could not parse the response.");
+            mg.FailRequest();
+            is_catch = true;
         }
     }
 

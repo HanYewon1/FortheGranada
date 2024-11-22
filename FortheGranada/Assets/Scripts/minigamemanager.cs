@@ -29,6 +29,90 @@ public class minigamemanager : MonoBehaviour
         return uniqueNumbers.ToArray();
     }
 
+    public void FailRequest()
+    {
+        int r = Random.Range(1, 13);
+
+        switch (r)
+        {
+            case 1:
+                GameManager.Instance.rannum3[0] = 1;
+                GameManager.Instance.rannum3[1] = 2;
+                GameManager.Instance.rannum3[2] = 3;
+                GameManager.Instance.APIResponse = "동물";
+                break;
+            case 2:
+                GameManager.Instance.rannum3[0] = 4;
+                GameManager.Instance.rannum3[1] = 5;
+                GameManager.Instance.rannum3[2] = 6;
+                GameManager.Instance.APIResponse = "동물";
+                break;
+            case 3:
+                GameManager.Instance.rannum3[0] = 7;
+                GameManager.Instance.rannum3[1] = 8;
+                GameManager.Instance.rannum3[2] = 9;
+                GameManager.Instance.APIResponse = "동물";
+                break;
+            case 4:
+                GameManager.Instance.rannum3[0] = 11;
+                GameManager.Instance.rannum3[1] = 12;
+                GameManager.Instance.rannum3[2] = 13;
+                GameManager.Instance.APIResponse = "음식";
+                break;
+            case 5:
+                GameManager.Instance.rannum3[0] = 14;
+                GameManager.Instance.rannum3[1] = 15;
+                GameManager.Instance.rannum3[2] = 16;
+                GameManager.Instance.APIResponse = "음식";
+                break;
+            case 6:
+                GameManager.Instance.rannum3[0] = 17;
+                GameManager.Instance.rannum3[1] = 18;
+                GameManager.Instance.rannum3[2] = 19;
+                GameManager.Instance.APIResponse = "음식";
+                break;
+            case 7:
+                GameManager.Instance.rannum3[0] = 21;
+                GameManager.Instance.rannum3[1] = 22;
+                GameManager.Instance.rannum3[2] = 23;
+                GameManager.Instance.APIResponse = "괴물";
+                break;
+            case 8:
+                GameManager.Instance.rannum3[0] = 24;
+                GameManager.Instance.rannum3[1] = 25;
+                GameManager.Instance.rannum3[2] = 26;
+                GameManager.Instance.APIResponse = "괴물";
+                break;
+            case 9:
+                GameManager.Instance.rannum3[0] = 27;
+                GameManager.Instance.rannum3[1] = 28;
+                GameManager.Instance.rannum3[2] = 29;
+                GameManager.Instance.APIResponse = "괴물";
+                break;
+            case 10:
+                GameManager.Instance.rannum3[0] = 31;
+                GameManager.Instance.rannum3[1] = 32;
+                GameManager.Instance.rannum3[2] = 33;
+                GameManager.Instance.APIResponse = "종족";
+                break;
+            case 11:
+                GameManager.Instance.rannum3[0] = 34;
+                GameManager.Instance.rannum3[1] = 35;
+                GameManager.Instance.rannum3[2] = 36;
+                GameManager.Instance.APIResponse = "종족";
+                break;
+            case 12:
+                GameManager.Instance.rannum3[0] = 37;
+                GameManager.Instance.rannum3[1] = 38;
+                GameManager.Instance.rannum3[2] = 39;
+                GameManager.Instance.APIResponse = "종족";
+                break;
+            default:
+                Debug.LogError("OutOfRange");
+                break;
+        }
+    }
+
     public string[] AnswerSet()
     {
         string[] ansset = new string[102];

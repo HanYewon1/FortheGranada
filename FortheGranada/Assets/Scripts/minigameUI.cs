@@ -21,6 +21,7 @@ public class minigameUI : MonoBehaviour
 
     public void UpdateMinigame()
     {
+        GameManager.Instance.is_minigame = true;
         if (GameManager.Instance.is_mgset == true && GameManager.Instance.APIResponse != null)
         {
             img_list[2].sprite = GameManager.Instance.spr_list[GameManager.Instance.rannum3[0]];
