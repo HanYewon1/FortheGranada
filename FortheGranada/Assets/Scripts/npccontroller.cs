@@ -56,11 +56,16 @@ public class npccontroller : MonoBehaviour
         //애니메이션
         if (Mathf.Abs(movement.x) > Mathf.Abs(movement.y))
         {
-            animator.SetInteger("npc_x", (int)movement.x);
+            animator.SetInteger("npc_x", movement.x > 0 ? 1 : -1); 
+            animator.SetInteger("npc_y", 0);
         }
+        // Vertical movement
         else
         {
-            animator.SetInteger("npc_y", (int)movement.y);
+            animator.SetInteger("npc_y", movement.y > 0 ? 1 : -1); 
+            animator.SetInteger("npc_x", 0);
         }
+
+    
     }
 }
