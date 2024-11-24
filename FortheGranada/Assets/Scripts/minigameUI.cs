@@ -1,4 +1,4 @@
-    using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -44,7 +44,7 @@ public class minigameUI : MonoBehaviour
                 {
                     if (txt_list[j].text != "NULL")
                     {
-                        Debug.Log("!NULL");
+                        //Debug.Log("!NULL");
                     }
                     else if (j == LLM)
                     {
