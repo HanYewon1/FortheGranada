@@ -24,7 +24,7 @@ public class minigamemanager : MonoBehaviour
         HashSet<int> uniqueNumbers = new HashSet<int>();
         while (uniqueNumbers.Count < 3)
         {
-            uniqueNumbers.Add(Random.Range(1, 67));
+            uniqueNumbers.Add(Random.Range(1, 101));
         }
         return uniqueNumbers.ToArray();
     }
@@ -175,7 +175,7 @@ public class minigamemanager : MonoBehaviour
         ansset[56] = "갑옷";
         ansset[57] = "점묘화";
         ansset[58] = "그림";
-        ansset[59] = "괴물입니다";
+        ansset[59] = "거대";
         ansset[60] = "전설";
         ansset[61] = "없음";
         ansset[62] = "쪼그맣다";
@@ -187,6 +187,37 @@ public class minigamemanager : MonoBehaviour
         ansset[68] = "중세";
         ansset[69] = "고무적";
         ansset[70] = "테두리";
+        ansset[71] = "있음";
+        ansset[72] = "커다랗다";
+        ansset[73] = "소인";
+        ansset[74] = "대인";
+        ansset[75] = "성벽";
+        ansset[76] = "신화";
+        ansset[77] = "그리스";
+        ansset[78] = "중구난방";
+        ansset[79] = "기사";
+        ansset[80] = "정어리";
+        ansset[81] = "제한";
+        ansset[82] = "제안";
+        ansset[83] = "정각";
+        ansset[84] = "직각";
+        ansset[85] = "삼각";
+        ansset[86] = "사각";
+        ansset[87] = "삼각형";
+        ansset[88] = "사각형";
+        ansset[89] = "모서리";
+        ansset[90] = "귀퉁이";
+        ansset[91] = "악귀";
+        ansset[92] = "천사";
+        ansset[93] = "악마";
+        ansset[94] = "재앙";
+        ansset[95] = "심각함";
+        ansset[96] = "적당함";
+        ansset[97] = "부족함";
+        ansset[98] = "과함";
+        ansset[99] = "넘쳐흐름";
+        ansset[100] = "미세";
+
 
         return ansset;
     }
@@ -277,12 +308,15 @@ public class minigamemanager : MonoBehaviour
         texture = Resources.Load<Texture2D>("MG_1_040");
         img_list[40] = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
 
-        for (int i = 41; i < 67; i++)
+        for (int i = 41; i < 100; i++)
         {
             string imgname = "MG_1_0" + i;
             texture = Resources.Load<Texture2D>(imgname);
             img_list[i] = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
         }
+
+        texture = Resources.Load<Texture2D>("MG_1_100");
+        img_list[100] = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
 
         return img_list;
     }
