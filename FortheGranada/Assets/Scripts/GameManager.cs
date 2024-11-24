@@ -252,6 +252,17 @@ public class GameManager : MonoBehaviour
                 StartCoroutine(SelectedIncurrect());
             }
         }
+
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            if (!is_ingame)
+            {
+                is_ingame = true;
+            }
+            is_running = true;
+            level = 1;
+            SceneManager.LoadScene("Stage_1");
+        }
     }
 
     private IEnumerator LLMAPIRequest(string prompt, int maxTokens)

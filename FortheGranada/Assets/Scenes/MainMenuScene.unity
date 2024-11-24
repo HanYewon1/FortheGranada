@@ -496,6 +496,7 @@ MonoBehaviour:
   APIResponse: 
   is_attacked_speed: 0
   is_preview: 0
+  is_running: 0
   is_closebox: 0
   is_minigame: 0
   is_delay: 0
@@ -506,6 +507,7 @@ MonoBehaviour:
   is_rannum2: 1
   _is_ingame: 0
   mg: {fileID: 0}
+  tm: {fileID: 0}
   player: {fileID: 0}
   ui_list: []
   rannum3: 
