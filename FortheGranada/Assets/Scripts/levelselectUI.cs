@@ -57,4 +57,10 @@ public class levelselectUI : MonoBehaviour
         GameManager.Instance.level = 3;
         SceneManager.LoadScene("PlayScene");
     }
+
+    public void OnClickMapTest()
+    {
+
+        SceneManager.LoadScene("SampleScene");
+    }
 }
