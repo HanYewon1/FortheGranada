@@ -47,6 +47,7 @@ public class GameManager : MonoBehaviour
     [Header("Flags")]
     public bool is_attacked_speed;
     public bool is_preview;
+    public bool is_running;
     public bool is_closebox = false;
     public bool is_minigame = false;
     public bool is_delay = false;
@@ -60,6 +61,7 @@ public class GameManager : MonoBehaviour
 
     [Header("GetComponents")]
     public minigamemanager mg;
+    public timer tm;
     public Transform player;
     public RectTransform[] ui_list;
     public int[] rannum3;
@@ -140,13 +142,15 @@ public class GameManager : MonoBehaviour
             ui_list[4] = GameObject.Find("GRayout6X6").GetComponent<RectTransform>();
             ui_list[5] = GameObject.Find("GRayout7X7").GetComponent<RectTransform>();
 
+            tm = ui_list[0].Find("TIME").GetComponent<timer>();
+
             // ë¶ˆí•„?š”?•œ ui ë¹„í™œ?„±
             ui_list[1].gameObject.SetActive(false);
             ui_list[2].gameObject.SetActive(false);
             ui_list[3].gameObject.SetActive(false);
             ui_list[4].gameObject.SetActive(false);
             ui_list[5].gameObject.SetActive(false);
-
+            Time.timeScale = 1;
             is_minigame = false;
 
             if (spr_list.Length == 0) spr_list = mg.ImageSet();
@@ -239,6 +243,7 @@ public class GameManager : MonoBehaviour
             {
                 if (Input.GetKeyDown(KeyCode.F))
                 {
+                    is_running = false;
                     ui_list[1].gameObject.SetActive(true);
                 }
             }
