@@ -11,7 +11,6 @@ public class npccontroller : MonoBehaviour
     int nextPoint = 0;
     float distToPoint;
 
-    Vector2 lastPosition;
     Vector2 movement;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -19,7 +18,6 @@ public class npccontroller : MonoBehaviour
     {
         rigidbody2D = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
-        lastPosition = transform.position;
         
     }
 
@@ -36,16 +34,12 @@ public class npccontroller : MonoBehaviour
 
         transform.position = Vector2.MoveTowards(transform.position, points[nextPoint].transform.position, moveSpeed * Time.deltaTime);
 
-        //현재 프레임 움직임 계산
-        movement = (Vector2)transform.position - lastPosition;
-        lastPosition = transform.position;
+        //움직임 방향 계산
+        movement = (points[nextPoint].transform.position - transform.position).normalized;
 
         //point에 도달했을 때 회전
-        if (distToPoint < 0.2f )
+        if (distToPoint < 0.2f)
         {
-            Vector3 currRot = transform.eulerAngles;
-            currRot.z += points[nextPoint].transform.eulerAngles.z;
-            transform.eulerAngles = currRot;
 
             //다음 point
             nextPoint++;
@@ -54,18 +48,9 @@ public class npccontroller : MonoBehaviour
         }
 
         //애니메이션
-        if (Mathf.Abs(movement.x) > Mathf.Abs(movement.y))
-        {
-            animator.SetInteger("npc_x", movement.x > 0 ? 1 : -1); 
-            animator.SetInteger("npc_y", 0);
-        }
-        // Vertical movement
-        else
-        {
-            animator.SetInteger("npc_y", movement.y > 0 ? 1 : -1); 
-            animator.SetInteger("npc_x", 0);
-        }
+        animator.SetInteger("npc_x", Mathf.RoundToInt(movement.x)); 
+        animator.SetInteger("npc_y", Mathf.RoundToInt(movement.y)); 
 
-    
     }
+
 }
