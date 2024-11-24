@@ -33,9 +33,9 @@ public class GameManager : MonoBehaviour
 
     [Header("Game Settings")]
     public int level = 0;
-    public int maxtokens = 3;
-    public string promptmessage = "3개의 이미지 공통점을 너무 포괄적이지 않은 단어로 단 1개만 출력해 입니다 금지";
-    public string APIRequest = null;
+    public int maxtokens = 5;
+    public string promptmessage = "3개의 이미지 공통점을 너무 포괄적이지 않은 단어로 단 1개만 출력해! 뒤에 입니다 붙이지 마! 판타지, 픽셀아트 금지!";
+    public string APIResponse = null;
     private string apiUrl;
     private string apiKey;
     [System.Serializable]
@@ -54,6 +54,7 @@ public class GameManager : MonoBehaviour
     public bool is_mgset = false;
     public bool is_catch = false;
     public bool is_rannum = true;
+    public bool is_rannum2 = true;
     [SerializeField]
     private bool _is_ingame = false;
 
@@ -62,6 +63,7 @@ public class GameManager : MonoBehaviour
     public Transform player;
     public RectTransform[] ui_list;
     public int[] rannum3;
+    public int[] rannum3_2;
     public Sprite[] spr_list;
     public string[] ans_list;
 
@@ -145,6 +147,8 @@ public class GameManager : MonoBehaviour
             ui_list[4].gameObject.SetActive(false);
             ui_list[5].gameObject.SetActive(false);
 
+            is_minigame = false;
+
             if (spr_list.Length == 0) spr_list = mg.ImageSet();
             if (ans_list.Length == 0) ans_list = mg.AnswerSet();
         }
@@ -167,6 +171,20 @@ public class GameManager : MonoBehaviour
             {
                 rannum3 = mg.RanNumGen();
                 is_rannum = false;
+            }
+
+            if (is_rannum2)
+            {
+                rannum3_2 = mg.RanNumGen();
+                is_rannum2 = false;
+            }
+
+            if (is_catch)
+            {
+                foreach (var rannum in rannum3_2)
+                {
+                    if (APIResponse == ans_list[rannum]) is_rannum2 = true;
+                }
             }
 
             if (is_mgset == false)
@@ -219,7 +237,7 @@ public class GameManager : MonoBehaviour
 
             if (is_closebox == true && is_minigame == false && is_delay == false && is_mgset == true && is_catch == true)
             {
-                if (Input.GetKeyDown(KeyCode.V))
+                if (Input.GetKeyDown(KeyCode.F))
                 {
                     ui_list[1].gameObject.SetActive(true);
                 }
@@ -301,7 +319,7 @@ public class GameManager : MonoBehaviour
         {
             Debug.LogError("Error: " + request.error);
             Debug.LogError("Response: " + request.downloadHandler.text);
-            APIRequest = "Error";
+            mg.FailRequest();
             is_catch = true;
         }
     }
@@ -317,12 +335,14 @@ public class GameManager : MonoBehaviour
         if (modelResponse != null)
         {
             Debug.Log("Model Response: " + modelResponse);
-            APIRequest = modelResponse;
+            APIResponse = modelResponse;
             is_catch = true;
         }
         else
         {
             Debug.LogError("Could not parse the response.");
+            mg.FailRequest();
+            is_catch = true;
         }
     }
 
