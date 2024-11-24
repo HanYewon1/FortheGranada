@@ -1,4 +1,4 @@
-    using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -44,7 +44,7 @@ public class minigameUI : MonoBehaviour
                 {
                     if (txt_list[j].text != "NULL")
                     {
-                        Debug.Log("!NULL");
+                        //Debug.Log("!NULL");
                     }
                     else if (j == LLM)
                     {
@@ -78,6 +78,7 @@ public class minigameUI : MonoBehaviour
         // ?î¨?ù¥ Î°úÎìú?ê† ?ïå ?ò∏Ï∂?
         //SceneManager.sceneLoaded += OnSceneLoaded;
         UpdateMinigame();
+        Time.timeScale = 0;
     }
 
     private void OnDisable()
@@ -122,7 +123,8 @@ public class minigameUI : MonoBehaviour
         {
             GameManager.Instance.is_mgset = false;
         }
-
+        Time.timeScale = 1;
+        GameManager.Instance.is_running = true;
         GameManager.Instance.is_catch = false;
         GameManager.Instance.is_rannum = true;
         GameManager.Instance.is_rannum2 = true;
@@ -145,7 +147,8 @@ public class minigameUI : MonoBehaviour
         {
             GameManager.Instance.is_mgset = false;
         }
-
+        Time.timeScale = 1;
+        GameManager.Instance.is_running = true;
         GameManager.Instance.is_catch = false;
         GameManager.Instance.is_rannum = true;
         GameManager.Instance.is_rannum2 = true;

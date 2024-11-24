@@ -31,7 +31,7 @@ public class levelselectUI : MonoBehaviour
         {
             GameManager.Instance.is_ingame = true;
         }
-        
+        GameManager.Instance.is_running = true;
         GameManager.Instance.level = 1;
         SceneManager.LoadScene("PlayScene");
     }
@@ -42,7 +42,7 @@ public class levelselectUI : MonoBehaviour
         {
             GameManager.Instance.is_ingame = true;
         }
-
+        GameManager.Instance.is_running = true;
         GameManager.Instance.level = 2;
         SceneManager.LoadScene("PlayScene");
     }
@@ -53,7 +53,7 @@ public class levelselectUI : MonoBehaviour
         {
             GameManager.Instance.is_ingame = true;
         }
-        
+        GameManager.Instance.is_running = true;
         GameManager.Instance.level = 3;
         SceneManager.LoadScene("PlayScene");
     }
