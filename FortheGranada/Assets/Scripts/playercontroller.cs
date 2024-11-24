@@ -8,6 +8,8 @@ public class playercontroller : MonoBehaviour
 
     Rigidbody2D rigidbody2d;
     Animator animator;
+    SpriteRenderer spriteRenderer;
+    Color originalColor;
 
     float player_x;//醫뚯슦 ???吏곸엫
     float player_y;//?긽?븯 ???吏곸엫
@@ -18,10 +20,13 @@ public class playercontroller : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         rigidbody2d = GetComponent<Rigidbody2D>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        originalColor = spriteRenderer.color;
     }
     void Update()
     {
-        PlayerMove();   
+        PlayerMove();
+        Damaged();
     }
 
     private void FixedUpdate()
@@ -64,5 +69,23 @@ public class playercontroller : MonoBehaviour
         }
         else //idle
             animator.SetBool("is_change", false);
+    }
+
+    //공격받았을 때
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        StartCoroutine(ChangeColor());
+    }
+
+    private IEnumerator ChangeColor()
+    {
+        spriteRenderer.color = Color.red; //빨간색으로 변함
+        yield return new WaitForSeconds(1f); //1초동안 유지
+        spriteRenderer.color = originalColor; //원래 색으로 돌아옴
+    }
+    //공격받을 경우
+    void Damaged()
+    {
+        
     }
 }
