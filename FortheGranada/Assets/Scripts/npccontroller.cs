@@ -18,7 +18,7 @@ public class npccontroller : MonoBehaviour
     {
         rigidbody2D = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
-        
+        moveSpeed = 5f * 0.75f;
     }
 
     // Update is called once per frame
@@ -48,8 +48,8 @@ public class npccontroller : MonoBehaviour
         }
 
         //애니메이션
-        animator.SetInteger("npc_x", Mathf.RoundToInt(movement.x)); 
-        animator.SetInteger("npc_y", Mathf.RoundToInt(movement.y)); 
+        animator.SetInteger("npc_x", Mathf.RoundToInt(movement.x));
+        animator.SetInteger("npc_y", Mathf.RoundToInt(movement.y));
 
     }
 

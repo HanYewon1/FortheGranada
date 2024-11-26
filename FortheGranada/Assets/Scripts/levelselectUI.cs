@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class levelselectUI : MonoBehaviour
+public class diffselectUI : MonoBehaviour
 {
     private Animator animator;
 
@@ -32,7 +32,8 @@ public class levelselectUI : MonoBehaviour
             GameManager.Instance.is_ingame = true;
         }
         GameManager.Instance.is_running = true;
-        GameManager.Instance.level = 1;
+        GameManager.Instance.diff = 1;
+        GameManager.Instance.stage++;
         SceneManager.LoadScene("PlayScene");
     }
 
@@ -43,7 +44,8 @@ public class levelselectUI : MonoBehaviour
             GameManager.Instance.is_ingame = true;
         }
         GameManager.Instance.is_running = true;
-        GameManager.Instance.level = 2;
+        GameManager.Instance.diff = 2;
+        GameManager.Instance.stage++;
         SceneManager.LoadScene("PlayScene");
     }
 
@@ -54,7 +56,8 @@ public class levelselectUI : MonoBehaviour
             GameManager.Instance.is_ingame = true;
         }
         GameManager.Instance.is_running = true;
-        GameManager.Instance.level = 3;
+        GameManager.Instance.diff = 3;
+        GameManager.Instance.stage++;
         SceneManager.LoadScene("PlayScene");
     }
 
