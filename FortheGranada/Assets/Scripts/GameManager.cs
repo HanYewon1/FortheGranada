@@ -58,6 +58,7 @@ public class GameManager : MonoBehaviour
     public bool is_rannum2 = true;
     [SerializeField]
     private bool _is_ingame = false;
+    public bool is_border;
 
     [Header("GetComponents")]
     public minigamemanager mg;
