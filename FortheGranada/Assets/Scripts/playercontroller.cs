@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class playercontroller : MonoBehaviour
 {
-    public float player_speed;//?뵆?젅?씠?뼱 ?씠?룞?냽?룄
-
     Rigidbody2D rigidbody2d;
     Animator animator;
     SpriteRenderer spriteRenderer;
@@ -32,7 +30,7 @@ public class playercontroller : MonoBehaviour
     private void FixedUpdate()
     {
         Vector2 move_vec = is_horizon_move ? new Vector2(player_x, 0) : new Vector2(0, player_y);
-        rigidbody2d.linearVelocity = move_vec * player_speed;
+        rigidbody2d.linearVelocity = move_vec * GameManager.Instance.speed;
     }
 
     private void PlayerMove()
@@ -87,6 +85,6 @@ public class playercontroller : MonoBehaviour
     //공격받을 경우
     void Damaged()
     {
-        
+
     }
 }
