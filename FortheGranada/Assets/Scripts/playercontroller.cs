@@ -74,7 +74,8 @@ public class playercontroller : MonoBehaviour
     //공격받았을 때
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        StartCoroutine(ChangeColor());
+        if(collision.gameObject.CompareTag("Enemy"))
+            StartCoroutine(ChangeColor());
     }
 
     private IEnumerator ChangeColor()
