@@ -31,9 +31,14 @@ public class diffselectUI : MonoBehaviour
         {
             GameManager.Instance.is_ingame = true;
         }
+        if (GameManager.Instance.is_boss)
+        {
+            GameManager.Instance.is_boss = false;
+        }
         GameManager.Instance.is_running = true;
         GameManager.Instance.diff = 1;
         GameManager.Instance.stage++;
+        GameManager.Instance.speed = GameManager.Instance.originspeed;
         SceneManager.LoadScene("PlayScene");
     }
 
@@ -43,9 +48,14 @@ public class diffselectUI : MonoBehaviour
         {
             GameManager.Instance.is_ingame = true;
         }
+        if (GameManager.Instance.is_boss)
+        {
+            GameManager.Instance.is_boss = false;
+        }
         GameManager.Instance.is_running = true;
         GameManager.Instance.diff = 2;
         GameManager.Instance.stage++;
+        GameManager.Instance.speed = GameManager.Instance.originspeed;
         SceneManager.LoadScene("PlayScene");
     }
 
@@ -55,9 +65,14 @@ public class diffselectUI : MonoBehaviour
         {
             GameManager.Instance.is_ingame = true;
         }
+        if (GameManager.Instance.is_boss)
+        {
+            GameManager.Instance.is_boss = false;
+        }
         GameManager.Instance.is_running = true;
         GameManager.Instance.diff = 3;
         GameManager.Instance.stage++;
+        GameManager.Instance.speed = GameManager.Instance.originspeed;
         SceneManager.LoadScene("PlayScene");
     }
 

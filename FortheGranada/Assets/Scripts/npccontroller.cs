@@ -18,7 +18,7 @@ public class npccontroller : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
-        moveSpeed = 5f * 0.75f;
+        moveSpeed = 3f * 0.75f;
     }
 
     // Update is called once per frame

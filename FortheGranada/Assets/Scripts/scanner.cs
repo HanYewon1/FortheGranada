@@ -3,7 +3,9 @@ using UnityEngine;
 public class scanner : MonoBehaviour
 {
     public BoxCollider2D boxCollider;
-    public Vector3 collisionPoint;
+    [SerializeField] private Vector2 mapMin = Vector2.zero; // 맵 최소 좌표
+    [SerializeField] private Vector2 mapMax = Vector2.zero; // 맵 최대 좌표
+    [SerializeField] private bool hasBorders = false;      // 경계값 유효 여부
 
     void Awake()
     {
@@ -41,9 +43,21 @@ public class scanner : MonoBehaviour
     {
         if (other.CompareTag("border"))
         {
-            GameManager.Instance.is_border = true;
-            collisionPoint = new Vector3(other.ClosestPoint(transform.position).x, other.ClosestPoint(transform.position).y, -10);
-            Debug.Log("보더 접근");
+            // Border의 Collider2D에서 경계값 계산
+            Collider2D borderCollider = other.GetComponent<Collider2D>();
+            if (borderCollider != null)
+            {
+                Bounds bounds = borderCollider.bounds;
+                mapMin = bounds.min; // 바운딩 박스 최소값
+                mapMax = bounds.max; // 바운딩 박스 최대값
+                hasBorders = true;
+
+                //Debug.Log($"Border detected! MapMin: {mapMin}, MapMax: {mapMax}");
+            }
+            else
+            {
+                Debug.LogError("Border object does not have a Collider2D component!");
+            }
         }
     }
 
@@ -51,8 +65,27 @@ public class scanner : MonoBehaviour
     {
         if (other.CompareTag("border"))
         {
-            GameManager.Instance.is_border = false;
             Debug.Log(other.name + "에서 벗어남!");
+        }
+    }
+
+    // 최소/최대 좌표 반환 메서드
+    public Vector2 GetMapMin() => mapMin;
+    public Vector2 GetMapMax() => mapMax;
+    public bool HasValidBorders() => hasBorders;
+
+    // 디버그: 경계를 시각화
+    private void OnDrawGizmos()
+    {
+        if (hasBorders)
+        {
+            Gizmos.color = Color.red;
+
+            // 경계 사각형 그리기
+            Gizmos.DrawLine(new Vector3(mapMin.x, mapMin.y, 0), new Vector3(mapMax.x, mapMin.y, 0));
+            Gizmos.DrawLine(new Vector3(mapMax.x, mapMin.y, 0), new Vector3(mapMax.x, mapMax.y, 0));
+            Gizmos.DrawLine(new Vector3(mapMax.x, mapMax.y, 0), new Vector3(mapMin.x, mapMax.y, 0));
+            Gizmos.DrawLine(new Vector3(mapMin.x, mapMax.y, 0), new Vector3(mapMin.x, mapMin.y, 0));
         }
     }
 }
