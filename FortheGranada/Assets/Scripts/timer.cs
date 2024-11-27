@@ -1,19 +1,21 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 
 public class timer : MonoBehaviour
 {
     public TMP_Text timerText; // UI Text 컴포넌트에 연결
-    public float totalTime = 900f; // 총 타이머 시간 (10초)
+    public float totalTime = 900f; // 총 타이머 시간 (900초)
     private float timeLeft; // 남은 시간
     //private bool is_Running = true; // 타이머 상태 (동작 중인지 여부)
 
     public void Awake()
     {
         timerText = this.transform.GetComponentInChildren<TMP_Text>();
+        totalTime = 900f;
     }
 
     void Start()
@@ -44,6 +46,9 @@ public class timer : MonoBehaviour
                 timeLeft = 0;
                 GameManager.Instance.is_running = false;
                 Debug.Log("시간 초과!");
+                GameManager.Instance.ui_list[7].gameObject.SetActive(true);
+                //Time.timeScale = 0;
+                StartCoroutine(WaitThreeSecond());
             }
         }
     }
@@ -79,7 +84,21 @@ public class timer : MonoBehaviour
             timestring = m.ToString() + " : 0" + s.ToString();
         }
 
-
         timerText.text = timestring;
+    }
+
+    private IEnumerator WaitThreeSecond()
+    {
+        // 5초 기다리고 타이틀 화면으로 감
+        yield return new WaitForSeconds(3f);
+        if (GameManager.Instance.is_ingame)
+        {
+            GameManager.Instance.is_ingame = false;
+        }
+        if (GameManager.Instance.is_boss)
+        {
+            GameManager.Instance.is_boss = false;
+        }
+        SceneManager.LoadScene("MainMenuScene");
     }
 }

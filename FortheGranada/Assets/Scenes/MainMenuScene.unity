@@ -476,8 +476,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 0
-  speed: 5
-  originspeed: 5
+  speed: 3
+  originspeed: 3
+  speed_for_boss_stage: 1.5
   maxHealth: 0
   armor: 0
   stealthTime: 0
@@ -489,7 +490,11 @@ MonoBehaviour:
   stealth_item: 0
   key_item: 0
   speed_item: 0
+  haste_item: 0
+  preview_item: 0
   ressurection_item: 0
+  _boss_health: 0
+  _boss_max_health: 0
   diff: 0
   stage: 0
   maxtokens: 5
@@ -509,11 +514,16 @@ MonoBehaviour:
   is_rannum: 1
   is_rannum2: 1
   _is_ingame: 0
-  is_border: 0
+  _is_boss: 0
+  currentbox: {fileID: 0}
   mg: {fileID: 0}
   im: {fileID: 0}
   tm: {fileID: 0}
+  sc: {fileID: 0}
+  boscon: {fileID: 0}
   hint_count: {fileID: 0}
+  speedcount: {fileID: 0}
+  healthSlider: {fileID: 0}
   player: {fileID: 0}
   health_list: []
   item_list: []
