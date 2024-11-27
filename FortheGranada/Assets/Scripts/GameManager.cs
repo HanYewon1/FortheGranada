@@ -21,9 +21,9 @@ public class GameManager : MonoBehaviour
 
     [Header("Player Settings")]
     public int health;
-    public float speed = 3;
-    public float originspeed = 3;
-    public float speed_for_boss_stage = 2;
+    public float speed = 0;
+    public float originspeed = 0;
+    public float speed_for_boss_stage = 0;
     public int maxHealth;
     public int armor = 0;
     public int stealthTime;
@@ -172,6 +172,11 @@ public class GameManager : MonoBehaviour
         // 씬이 초기화되면 로그 띄움
         Debug.Log($"Initializing scene: {scene.name}");
 
+        // 각 변수들 초기화
+        speed = 3;
+        originspeed = 3;
+        speed_for_boss_stage = 1.5f;
+
         // Ingame 들어가면 초기화 작업 실행
         if (is_ingame == true)
         {
@@ -249,13 +254,15 @@ public class GameManager : MonoBehaviour
             player = GameObject.Find("Player").GetComponent<Transform>();
 
             // ui_list에 필요한 UI들 미리 가져오기
-            ui_list = new RectTransform[6];
+            ui_list = new RectTransform[8];
             ui_list[0] = GameObject.Find("InGameUI").GetComponent<RectTransform>();
             ui_list[1] = GameObject.Find("MiniGameUI").GetComponent<RectTransform>();
             ui_list[2] = GameObject.Find("PauseMenuUI").GetComponent<RectTransform>();
             ui_list[3] = GameObject.Find("GRayout5X5").GetComponent<RectTransform>();
             ui_list[4] = GameObject.Find("GRayout6X6").GetComponent<RectTransform>();
             ui_list[5] = GameObject.Find("GRayout7X7").GetComponent<RectTransform>();
+            ui_list[6] = GameObject.Find("ChatUI").GetComponent<RectTransform>();
+            ui_list[7] = GameObject.Find("OverUI").GetComponent<RectTransform>();
 
             // 체력과 아이템 UI 자식들 가져오기
             health_list = GameObject.Find("HPUI").GetComponentsInChildren<RectTransform>();
@@ -270,6 +277,8 @@ public class GameManager : MonoBehaviour
             ui_list[3].gameObject.SetActive(false);
             ui_list[4].gameObject.SetActive(false);
             ui_list[5].gameObject.SetActive(false);
+            ui_list[6].gameObject.SetActive(false);
+            ui_list[7].gameObject.SetActive(false);
             health_list[6].gameObject.SetActive(false);
             health_list[7].gameObject.SetActive(false);
             health_list[8].gameObject.SetActive(false);

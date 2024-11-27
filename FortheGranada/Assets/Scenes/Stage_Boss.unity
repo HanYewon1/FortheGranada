@@ -19226,7 +19226,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 0
   speed: 2
-  originspeed: 5
+  originspeed: 3
   speed_for_boss_stage: 2
   maxHealth: 0
   armor: 0
@@ -19264,6 +19264,7 @@ MonoBehaviour:
   is_rannum2: 1
   _is_ingame: 0
   _is_boss: 0
+  currentbox: {fileID: 0}
   mg: {fileID: 0}
   im: {fileID: 0}
   tm: {fileID: 0}
