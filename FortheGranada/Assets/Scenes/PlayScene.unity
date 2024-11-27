@@ -5302,15 +5302,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 519420028}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c49b5b3606ffe8646b5b2b8d284539ab, type: 3}
+  m_Script: {fileID: 11500000, guid: 186254644025bee4eba578bd3e6dff91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 0}
-  offset: {x: 0, y: 0, z: 0}
-  smoothSpeed: 0.125
-  scan: {fileID: 0}
-  minBounds: {x: 0, y: 0, z: 0}
-  maxBounds: {x: 0, y: 0, z: 0}
+  player: {fileID: 0}
+  scanner: {fileID: 0}
 --- !u!1 &526788879
 GameObject:
   m_ObjectHideFlags: 0
@@ -9611,6 +9607,7 @@ MonoBehaviour:
   health: 0
   speed: 0
   originspeed: 5
+  speed_for_boss_stage: 2
   maxHealth: 0
   armor: 0
   stealthTime: 0
@@ -9625,6 +9622,8 @@ MonoBehaviour:
   haste_item: 0
   preview_item: 0
   ressurection_item: 0
+  _boss_health: 0
+  _boss_max_health: 0
   diff: 0
   stage: 0
   maxtokens: 5
@@ -9644,12 +9643,15 @@ MonoBehaviour:
   is_rannum: 1
   is_rannum2: 1
   _is_ingame: 0
-  is_border: 0
+  _is_boss: 0
   mg: {fileID: 0}
   im: {fileID: 0}
   tm: {fileID: 0}
+  sc: {fileID: 0}
+  boscon: {fileID: 0}
   hint_count: {fileID: 0}
   speedcount: {fileID: 0}
+  healthSlider: {fileID: 0}
   player: {fileID: 0}
   health_list: []
   item_list: []
@@ -14670,7 +14672,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   boxCollider: {fileID: 0}
-  collisionPoint: {x: 0, y: 0, z: 0}
+  mapMin: {x: 0, y: 0}
+  mapMax: {x: 0, y: 0}
+  hasBorders: 0
 --- !u!61 &1786083638
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -16948,6 +16952,14 @@ PrefabInstance:
     - target: {fileID: 2263638329334653959, guid: dface4af1d872584f80eac8c5608e815, type: 3}
       propertyPath: m_Name
       value: Itembox
+      objectReference: {fileID: 0}
+    - target: {fileID: 2263638329334653959, guid: dface4af1d872584f80eac8c5608e815, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2263638329334653959, guid: dface4af1d872584f80eac8c5608e815, type: 3}
+      propertyPath: m_TagString
+      value: Chest
       objectReference: {fileID: 0}
     - target: {fileID: 7477251086776736668, guid: dface4af1d872584f80eac8c5608e815, type: 3}
       propertyPath: m_SortingOrder

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class CameraFollow : MonoBehaviour
+public class maincamera : MonoBehaviour
 {
     public Transform target; // ?��?���?? 캐릭?��?�� Transform
     public Vector3 offset;   // 카메?��??? 캐릭?�� 간의 거리 (?��?��?��)
@@ -37,14 +37,14 @@ public class CameraFollow : MonoBehaviour
             return;
         }
 
-        if (!GameManager.Instance.is_border)
+        /*if (!GameManager.Instance.is_border)
         {
             UpdateCam();
         }
         else
         {
             UpdateBoundCam(scan.collisionPoint);
-        }
+        }*/
     }
 
     /*void OnCollisionEnter2D(Collision2D collision)

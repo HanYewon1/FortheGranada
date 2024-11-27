@@ -7,6 +7,7 @@ using System.Text;
 using System.Security.Cryptography;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
@@ -20,8 +21,9 @@ public class GameManager : MonoBehaviour
 
     [Header("Player Settings")]
     public int health;
-    public float speed = 5;
-    public float originspeed = 5;
+    public float speed = 3;
+    public float originspeed = 3;
+    public float speed_for_boss_stage = 2;
     public int maxHealth;
     public int armor = 0;
     public int stealthTime;
@@ -38,6 +40,24 @@ public class GameManager : MonoBehaviour
     public int ressurection_item = 0;
 
     [Header("Game Settings")]
+    [SerializeField] private float _boss_health;
+    public float boss_health
+    {
+        get => _boss_health;
+        set
+        {
+            _boss_health = value;
+        }
+    }
+    [SerializeField] private float _boss_max_health;
+    public float boss_max_health
+    {
+        get => _boss_max_health;
+        set
+        {
+            _boss_max_health = value;
+        }
+    }
     public int diff = 0;
     public int stage = 0;
     public int maxtokens = 5;
@@ -65,14 +85,19 @@ public class GameManager : MonoBehaviour
     public bool is_rannum2 = true;
     [SerializeField]
     private bool _is_ingame = false;
-    public bool is_border;
+    [SerializeField]
+    private bool _is_boss = false;
 
     [Header("GetComponents")]
+    public itemboxcontroller currentbox;
     public minigamemanager mg;
     public itemmanager im;
     public timer tm;
+    public scanner sc;
+    public bosscontroller boscon;
     public TMP_Text hint_count;
     public Image speedcount;
+    public Slider healthSlider;
     public Transform player;
     public RectTransform[] health_list;
     public RectTransform[] item_list;
@@ -89,6 +114,15 @@ public class GameManager : MonoBehaviour
         {
             _is_ingame = value;
             Debug.Log($"is_ingame 값 변경됨: {_is_ingame}");
+        }
+    }
+    public bool is_boss
+    {
+        get => _is_boss;
+        set
+        {
+            _is_boss = value;
+            Debug.Log($"is_boss 값 변경됨: {_is_boss}");
         }
     }
 
@@ -210,6 +244,7 @@ public class GameManager : MonoBehaviour
             mg = GameObject.Find("MinigameManager").GetComponent<minigamemanager>();
             im = GameObject.Find("ItemManager").GetComponent<itemmanager>();
             tm = GameObject.Find("TIME").GetComponent<timer>();
+            sc = GameObject.Find("Scanner").GetComponent<scanner>();
             hint_count = GameObject.Find("hintcount").GetComponent<TMP_Text>();
             player = GameObject.Find("Player").GetComponent<Transform>();
 
@@ -250,6 +285,12 @@ public class GameManager : MonoBehaviour
             // 미니게임용 이미지랑 보기 리스트 가져오기
             if (spr_list.Length == 0) spr_list = mg.ImageSet();
             if (ans_list.Length == 0) ans_list = mg.AnswerSet();
+        }
+
+        if (is_boss)
+        {
+            healthSlider = GameObject.Find("Slider").GetComponent<Slider>();
+            boscon = GameObject.Find("BOSS").GetComponent<bosscontroller>();
         }
     }
 
@@ -354,7 +395,7 @@ public class GameManager : MonoBehaviour
                 }
             }
 
-            if (is_closebox == true && is_minigame == false && is_delay == false && is_mgset == true && is_catch == true)
+            if (is_closebox == true && is_minigame == false && is_delay == false && is_mgset == true && is_catch == true && !currentbox.isOpen)
             {
                 if (Input.GetKeyDown(KeyCode.F))
                 {
@@ -380,9 +421,29 @@ public class GameManager : MonoBehaviour
             {
                 is_ingame = true;
             }
+            if (is_boss)
+            {
+                is_boss = false;
+            }
             is_running = true;
             diff = 1;
+            stage = 1;
+            speed = originspeed;
             SceneManager.LoadScene("Test");
+        }
+
+        if (Input.GetKeyDown(KeyCode.Y))
+        {
+            if (is_ingame)
+            {
+                is_ingame = false;
+            }
+            if (!is_boss)
+            {
+                is_boss = true;
+            }
+            speed = speed_for_boss_stage;
+            SceneManager.LoadScene("Stage_Boss");
         }
     }
 
@@ -648,5 +709,11 @@ public class GameManager : MonoBehaviour
         string spriteName = "Speed";
         spriteName += speed_item;
         speedcount.sprite = Resources.Load<Sprite>(spriteName);
+    }
+
+    // 보스 체력 비율 반환
+    public float GetNormalizedHealth()
+    {
+        return boss_health / boss_max_health;
     }
 }

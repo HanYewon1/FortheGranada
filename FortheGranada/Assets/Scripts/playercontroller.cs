@@ -72,8 +72,18 @@ public class playercontroller : MonoBehaviour
     //공격받았을 때
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.gameObject.CompareTag("Enemy"))
+        if (collision.gameObject.CompareTag("Enemy"))
             StartCoroutine(ChangeColor());
+
+        if (collision.gameObject.CompareTag("Chest"))
+        {
+            Transform target = collision.gameObject.GetComponent<Transform>();
+            if (target != null)
+            {
+                GameManager.Instance.currentbox = target.gameObject.GetComponent<itemboxcontroller>();
+                Debug.Log("값 할당됨");
+            }
+        }
     }
 
     private IEnumerator ChangeColor()
