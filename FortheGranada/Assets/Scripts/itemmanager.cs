@@ -100,7 +100,7 @@ public class itemmanager : MonoBehaviour
         {
             if (item.GetItemID == 5 && GameManager.Instance.ressurection_item < item.GetNumNesting)//��Ȱ ������
             {
-                GameManager.Instance.ressurection++;
+                GameManager.Instance.is_ressurection = true;
                 GameManager.Instance.ressurection_item++;
                 GameManager.Instance.item_list[4].gameObject.SetActive(true);
             }

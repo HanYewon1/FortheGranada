@@ -29,7 +29,6 @@ public class GameManager : MonoBehaviour
     public int stealthTime;
     public int key;
     public int req_key;
-    public int ressurection = 0;
     public int health_item = 0;
     public int armor_item = 0;
     public int stealth_item = 0;
@@ -72,6 +71,7 @@ public class GameManager : MonoBehaviour
     }
 
     [Header("Flags")]
+    public bool is_ressurection;
     public bool is_attacked_speed;
     public bool is_preview;
     public bool is_running;
@@ -100,6 +100,7 @@ public class GameManager : MonoBehaviour
     public Image speedcount;
     public Slider healthSlider;
     public Transform player;
+    public inneritem[] innerItems;
     public RectTransform[] health_list;
     public RectTransform[] item_list;
     public RectTransform[] ui_list;
@@ -258,6 +259,8 @@ public class GameManager : MonoBehaviour
             hint_count = GameObject.Find("hintcount").GetComponent<TMP_Text>();
             player = GameObject.Find("Player").GetComponent<Transform>();
             pc = player.GetComponent<playercontroller>();
+            // InnerItem 스크립트를 가진 모든 오브젝트 찾기
+            innerItems = FindObjectsOfType<inneritem>(true);
 
             // ui_list에 필요한 UI들 미리 가져오기
             ui_list = new RectTransform[8];
@@ -300,6 +303,9 @@ public class GameManager : MonoBehaviour
             // 미니게임용 이미지랑 보기 리스트 가져오기
             if (spr_list.Length == 0) spr_list = mg.ImageSet();
             if (ans_list.Length == 0) ans_list = mg.AnswerSet();
+
+            // 모든 상자에 키랑 아이템 할당
+            SetItems();
         }
 
         if (is_boss)
@@ -424,7 +430,7 @@ public class GameManager : MonoBehaviour
                 }
             }
 
-            if (is_closebox == true && is_minigame == false && is_delay == false && is_mgset == true && is_catch == true && !currentbox.isOpen)
+            if (is_closebox == true && is_minigame == false && is_delay == false && is_mgset == true && is_catch == true && !currentbox.isOpen && currentbox.ii.is_set)
             {
                 if (Input.GetKeyDown(KeyCode.F))
                 {
@@ -609,60 +615,56 @@ public class GameManager : MonoBehaviour
         Debug.Log("패널티 해제");
     }
 
-    public void SelectItem(int rannum1)
+    public int SelectItem(int rannum1)
     {
         int itemnum = 10;
 
-        if (rannum1 >= 11 && rannum1 <= 50)
+        if (rannum1 >= 1 && rannum1 <= 50)
         {
             itemnum = 1;
-            Debug.Log("체력 회복");
+            //Debug.Log("체력 회복");
         }
         else if (rannum1 >= 51 && rannum1 <= 69)
         {
             itemnum = 2;
-            Debug.Log("쉴드 획득");
+            //Debug.Log("쉴드 획득");
         }
         else if (rannum1 >= 70 && rannum1 <= 79)
         {
             itemnum = 3;
-            Debug.Log("이속 증가");
+            //Debug.Log("이속 증가");
         }
         else if (rannum1 >= 80 && rannum1 <= 84)
         {
             itemnum = 0;
-            Debug.Log("최대 체력 증가");
+            //Debug.Log("최대 체력 증가");
         }
         else if (rannum1 >= 85 && rannum1 <= 89)
         {
             itemnum = 5;
-            Debug.Log("피격 시 이속 증가");
+            //Debug.Log("피격 시 이속 증가");
         }
         else if (rannum1 >= 90 && rannum1 <= 94)
         {
             itemnum = 6;
-            Debug.Log("감지 시간 지연");
+            //Debug.Log("감지 시간 지연");
         }
         else if (rannum1 >= 95 && rannum1 <= 99)
         {
             itemnum = 7;
-            Debug.Log("상자 투시");
-        }
-        else if (rannum1 >= 1 && rannum1 <= 10)
-        {
-            itemnum = 8;
-            Debug.Log("열쇠 조각 획득");
+            //Debug.Log("상자 투시");
         }
         else if (rannum1 == 100)
         {
             itemnum = 4;
-            Debug.Log("부활 템 획득!");
+            //Debug.Log("부활 템 획득!");
         }
         else
         {
             Debug.LogError("Out of ItemNum");
         }
-        im.getItem(im.itemlist[itemnum]);
+        //im.getItem(im.itemlist[itemnum]);
+        return itemnum;
     }
 
     public void updatehealth()
@@ -762,7 +764,14 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
-        if (is_running)
+        if (is_ressurection)
+        {
+            health = 1;
+            ressurection_item--;
+            is_ressurection = false;
+            item_list[4].gameObject.SetActive(false);
+        }
+        else if (is_running)
         {
             is_running = false;
             Debug.Log("캐릭터 사망!");
@@ -786,5 +795,23 @@ public class GameManager : MonoBehaviour
             is_boss = false;
         }
         SceneManager.LoadScene("MainMenuScene");
+    }
+
+    public void SetItems()
+    {
+        int[] rankey = mg.RanNumGenWithNum(req_key, innerItems.Length);
+        foreach (int i in rankey)
+        {
+            innerItems[i].itemnumber = 8;
+            innerItems[i].is_set = true;
+        }
+        for (int j = 0; j < innerItems.Length; j++)
+        {
+            if (!innerItems[j].is_set)
+            {
+                innerItems[j].itemnumber = SelectItem(UnityEngine.Random.Range(1, 101));
+                innerItems[j].is_set = true;
+            }
+        }
     }
 }

@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: Heal
   m_EditorClassIdentifier: 
   item_ID: 2
+  item_sprite: {fileID: 4606908045521496030, guid: 930294c1de30c7841be98206b1cc4f21, type: 3}
   num_nesting: 999
   item_type: 0
