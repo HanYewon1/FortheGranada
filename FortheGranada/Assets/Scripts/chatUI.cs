@@ -28,6 +28,7 @@ public class chatUI : MonoBehaviour
         else
         {
             idx = 0;
+            Time.timeScale = 1;
             gameObject.SetActive(false);
         }
 

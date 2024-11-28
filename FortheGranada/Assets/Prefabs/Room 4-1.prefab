@@ -11400,7 +11400,7 @@ GameObject:
   - component: {fileID: 4156644664032325256}
   - component: {fileID: 450551545913288635}
   - component: {fileID: 3221280088517586204}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: border
   m_TagString: border
   m_Icon: {fileID: 0}

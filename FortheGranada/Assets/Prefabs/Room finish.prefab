@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2447005991648372494}
   - component: {fileID: 7915763539484398219}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: opened_chest_finish
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -339,7 +339,7 @@ GameObject:
   - component: {fileID: 8384101795964613977}
   - component: {fileID: 5406220108368292251}
   - component: {fileID: 3900249980253984401}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: border
   m_TagString: border
   m_Icon: {fileID: 0}
@@ -2135,7 +2135,7 @@ GameObject:
   - component: {fileID: 3519982751684450946}
   - component: {fileID: 5177839895730960314}
   - component: {fileID: 6029373471993921671}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: door_finish
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3854,7 +3854,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8474249447020458059}
   - component: {fileID: 353536013262880141}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: item_finish
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3941,7 +3941,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8739112397100660610}
   - component: {fileID: 881665231231454802}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: closed_chest_finish
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14450,9 +14450,11 @@ GameObject:
   m_Component:
   - component: {fileID: 100792237321663188}
   - component: {fileID: 8880938146813024572}
-  m_Layer: 0
+  - component: {fileID: 6442105824004956174}
+  - component: {fileID: 2023045649948677578}
+  m_Layer: 6
   m_Name: chest_finish
-  m_TagString: Untagged
+  m_TagString: Chest
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -14488,3 +14490,76 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f565dde4f20673e4692e56eb335bbba2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!61 &6442105824004956174
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9087324271695194180}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 1, y: 1}
+  m_EdgeRadius: 0
+--- !u!50 &2023045649948677578
+Rigidbody2D:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9087324271695194180}
+  m_BodyType: 2
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0

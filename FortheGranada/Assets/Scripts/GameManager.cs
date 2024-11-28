@@ -37,6 +37,7 @@ public class GameManager : MonoBehaviour
     public int haste_item = 0;
     public int preview_item = 0;
     public int ressurection_item = 0;
+    public KeyCode interactKey = KeyCode.F;
 
     [Header("Game Settings")]
     [SerializeField] private float _boss_health;
@@ -59,8 +60,8 @@ public class GameManager : MonoBehaviour
     }
     public int diff = 0;
     public int stage = 0;
-    public int maxtokens = 6;
-    public string promptmessage = "3개의 이미지 공통점을 너무 포괄적이지 않은 단어로 단 1개만 출력해! 뒤에 입니다 붙이지 마! 판타지, 픽셀아트 금지!";
+    public int maxtokens = 0;
+    public string promptmessage = null;
     public string APIResponse = null;
     private string apiUrl = null;
     private string apiKey;
@@ -150,6 +151,8 @@ public class GameManager : MonoBehaviour
         }
 
         apiUrl = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=" + apiKey;
+
+        interactKey = KeyCode.F;
     }
 
     private void OnEnable()
