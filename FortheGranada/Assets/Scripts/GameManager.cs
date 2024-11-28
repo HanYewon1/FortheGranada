@@ -20,11 +20,11 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
 
     [Header("Player Settings")]
-    public int health;
+    public int health = 1;
     public float speed = 0;
     public float originspeed = 0;
     public float speed_for_boss_stage = 0;
-    public int maxHealth;
+    public int maxHealth = 10;
     public int armor = 0;
     public int stealthTime;
     public int key;
@@ -60,10 +60,10 @@ public class GameManager : MonoBehaviour
     }
     public int diff = 0;
     public int stage = 0;
-    public int maxtokens = 5;
+    public int maxtokens = 6;
     public string promptmessage = "3개의 이미지 공통점을 너무 포괄적이지 않은 단어로 단 1개만 출력해! 뒤에 입니다 붙이지 마! 판타지, 픽셀아트 금지!";
     public string APIResponse = null;
-    private string apiUrl;
+    private string apiUrl = null;
     private string apiKey;
     [System.Serializable]
     private class ApiKeyData
@@ -180,6 +180,10 @@ public class GameManager : MonoBehaviour
         // Ingame 들어가면 초기화 작업 실행
         if (is_ingame == true)
         {
+            // API 관련 변수들 초기화
+            maxtokens = 6;
+            promptmessage = "3개의 이미지 공통점을 너무 포괄적이지 않은 단어로 단 1개만 출력해! 뒤에 입니다 붙이지 마! 판타지, 픽셀아트 금지!";
+
             // 난이도 선택에 따라 게임 설정들 변경
             switch (diff)
             {
@@ -300,6 +304,13 @@ public class GameManager : MonoBehaviour
         {
             healthSlider = GameObject.Find("Slider").GetComponent<Slider>();
             boscon = GameObject.Find("BOSS").GetComponent<bosscontroller>();
+            ui_list = new RectTransform[8];
+            ui_list[2] = GameObject.Find("PauseMenuUI").GetComponent<RectTransform>();
+            ui_list[6] = GameObject.Find("ChatUI").GetComponent<RectTransform>();
+            ui_list[7] = GameObject.Find("OverUI").GetComponent<RectTransform>();
+            ui_list[2].gameObject.SetActive(false);
+            ui_list[6].gameObject.SetActive(false);
+            ui_list[7].gameObject.SetActive(false);
         }
     }
 
@@ -314,6 +325,11 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (health == 0 && (is_boss || is_ingame))
+        {
+            GameOver();
+        }
+
         if (is_ingame == true)
         {
             if (is_rannum)
@@ -424,6 +440,18 @@ public class GameManager : MonoBehaviour
             updateshoe();
         }
 
+        if (is_boss)
+        {
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                // ESC 메뉴 여닫기
+                if (ui_list[2] != null)
+                {
+                    ui_list[2].gameObject.SetActive(!ui_list[2].gameObject.activeSelf);
+                }
+            }
+        }
+
         if (Input.GetKeyDown(KeyCode.T))
         {
             if (!is_ingame)
@@ -451,6 +479,8 @@ public class GameManager : MonoBehaviour
             {
                 is_boss = true;
             }
+            health = 5;
+            is_running = true;
             speed = speed_for_boss_stage;
             SceneManager.LoadScene("Stage_Boss");
         }
@@ -724,5 +754,33 @@ public class GameManager : MonoBehaviour
     public float GetNormalizedHealth()
     {
         return boss_health / boss_max_health;
+    }
+
+    public void GameOver()
+    {
+        if (is_running)
+        {
+            is_running = false;
+            Debug.Log("캐릭터 사망!");
+            ui_list[7].gameObject.SetActive(true);
+            //Time.timeScale = 0;
+            speed = 0;
+            StartCoroutine(WaitThreeSecond());
+        }
+    }
+
+    public IEnumerator WaitThreeSecond()
+    {
+        // 5초 기다리고 타이틀 화면으로 감
+        yield return new WaitForSeconds(3f);
+        if (is_ingame)
+        {
+            is_ingame = false;
+        }
+        if (is_boss)
+        {
+            is_boss = false;
+        }
+        SceneManager.LoadScene("MainMenuScene");
     }
 }
