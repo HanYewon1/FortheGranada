@@ -86,6 +86,14 @@ public class playercontroller : MonoBehaviour
         }
     }
 
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        Debug.Log("trigger: " + collision.name);
+        if (collision.tag == "Door")
+        {
+            Debug.Log(2);
+        }
+    }
     private IEnumerator ChangeColor()
     {
         spriteRenderer.color = Color.red; //빨간색으로 변함
