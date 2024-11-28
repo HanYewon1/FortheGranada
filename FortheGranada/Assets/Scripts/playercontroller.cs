@@ -17,8 +17,12 @@ public class playercontroller : MonoBehaviour
     float player_x;//鮈 ???鴔�
     float player_y;//?嚙踝蕭?嚙踝蕭 ???鴔�
 
-    bool is_horizon_move; //4諻拗 窶域�
+
+
     bool isDead = false;
+    bool is_door;
+    bool is_horizon_move; //4방향 결정
+
 
     private void Awake()
     {
@@ -30,7 +34,14 @@ public class playercontroller : MonoBehaviour
     void Update()
     {
         PlayerMove();
-        Damaged();
+
+        if(Input.GetKeyDown(KeyCode.F))
+        {
+            Debug.Log(1);
+            useDoor();
+        }
+        
+
     }
 
     private void FixedUpdate()
@@ -106,9 +117,31 @@ public class playercontroller : MonoBehaviour
         yield return new WaitForSeconds(1f); //1嚙褊蛛蕭嚙踝蕭 嚙踝蕭嚙踝蕭
         spriteRenderer.color = originalColor; //嚙踝蕭嚙踝蕭 嚙踝蕭嚙踝蕭嚙踝蕭 嚙踝蕭嚙複選蕭
     }
-    //嚙踝蕭嚙豎對蕭嚙踝蕭 嚙踝蕭嚙�
-    void Damaged()
+
+
+    //?�踝??��豎對??��踝蕭 ?�踝??���?
+ 
+    public void Dead()
+
     {
+        if (isDead) return; // ?�諒對蕭 ?�踝??��踝蕭 ?�踝??��?�塚??���??�踝??��踝蕭?�踝??��踝蕭 ?�踝??��踝蕭
+
+        isDead = true; // ?�踝??��踝蕭 ?�踝??��踝蕭 ?�踝??��踝蕭
+        spriteRenderer.color = Color.gray; // ?�踝??��踝蕭 ?�踝??��踝蕭
+        spriteRenderer.sprite = deadSprite; // ?�踝??��踝蕭?�踝??��踝蕭???�踝??��踝蕭
+        animator.enabled = false; // ?�誰棲賂??��諒潘???�踝??��?�踝??��
+        Debug.Log("Game Over");
+    }
+
+    void useDoor()
+    {
+        Debug.Log("use_door: " + is_door);
+        if (is_door)
+        {
+            Debug.Log(2);
+            this.transform.position = this.transform.position + add_door_position;
+        }
+
 
     }
     public void Dead()
