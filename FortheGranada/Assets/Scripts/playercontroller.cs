@@ -18,9 +18,6 @@ public class playercontroller : MonoBehaviour
     float player_x;//鮈 ???鴔�
     float player_y;//?嚙踝蕭?嚙踝蕭 ???鴔�
 
-
-
-
     bool isDead = false;
     bool is_door;
     bool is_horizon_move; //4방향 결정
@@ -172,25 +169,5 @@ public class playercontroller : MonoBehaviour
 
 
     }
-    public void Dead()
-    {
-        if (isDead) return; // 嚙諒對蕭 嚙踝蕭嚙踝蕭 嚙踝蕭嚙蝓塚蕭嚙� 嚙踝蕭嚙踝蕭嚙踝蕭嚙踝蕭 嚙踝蕭嚙踝蕭
-
-        isDead = true; // 嚙踝蕭嚙踝蕭 嚙踝蕭嚙踝蕭 嚙踝蕭嚙踝蕭
-        spriteRenderer.color = Color.gray; // 嚙踝蕭嚙踝蕭 嚙踝蕭嚙踝蕭
-        spriteRenderer.sprite = deadSprite; // 嚙踝蕭嚙踝蕭嚙踝蕭嚙踝蕭 嚙踝蕭嚙踝蕭
-        animator.enabled = false; // 嚙誰棲賂蕭嚙諒潘蕭 嚙踝蕭嚙踝蕭
-        Debug.Log("Game Over");
-    }
-
-    void useDoor()
-    {
-        Debug.Log("use_door: " + is_door);
-        if (is_door)
-        {
-            Debug.Log(2);
-            this.transform.position = this.transform.position + add_door_position;
-        }
-
-    }
+    
 }
