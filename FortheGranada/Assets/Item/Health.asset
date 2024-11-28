@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: Health
   m_EditorClassIdentifier: 
   item_ID: 1
+  item_sprite: {fileID: 6554300753923588988, guid: 5f9a71dfa8ce90943a867119fc480b28, type: 3}
   num_nesting: 2
   item_type: 0

@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: Detect
   m_EditorClassIdentifier: 
   item_ID: 7
+  item_sprite: {fileID: 5383995641849305029, guid: 6f12de4c0ffebfb4ba388cd565e3a953, type: 3}
   num_nesting: 1
   item_type: 1

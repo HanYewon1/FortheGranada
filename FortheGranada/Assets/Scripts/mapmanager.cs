@@ -203,10 +203,10 @@ public class MapManager : MonoBehaviour
                             door_name += "door_right";
                             break;
                         case 2:
-                            door_name += "door_down";
+                            door_name += "door_up";
                             break;
                         case 3:
-                            door_name += "door_up";
+                            door_name += "door_down";
                             break;
                         default: break;
                     }

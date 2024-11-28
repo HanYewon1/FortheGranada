@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: Ressurection
   m_EditorClassIdentifier: 
   item_ID: 5
+  item_sprite: {fileID: 8482712648628362555, guid: 76b8576955d8e134ebc10b4a126e22e5, type: 3}
   num_nesting: 1
   item_type: 3

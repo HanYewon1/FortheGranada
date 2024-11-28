@@ -13,9 +13,11 @@ public class playercontroller : MonoBehaviour
     Animator animator;
     SpriteRenderer spriteRenderer;
     Color originalColor;
+    Vector3 add_door_position;
 
     float player_x;//鮈 ???鴔�
     float player_y;//?嚙踝蕭?嚙踝蕭 ???鴔�
+
 
 
 
@@ -103,12 +105,38 @@ public class playercontroller : MonoBehaviour
         }
     }
 
-    private void OnTriggerStay2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("trigger: " + collision.name);
         if (collision.tag == "Door")
         {
-            Debug.Log(2);
+            is_door = true;
+            Debug.Log("door: " + is_door);
+            if (collision.name == "door_up")
+            {
+                add_door_position = new Vector3(0, 7, 0);
+            }
+            else if (collision.name == "door_down")
+            {
+                add_door_position = new Vector3(0, -7, 0);
+            }
+            else if (collision.name == "door_right")
+            {
+                add_door_position = new Vector3(7, 0, 0);
+            }
+            else if (collision.name == "door_left")
+            {
+                add_door_position = new Vector3(-7, 0, 0);
+            }
+
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.tag == "Door")
+        {
+            Debug.Log("EXit");
+            is_door = false;
         }
     }
     private IEnumerator ChangeColor()
@@ -153,5 +181,16 @@ public class playercontroller : MonoBehaviour
         spriteRenderer.sprite = deadSprite; // 嚙踝蕭嚙踝蕭嚙踝蕭嚙踝蕭 嚙踝蕭嚙踝蕭
         animator.enabled = false; // 嚙誰棲賂蕭嚙諒潘蕭 嚙踝蕭嚙踝蕭
         Debug.Log("Game Over");
+    }
+
+    void useDoor()
+    {
+        Debug.Log("use_door: " + is_door);
+        if (is_door)
+        {
+            Debug.Log(2);
+            this.transform.position = this.transform.position + add_door_position;
+        }
+
     }
 }

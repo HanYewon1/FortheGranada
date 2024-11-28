@@ -29,9 +29,19 @@ public class minigamemanager : MonoBehaviour
         return uniqueNumbers.ToArray();
     }
 
+    public int[] RanNumGenWithNum(int num1, int num2)
+    {
+        HashSet<int> uniqueNumbers = new HashSet<int>();
+        while (uniqueNumbers.Count < num1)
+        {
+            uniqueNumbers.Add(Random.Range(0, num2));
+        }
+        return uniqueNumbers.ToArray();
+    }
+
     public void FailRequest()
     {
-        int r = Random.Range(1, 13);
+        int r = Random.Range(1, 25);
 
         switch (r)
         {
@@ -106,6 +116,78 @@ public class minigamemanager : MonoBehaviour
                 GameManager.Instance.rannum3[1] = 38;
                 GameManager.Instance.rannum3[2] = 39;
                 GameManager.Instance.APIResponse = "종족";
+                break;
+            case 13:
+                GameManager.Instance.rannum3[0] = 43;
+                GameManager.Instance.rannum3[1] = 41;
+                GameManager.Instance.rannum3[2] = 42;
+                GameManager.Instance.APIResponse = "직업";
+                break;
+            case 14:
+                GameManager.Instance.rannum3[0] = 44;
+                GameManager.Instance.rannum3[1] = 45;
+                GameManager.Instance.rannum3[2] = 46;
+                GameManager.Instance.APIResponse = "직업";
+                break;
+            case 15:
+                GameManager.Instance.rannum3[0] = 47;
+                GameManager.Instance.rannum3[1] = 48;
+                GameManager.Instance.rannum3[2] = 49;
+                GameManager.Instance.APIResponse = "직업";
+                break;
+            case 16:
+                GameManager.Instance.rannum3[0] = 51;
+                GameManager.Instance.rannum3[1] = 52;
+                GameManager.Instance.rannum3[2] = 53;
+                GameManager.Instance.APIResponse = "의상";
+                break;
+            case 17:
+                GameManager.Instance.rannum3[0] = 54;
+                GameManager.Instance.rannum3[1] = 55;
+                GameManager.Instance.rannum3[2] = 56;
+                GameManager.Instance.APIResponse = "신발";
+                break;
+            case 18:
+                GameManager.Instance.rannum3[0] = 57;
+                GameManager.Instance.rannum3[1] = 55;
+                GameManager.Instance.rannum3[2] = 56;
+                GameManager.Instance.APIResponse = "신발";
+                break;
+            case 19:
+                GameManager.Instance.rannum3[0] = 60;
+                GameManager.Instance.rannum3[1] = 59;
+                GameManager.Instance.rannum3[2] = 58;
+                GameManager.Instance.APIResponse = "판타지";
+                break;
+            case 20:
+                GameManager.Instance.rannum3[0] = 62;
+                GameManager.Instance.rannum3[1] = 61;
+                GameManager.Instance.rannum3[2] = 63;
+                GameManager.Instance.APIResponse = "판타지";
+                break;
+            case 21:
+                GameManager.Instance.rannum3[0] = 64;
+                GameManager.Instance.rannum3[1] = 65;
+                GameManager.Instance.rannum3[2] = 66;
+                GameManager.Instance.APIResponse = "도구";
+                break;
+            case 22:
+                GameManager.Instance.rannum3[0] = 67;
+                GameManager.Instance.rannum3[1] = 68;
+                GameManager.Instance.rannum3[2] = 69;
+                GameManager.Instance.APIResponse = "물약";
+                break;
+            case 23:
+                GameManager.Instance.rannum3[0] = 77;
+                GameManager.Instance.rannum3[1] = 84;
+                GameManager.Instance.rannum3[2] = 85;
+                GameManager.Instance.APIResponse = "꽃";
+                break;
+            case 24:
+                GameManager.Instance.rannum3[0] = 73;
+                GameManager.Instance.rannum3[1] = 89;
+                GameManager.Instance.rannum3[2] = 90;
+                GameManager.Instance.APIResponse = "건물";
                 break;
             default:
                 Debug.LogError("OutOfRange");

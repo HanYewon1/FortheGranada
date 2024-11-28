@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: Armor
   m_EditorClassIdentifier: 
   item_ID: 3
+  item_sprite: {fileID: -6717884257390833292, guid: 6b5f6bf0dd9e2cf4199b18c81b0cc6c6, type: 3}
   num_nesting: 1
   item_type: 2

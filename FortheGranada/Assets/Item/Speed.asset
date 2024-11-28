@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: Speed
   m_EditorClassIdentifier: 
   item_ID: 4
+  item_sprite: {fileID: 7015289931027406674, guid: f357a0bc88a043e42aa113ff0fb5b9be, type: 3}
   num_nesting: 5
   item_type: 1
