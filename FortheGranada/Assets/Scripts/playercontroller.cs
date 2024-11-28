@@ -5,7 +5,7 @@ using UnityEngine;
 public class playercontroller : MonoBehaviour
 {
 
-    public float player_speed;//??š™è¸è•­??š™è¸è•­??š™è¸è•­??š™è¸è•­ ??š™è¸è•­??š™è¸è•­??š™è¸è•­??š™è¸è•­
+    public float player_speed;//??ï¿½ï¿½è¸è•­??ï¿½ï¿½è¸è•­??ï¿½ï¿½è¸è•­??ï¿½ï¿½è¸è•­ ??ï¿½ï¿½è¸è•­??ï¿½ï¿½è¸è•­??ï¿½ï¿½è¸è•­??ï¿½ï¿½è¸è•­
     public Sprite deadSprite;
 
 
@@ -15,14 +15,13 @@ public class playercontroller : MonoBehaviour
     Color originalColor;
     Vector3 add_door_position;
 
-    float player_x;//é®ˆï˜îª? ???é´”î½‚ï¿?
-    float player_y;//??š™è¸è•­??š™è¸è•­ ???é´”î½‚ï¿?
+    float player_x;//é®ˆï˜ï¿½? ???é´”î½‚ï¿½?
+    float player_y;//??ï¿½ï¿½è¸è•­??ï¿½ï¿½è¸è•­ ???é´”î½‚ï¿½?
 
-
-    bool is_horizon_move; //4è«»æ‹—? ¼ çª¶åŸŸï¿?
     bool isDead = false;
     bool is_door;
-    //bool is_horizon_move; //4ë°©í–¥ ê²°ì •
+    bool is_horizon_move; //4ë°©í–¥ ê²°ì •
+
 
     private void Awake()
     {
@@ -34,8 +33,9 @@ public class playercontroller : MonoBehaviour
     void Update()
     {
         PlayerMove();
-        Damaged();
-        if (Input.GetKeyDown(KeyCode.F))
+
+        if(Input.GetKeyDown(KeyCode.F))
+
         {
             Debug.Log(1);
             useDoor();
@@ -51,32 +51,32 @@ public class playercontroller : MonoBehaviour
 
     private void PlayerMove()
     {
-        player_x = Input.GetAxisRaw("Horizontal"); //é®ˆï˜îª? ??š™è¸è•­??š™è¸è•­
-        player_y = Input.GetAxisRaw("Vertical"); //??š™è¸è•­??š™è¸è•­ ??š™è¸è•­??š™è¸è•­
+        player_x = Input.GetAxisRaw("Horizontal"); //é®ˆï˜ï¿½? ??ï¿½ï¿½è¸è•­??ï¿½ï¿½è¸è•­
+        player_y = Input.GetAxisRaw("Vertical"); //??ï¿½ï¿½è¸è•­??ï¿½ï¿½è¸è•­ ??ï¿½ï¿½è¸è•­??ï¿½ï¿½è¸è•­
 
-        //??š™è¸è•­?š™ï¿?? è²’ï„š?’— éº?æ¸£î¼‚
+        //??ï¿½ï¿½è¸è•­?ï¿½ï¿½ï¿½?? è²’ï„š?ï¿½ï¿½ ï¿½?æ¸£î¼‚
         bool player_x_down = Input.GetButtonDown("Horizontal");
         bool player_x_up = Input.GetButtonUp("Horizontal");
         bool player_y_down = Input.GetButtonDown("Vertical");
         bool player_y_up = Input.GetButtonUp("Vertical");
 
-        //??š™è¸è•­??š™è¸è•­é®ˆï˜îª? ??š™è¸è•­??š™è¸è•­??š™è¸è•­ ??š™è¸è•­??š™è¸è•­ é­½åœ‹?¢
+        //??ï¿½ï¿½è¸è•­??ï¿½ï¿½è¸è•­é®ˆï˜ï¿½? ??ï¿½ï¿½è¸è•­??ï¿½ï¿½è¸è•­??ï¿½ï¿½è¸è•­ ??ï¿½ï¿½è¸è•­??ï¿½ï¿½è¸è•­ é­½åœ‹?ï¿½ï¿½
         if (player_x_down)
         {
-            is_horizon_move = true; //é®ˆï˜îª? ??š™è¸è•­??š™è¸è•­
+            is_horizon_move = true; //é®ˆï˜ï¿½? ??ï¿½ï¿½è¸è•­??ï¿½ï¿½è¸è•­
         }
         else if (player_y_down)
-            is_horizon_move = false; //??š™è¸è•­??š™è¸è•­ ??š™è¸è•­??š™è¸è•­
+            is_horizon_move = false; //??ï¿½ï¿½è¸è•­??ï¿½ï¿½è¸è•­ ??ï¿½ï¿½è¸è•­??ï¿½ï¿½è¸è•­
         else if (player_x_up || player_y_up)
             is_horizon_move = player_x != 0;
 
-        //??š™è¸è•­??š™è¸è•­è«°î‰î²???š™è¸è•­
-        if (animator.GetInteger("player_move_x") != player_x) //é®ˆï˜îª?
+        //??ï¿½ï¿½è¸è•­??ï¿½ï¿½è¸è•­è«°î‰ï¿½???ï¿½ï¿½è¸è•­
+        if (animator.GetInteger("player_move_x") != player_x) //é®ˆï˜ï¿½?
         {
             animator.SetBool("is_change", true);
             animator.SetInteger("player_move_x", (int)player_x);
         }
-        else if (animator.GetInteger("player_move_y") != player_y) //??š™è¸è•­??š™è¸è•­
+        else if (animator.GetInteger("player_move_y") != player_y) //??ï¿½ï¿½è¸è•­??ï¿½ï¿½è¸è•­
         {
             animator.SetBool("is_change", true);
             animator.SetInteger("player_move_y", (int)player_y);
@@ -85,7 +85,7 @@ public class playercontroller : MonoBehaviour
             animator.SetBool("is_change", false);
     }
 
-    //?š™è¸è•­?š™è±å«¡æ©˜è•­?š™è¸è•­ ?š™è¸è•­
+    //?ï¿½ï¿½è¸è•­?ï¿½ï¿½è±å«¡æ©˜è•­?ï¿½ï¿½è¸è•­ ?ï¿½ï¿½è¸è•­
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Enemy"))
@@ -138,23 +138,22 @@ public class playercontroller : MonoBehaviour
     }
     private IEnumerator ChangeColor()
     {
-        spriteRenderer.color = Color.red; //?š™è¸è•­?š™è¸è•­?š™è¸è•­?š™è¸è•­?š™è¸è•­ ?š™è¸è•­?š™è¸è•­
-        yield return new WaitForSeconds(1f); //1?š™è¤Šè››?•­?š™è¸è•­ ?š™è¸è•­?š™è¸è•­
-        spriteRenderer.color = originalColor; //?š™è¸è•­?š™è¸è•­ ?š™è¸è•­?š™è¸è•­?š™è¸è•­ ?š™è¸è•­?š™è¤‡é¸?•­
+        spriteRenderer.color = Color.red; //?ï¿½ï¿½è¸è•­?ï¿½ï¿½è¸è•­?ï¿½ï¿½è¸è•­?ï¿½ï¿½è¸è•­?ï¿½ï¿½è¸è•­ ?ï¿½ï¿½è¸è•­?ï¿½ï¿½è¸è•­
+        yield return new WaitForSeconds(1f); //1?ï¿½ï¿½è¤Šè››?ï¿½ï¿½?ï¿½ï¿½è¸è•­ ?ï¿½ï¿½è¸è•­?ï¿½ï¿½è¸è•­
+        spriteRenderer.color = originalColor; //?ï¿½ï¿½è¸è•­?ï¿½ï¿½è¸è•­ ?ï¿½ï¿½è¸è•­?ï¿½ï¿½è¸è•­?ï¿½ï¿½è¸è•­ ?ï¿½ï¿½è¸è•­?ï¿½ï¿½è¤‡é¸?ï¿½ï¿½
     }
-    //?š™è¸è•­?š™è±å°?•­?š™è¸è•­ ?š™è¸è•­?š™ï¿?
-    void Damaged()
-    {
 
-    }
+    //?ï¿½è¸??ï¿½ï¿½è±å°??ï¿½ï¿½è¸è•­ ?ï¿½è¸??ï¿½ï¿½ï¿½?
+ 
     public void Dead()
-    {
-        if (isDead) return; // ?š™è«’å°?•­ ?š™è¸è•­?š™è¸è•­ ?š™è¸è•­?š™?“å¡šè•­?š™ï¿? ?š™è¸è•­?š™è¸è•­?š™è¸è•­?š™è¸è•­ ?š™è¸è•­?š™è¸è•­
 
-        isDead = true; // ?š™è¸è•­?š™è¸è•­ ?š™è¸è•­?š™è¸è•­ ?š™è¸è•­?š™è¸è•­
-        spriteRenderer.color = Color.gray; // ?š™è¸è•­?š™è¸è•­ ?š™è¸è•­?š™è¸è•­
-        spriteRenderer.sprite = deadSprite; // ?š™è¸è•­?š™è¸è•­?š™è¸è•­?š™è¸è•­?š¾ ?š™è¸è•­?š™è¸è•­
-        animator.enabled = false; // ?š™èª°æ£²è³‚è•­?š™è«’æ½˜?•­ ?š™è¸è•­?Ÿº?š™è¸è•­?Ÿ·
+    {
+        if (isDead) return; // ?ï¿½è«’å°è•­ ?ï¿½è¸??ï¿½ï¿½è¸è•­ ?ï¿½è¸??ï¿½ï¿½?ï¿½å¡š??ï¿½ï¿½ï¿½??ï¿½è¸??ï¿½ï¿½è¸è•­?ï¿½è¸??ï¿½ï¿½è¸è•­ ?ï¿½è¸??ï¿½ï¿½è¸è•­
+
+        isDead = true; // ?ï¿½è¸??ï¿½ï¿½è¸è•­ ?ï¿½è¸??ï¿½ï¿½è¸è•­ ?ï¿½è¸??ï¿½ï¿½è¸è•­
+        spriteRenderer.color = Color.gray; // ?ï¿½è¸??ï¿½ï¿½è¸è•­ ?ï¿½è¸??ï¿½ï¿½è¸è•­
+        spriteRenderer.sprite = deadSprite; // ?ï¿½è¸??ï¿½ï¿½è¸è•­?ï¿½è¸??ï¿½ï¿½è¸è•­???ï¿½è¸??ï¿½ï¿½è¸è•­
+        animator.enabled = false; // ?ï¿½èª°æ£²è³‚??ï¿½ï¿½è«’æ½˜???ï¿½è¸??ï¿½ï¿½?ï¿½è¸??ï¿½ï¿½
         Debug.Log("Game Over");
     }
 
@@ -167,5 +166,7 @@ public class playercontroller : MonoBehaviour
             this.transform.position = this.transform.position + add_door_position;
         }
 
+
     }
+    
 }
