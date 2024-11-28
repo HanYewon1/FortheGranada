@@ -773,6 +773,7 @@ public class GameManager : MonoBehaviour
         }
         else if (is_running)
         {
+            pc.Dead();
             is_running = false;
             Debug.Log("Ä³¸¯ÅÍ »ç¸Á!");
             ui_list[7].gameObject.SetActive(true);

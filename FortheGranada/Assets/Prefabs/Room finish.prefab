@@ -76,7 +76,7 @@ SpriteRenderer:
   m_SortingLayerID: 1342207409
   m_SortingLayer: 6
   m_SortingOrder: 0
-  m_Sprite: {fileID: -1761907223, guid: 4ebcf0423bbbfbb469957387637cc8dd, type: 3}
+  m_Sprite: {fileID: 376811427, guid: 4ebcf0423bbbfbb469957387637cc8dd, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -341,7 +341,7 @@ GameObject:
   - component: {fileID: 3900249980253984401}
   m_Layer: 0
   m_Name: border
-  m_TagString: Untagged
+  m_TagString: border
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4007,7 +4007,7 @@ SpriteRenderer:
   m_SortingLayerID: 1342207409
   m_SortingLayer: 6
   m_SortingOrder: 0
-  m_Sprite: {fileID: -172131914, guid: 4ebcf0423bbbfbb469957387637cc8dd, type: 3}
+  m_Sprite: {fileID: 29141619, guid: 4ebcf0423bbbfbb469957387637cc8dd, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -14449,6 +14449,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 100792237321663188}
+  - component: {fileID: 8880938146813024572}
   m_Layer: 0
   m_Name: chest_finish
   m_TagString: Untagged
@@ -14475,3 +14476,15 @@ Transform:
   - {fileID: 8669706148197550684}
   m_Father: {fileID: 929338788241627300}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8880938146813024572
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9087324271695194180}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f565dde4f20673e4692e56eb335bbba2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
