@@ -16,6 +16,7 @@ public class timer : MonoBehaviour
     {
         timerText = this.transform.GetComponentInChildren<TMP_Text>();
         totalTime = 900f;
+        timeLeft = totalTime; // 초기화
     }
 
     void Start()
@@ -26,12 +27,12 @@ public class timer : MonoBehaviour
 
     public void OnEnable()
     {
-        timeLeft = totalTime; // 초기화
+        //timeLeft = totalTime; // 초기화
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        timeLeft = totalTime; // 초기화
+        //timeLeft = totalTime; // 초기화
     }
 
     void Update()
@@ -48,7 +49,8 @@ public class timer : MonoBehaviour
                 Debug.Log("시간 초과!");
                 GameManager.Instance.ui_list[7].gameObject.SetActive(true);
                 //Time.timeScale = 0;
-                StartCoroutine(WaitThreeSecond());
+                GameManager.Instance.speed = 0;
+                StartCoroutine(GameManager.Instance.WaitThreeSecond());
             }
         }
     }
@@ -85,20 +87,5 @@ public class timer : MonoBehaviour
         }
 
         timerText.text = timestring;
-    }
-
-    private IEnumerator WaitThreeSecond()
-    {
-        // 5초 기다리고 타이틀 화면으로 감
-        yield return new WaitForSeconds(3f);
-        if (GameManager.Instance.is_ingame)
-        {
-            GameManager.Instance.is_ingame = false;
-        }
-        if (GameManager.Instance.is_boss)
-        {
-            GameManager.Instance.is_boss = false;
-        }
-        SceneManager.LoadScene("MainMenuScene");
     }
 }
