@@ -27,6 +27,7 @@ public class chatUI : MonoBehaviour
         }
         else
         {
+            idx = 0;
             gameObject.SetActive(false);
         }
 
