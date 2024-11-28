@@ -36,6 +36,11 @@ public class chatUI : MonoBehaviour
         {
             idx++;
         }
+
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            idx++;
+        }
     }
 
     public void OnClickNextPageButton()

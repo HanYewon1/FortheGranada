@@ -60,6 +60,7 @@ public class GameManager : MonoBehaviour
     }
     public int diff = 0;
     public int stage = 0;
+    public int maxstage = 0;
     public int maxtokens = 0;
     public string promptmessage = null;
     public string APIResponse = null;
@@ -178,6 +179,7 @@ public class GameManager : MonoBehaviour
         Debug.Log($"Initializing scene: {scene.name}");
 
         // 각 변수들 초기화
+        maxstage = 3;
         speed = 3;
         originspeed = 3;
         speed_for_boss_stage = 1.5f;
@@ -496,6 +498,23 @@ public class GameManager : MonoBehaviour
             is_running = true;
             speed = speed_for_boss_stage;
             SceneManager.LoadScene("Stage_Boss");
+        }
+
+        if (Input.GetKeyDown(KeyCode.U))
+        {
+            if (!is_ingame)
+            {
+                is_ingame = true;
+            }
+            if (is_boss)
+            {
+                is_boss = false;
+            }
+            is_running = true;
+            diff = 1;
+            stage = 1;
+            speed = originspeed;
+            SceneManager.LoadScene("PlayScene");
         }
     }
 

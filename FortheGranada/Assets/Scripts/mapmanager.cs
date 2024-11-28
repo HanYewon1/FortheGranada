@@ -13,8 +13,8 @@ public class MapManager : MonoBehaviour
     [System.Serializable]
     public struct PrefabEntry
     {
-        public string prefabName; 
-        public GameObject prefab; 
+        public string prefabName;
+        public GameObject prefab;
     }
     public int stage;
     public Button button;
@@ -58,7 +58,7 @@ public class MapManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.UpArrow))
         {
-            if(stage < 3)
+            if (stage < 3)
             {
                 stage++;
                 text_size.text = "Size: " + stage_size[stage] + "X" + stage_size[stage];
@@ -66,14 +66,16 @@ public class MapManager : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.DownArrow))
         {
-            if(stage > 0)
+            if (stage > 0)
             {
                 stage--;
                 text_size.text = "Size: " + stage_size[stage] + "X" + stage_size[stage];
             }
         }
-        if(Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
+            GameManager.Instance.is_ingame = false;
+            GameManager.Instance.is_running = false;
             SceneManager.LoadScene("MainMenuScene");
         }
     }
@@ -107,9 +109,9 @@ public class MapManager : MonoBehaviour
         stage_room[start_x, start_y] = 11;
         stage_room[finish_x, finish_y] = 12;
 
-        Queue<(int, int)> queue = new Queue<(int, int)> ();
+        Queue<(int, int)> queue = new Queue<(int, int)>();
         queue.Enqueue((start_x, start_y));
-        
+
         visited[start_x, start_y] = true;
         List<(int, int)> path = new List<(int, int)>();
         path.Add((start_x, start_y));
@@ -176,11 +178,11 @@ public class MapManager : MonoBehaviour
             Vector3 position = new Vector3(x * 35, y * (-35), 0);
             quaternion rotation = Quaternion.Euler(0, 0, 0);
             GameObject instance = Instantiate(prefabEntries[room], position, rotation);
-            if(room == 11)
+            if (room == 11)
             {
                 player.transform.position = position;
             }
-            
+
             if (i > 1)
             {
                 instance.name = "Room " + x + "_" + y;
@@ -191,7 +193,7 @@ public class MapManager : MonoBehaviour
                 int current_x = x + dx;
                 int current_y = y + dy;
                 string door_name = "door/";
-                
+
                 if (current_x >= 0 && current_y >= 0 && current_x < size && current_y < size && stage_room[current_x, current_y] != -1)
                 {
                     switch (j)
@@ -227,4 +229,4 @@ public class MapManager : MonoBehaviour
 
 }
 
-    
+

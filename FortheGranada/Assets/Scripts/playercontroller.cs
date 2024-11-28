@@ -97,7 +97,7 @@ public class playercontroller : MonoBehaviour
             if (target != null)
             {
                 GameManager.Instance.currentbox = target.gameObject.GetComponent<itemboxcontroller>();
-                Debug.Log("é«? ?¿æ¸¡è„¾");
+                Debug.Log("Near Box");
             }
         }
     }
