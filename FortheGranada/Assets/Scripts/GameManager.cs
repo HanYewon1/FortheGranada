@@ -94,6 +94,7 @@ public class GameManager : MonoBehaviour
     public itemmanager im;
     public timer tm;
     public scanner sc;
+    public playercontroller pc;
     public bosscontroller boscon;
     public TMP_Text hint_count;
     public Image speedcount;
@@ -256,6 +257,7 @@ public class GameManager : MonoBehaviour
             sc = GameObject.Find("Scanner").GetComponent<scanner>();
             hint_count = GameObject.Find("hintcount").GetComponent<TMP_Text>();
             player = GameObject.Find("Player").GetComponent<Transform>();
+            pc = player.GetComponent<playercontroller>();
 
             // ui_list에 필요한 UI들 미리 가져오기
             ui_list = new RectTransform[8];
@@ -302,6 +304,8 @@ public class GameManager : MonoBehaviour
 
         if (is_boss)
         {
+            player = GameObject.Find("Player").GetComponent<Transform>();
+            pc = player.GetComponent<playercontroller>();
             healthSlider = GameObject.Find("Slider").GetComponent<Slider>();
             boscon = GameObject.Find("BOSS").GetComponent<bosscontroller>();
             ui_list = new RectTransform[8];
