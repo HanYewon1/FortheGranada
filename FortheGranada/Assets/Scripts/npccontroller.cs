@@ -4,6 +4,7 @@ public class npccontroller : MonoBehaviour
 {
     Rigidbody2D rb;
     Animator animator;
+    npcsight npc_sight;
 
     public float moveSpeed;
     public GameObject[] points;
@@ -18,6 +19,7 @@ public class npccontroller : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        npc_sight = GetComponent<npcsight>();
         moveSpeed = 3f * 0.75f;
     }
 
@@ -28,23 +30,25 @@ public class npccontroller : MonoBehaviour
     }
     void NPCMoveDefault() //경로에 따른 움직임
     {
-
-        //point 사이 거리
-        distToPoint = Vector2.Distance(transform.position, points[nextPoint].transform.position);
-
-        transform.position = Vector2.MoveTowards(transform.position, points[nextPoint].transform.position, moveSpeed * Time.deltaTime);
-
-        //움직임 방향 계산
-        movement = (points[nextPoint].transform.position - transform.position).normalized;
-
-        //point에 도달했을 때 회전
-        if (distToPoint < 0.2f)
+        if (npc_sight.DetectPlayer == false)
         {
+            //point 사이 거리
+            distToPoint = Vector2.Distance(transform.position, points[nextPoint].transform.position);
 
-            //다음 point
-            nextPoint++;
-            if (nextPoint == points.Length) //point 다 돌면 0부터 다시 시작
-                nextPoint = 0;
+            transform.position = Vector2.MoveTowards(transform.position, points[nextPoint].transform.position, moveSpeed * Time.deltaTime);
+
+            //움직임 방향 계산
+            movement = (points[nextPoint].transform.position - transform.position).normalized;
+
+            //point에 도달했을 때 회전
+            if (distToPoint < 0.2f)
+            {
+
+                //다음 point
+                nextPoint++;
+                if (nextPoint == points.Length) //point 다 돌면 0부터 다시 시작
+                    nextPoint = 0;
+            }
         }
 
         //애니메이션
