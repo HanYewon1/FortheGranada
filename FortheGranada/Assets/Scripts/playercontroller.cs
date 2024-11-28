@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class playercontroller : MonoBehaviour
 {
-    public float player_speed;//?”Œ? ˆ?´?–´ ?´?™?†?„
+    public float player_speed;//?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½
+    public Sprite deadSprite;
 
     Rigidbody2D rigidbody2d;
     Animator animator;
@@ -12,9 +13,10 @@ public class playercontroller : MonoBehaviour
     Color originalColor;
 
     float player_x;//ì¢Œìš° ???ì§ì„
-    float player_y;//?ƒ?•˜ ???ì§ì„
+    float player_y;//?ï¿½ï¿½?ï¿½ï¿½ ???ì§ì„
 
     bool is_horizon_move; //4ë°©í–¥ ê²°ì •
+    bool isDead = false;
 
     private void Awake()
     {
@@ -37,32 +39,32 @@ public class playercontroller : MonoBehaviour
 
     private void PlayerMove()
     {
-        player_x = Input.GetAxisRaw("Horizontal"); //ì¢Œìš° ?´?™
-        player_y = Input.GetAxisRaw("Vertical"); //?ƒ?•˜ ?´?™
+        player_x = Input.GetAxisRaw("Horizontal"); //ì¢Œìš° ?ï¿½ï¿½?ï¿½ï¿½
+        player_y = Input.GetAxisRaw("Vertical"); //?ï¿½ï¿½?ï¿½ï¿½ ?ï¿½ï¿½?ï¿½ï¿½
 
-        //?ˆŒë¦? ë²„íŠ¼ ì²´í¬
+        //?ï¿½ï¿½ï¿½? ë²„íŠ¼ ì²´í¬
         bool player_x_down = Input.GetButtonDown("Horizontal");
         bool player_x_up = Input.GetButtonUp("Horizontal");
         bool player_y_down = Input.GetButtonDown("Vertical");
         bool player_y_up = Input.GetButtonUp("Vertical");
 
-        //?ƒ?•˜ì¢Œìš° ?´?™?„ ?œ„?•œ ì¡°ê±´
+        //?ï¿½ï¿½?ï¿½ï¿½ì¢Œìš° ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ ?ï¿½ï¿½?ï¿½ï¿½ ì¡°ê±´
         if (player_x_down)
         {
-            is_horizon_move = true; //ì¢Œìš° ?´?™
+            is_horizon_move = true; //ì¢Œìš° ?ï¿½ï¿½?ï¿½ï¿½
         }
         else if (player_y_down)
-            is_horizon_move = false; //?ƒ?•˜ ?´?™
+            is_horizon_move = false; //?ï¿½ï¿½?ï¿½ï¿½ ?ï¿½ï¿½?ï¿½ï¿½
         else if (player_x_up || player_y_up)
             is_horizon_move = player_x != 0;
 
-        //?• ?‹ˆë©”ì´?…˜
+        //?ï¿½ï¿½?ï¿½ï¿½ë©”ì´?ï¿½ï¿½
         if (animator.GetInteger("player_move_x") != player_x) //ì¢Œìš°
         {
             animator.SetBool("is_change", true);
             animator.SetInteger("player_move_x", (int)player_x);
         }
-        else if (animator.GetInteger("player_move_y") != player_y) //?ƒ?•˜
+        else if (animator.GetInteger("player_move_y") != player_y) //?ï¿½ï¿½?ï¿½ï¿½
         {
             animator.SetBool("is_change", true);
             animator.SetInteger("player_move_y", (int)player_y);
@@ -71,7 +73,7 @@ public class playercontroller : MonoBehaviour
             animator.SetBool("is_change", false);
     }
 
-    //°ø°İ¹Ş¾ÒÀ» ¶§
+    //ï¿½ï¿½ï¿½İ¹Ş¾ï¿½ï¿½ï¿½ ï¿½ï¿½
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if(collision.gameObject.CompareTag("Enemy"))
@@ -80,13 +82,23 @@ public class playercontroller : MonoBehaviour
 
     private IEnumerator ChangeColor()
     {
-        spriteRenderer.color = Color.red; //»¡°£»öÀ¸·Î º¯ÇÔ
-        yield return new WaitForSeconds(1f); //1ÃÊµ¿¾È À¯Áö
-        spriteRenderer.color = originalColor; //¿ø·¡ »öÀ¸·Î µ¹¾Æ¿È
+        spriteRenderer.color = Color.red; //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        yield return new WaitForSeconds(1f); //1ï¿½Êµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        spriteRenderer.color = originalColor; //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Æ¿ï¿½
     }
-    //°ø°İ¹ŞÀ» °æ¿ì
+    //ï¿½ï¿½ï¿½İ¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
     void Damaged()
     {
         
+    }
+    public void Dead()
+    {
+        if (isDead) return; // ï¿½Ì¹ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Â¶ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+
+        isDead = true; // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        spriteRenderer.color = Color.gray; // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        spriteRenderer.sprite = deadSprite; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½
+        animator.enabled = false; // ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½ ï¿½ï¿½È°ï¿½ï¿½È­
+        Debug.Log("Game Over");
     }
 }

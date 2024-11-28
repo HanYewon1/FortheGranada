@@ -850,6 +850,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player_speed: 5
+  deadSprite: {fileID: 1400998785, guid: cdeef39a8c35d994a82b6432ab248b83, type: 3}
 --- !u!212 &77680049
 SpriteRenderer:
   m_ObjectHideFlags: 0
