@@ -7,6 +7,8 @@ TagManager:
   - border
   - player
   - Enemy
+  - Chest
+  - Door
   layers:
   - Default
   - TransparentFX

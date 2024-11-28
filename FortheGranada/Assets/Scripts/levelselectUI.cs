@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class levelselectUI : MonoBehaviour
+public class diffselectUI : MonoBehaviour
 {
     private Animator animator;
 
@@ -31,9 +31,16 @@ public class levelselectUI : MonoBehaviour
         {
             GameManager.Instance.is_ingame = true;
         }
+        if (GameManager.Instance.is_boss)
+        {
+            GameManager.Instance.is_boss = false;
+        }
         GameManager.Instance.is_running = true;
-        GameManager.Instance.level = 1;
-        SceneManager.LoadScene("PlayScene");
+        GameManager.Instance.diff = 1;
+        GameManager.Instance.stage++;
+        GameManager.Instance.speed = GameManager.Instance.originspeed;
+        //SceneManager.LoadScene("PlayScene");
+        SceneManager.LoadScene("Stage_1");
     }
 
     public void OnClickNormalButton()
@@ -42,8 +49,14 @@ public class levelselectUI : MonoBehaviour
         {
             GameManager.Instance.is_ingame = true;
         }
+        if (GameManager.Instance.is_boss)
+        {
+            GameManager.Instance.is_boss = false;
+        }
         GameManager.Instance.is_running = true;
-        GameManager.Instance.level = 2;
+        GameManager.Instance.diff = 2;
+        GameManager.Instance.stage++;
+        GameManager.Instance.speed = GameManager.Instance.originspeed;
         SceneManager.LoadScene("PlayScene");
     }
 
@@ -53,8 +66,14 @@ public class levelselectUI : MonoBehaviour
         {
             GameManager.Instance.is_ingame = true;
         }
+        if (GameManager.Instance.is_boss)
+        {
+            GameManager.Instance.is_boss = false;
+        }
         GameManager.Instance.is_running = true;
-        GameManager.Instance.level = 3;
+        GameManager.Instance.diff = 3;
+        GameManager.Instance.stage++;
+        GameManager.Instance.speed = GameManager.Instance.originspeed;
         SceneManager.LoadScene("PlayScene");
     }
 

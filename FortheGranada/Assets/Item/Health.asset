@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Health
   m_EditorClassIdentifier: 
   item_ID: 1
-  num_nesting: 3
+  num_nesting: 2
   item_type: 0

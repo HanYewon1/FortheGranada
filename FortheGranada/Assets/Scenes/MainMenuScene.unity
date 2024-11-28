@@ -476,19 +476,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 0
-  speed: 0
+  speed: 3
+  originspeed: 3
+  speed_for_boss_stage: 1.5
   maxHealth: 0
   armor: 0
   stealthTime: 0
   key: 0
+  req_key: 0
   ressurection: 0
   health_item: 0
   armor_item: 0
   stealth_item: 0
   key_item: 0
   speed_item: 0
-  ressurectiom_item: 0
-  level: 0
+  haste_item: 0
+  preview_item: 0
+  ressurection_item: 0
+  _boss_health: 0
+  _boss_max_health: 0
+  diff: 0
+  stage: 0
   maxtokens: 5
   promptmessage: "3\uAC1C\uC758 \uC774\uBBF8\uC9C0 \uACF5\uD1B5\uC810\uC744 \uB108\uBB34
     \uD3EC\uAD04\uC801\uC774\uC9C0 \uC54A\uC740 \uB2E8\uC5B4\uB85C \uB2E8 1\uAC1C\uB9CC
@@ -506,9 +514,19 @@ MonoBehaviour:
   is_rannum: 1
   is_rannum2: 1
   _is_ingame: 0
+  _is_boss: 0
+  currentbox: {fileID: 0}
   mg: {fileID: 0}
+  im: {fileID: 0}
   tm: {fileID: 0}
+  sc: {fileID: 0}
+  boscon: {fileID: 0}
+  hint_count: {fileID: 0}
+  speedcount: {fileID: 0}
+  healthSlider: {fileID: 0}
   player: {fileID: 0}
+  health_list: []
+  item_list: []
   ui_list: []
   rannum3: 
   rannum3_2: 

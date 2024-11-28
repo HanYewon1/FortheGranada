@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using Unity.Mathematics;
+using UnityEditor.U2D.Aseprite;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -17,6 +18,7 @@ public class MapManager : MonoBehaviour
     }
     public int stage;
     public Button button;
+    public GameObject player;
     public GameObject[] prefabEntries;
     public Queue<GameObject> queue_room;
     public TextMeshProUGUI text_size;
@@ -30,6 +32,7 @@ public class MapManager : MonoBehaviour
     public void Start()
     {
         queue_room = new Queue<GameObject>();
+        CreateMap(stage);
     }
 
     public void OnClick()
@@ -173,6 +176,10 @@ public class MapManager : MonoBehaviour
             Vector3 position = new Vector3(x * 35, y * (-35), 0);
             quaternion rotation = Quaternion.Euler(0, 0, 0);
             GameObject instance = Instantiate(prefabEntries[room], position, rotation);
+            if(room == 11)
+            {
+                player.transform.position = position;
+            }
             
             if (i > 1)
             {

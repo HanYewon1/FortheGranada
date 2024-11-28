@@ -1,10 +1,13 @@
+using TMPro;
 using System;
 using System.IO;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using System.Security.Cryptography;
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
@@ -17,26 +20,50 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
 
     [Header("Player Settings")]
-    public int health;
-    public float speed;
-    public int maxHealth;
-    public int armor;
+    public int health = 1;
+    public float speed = 0;
+    public float originspeed = 0;
+    public float speed_for_boss_stage = 0;
+    public int maxHealth = 10;
+    public int armor = 0;
     public int stealthTime;
     public int key;
-    public int ressurection;
-    public int health_item;
-    public int armor_item;
-    public int stealth_item;
-    public int key_item;
-    public int speed_item;
-    public int ressurectiom_item;
+    public int req_key;
+    public int ressurection = 0;
+    public int health_item = 0;
+    public int armor_item = 0;
+    public int stealth_item = 0;
+    public int key_item = 0;
+    public int speed_item = 0;
+    public int haste_item = 0;
+    public int preview_item = 0;
+    public int ressurection_item = 0;
 
     [Header("Game Settings")]
-    public int level = 0;
-    public int maxtokens = 5;
+    [SerializeField] private float _boss_health;
+    public float boss_health
+    {
+        get => _boss_health;
+        set
+        {
+            _boss_health = value;
+        }
+    }
+    [SerializeField] private float _boss_max_health;
+    public float boss_max_health
+    {
+        get => _boss_max_health;
+        set
+        {
+            _boss_max_health = value;
+        }
+    }
+    public int diff = 0;
+    public int stage = 0;
+    public int maxtokens = 6;
     public string promptmessage = "3°³ÀÇ ÀÌ¹ÌÁö °øÅëÁ¡À» ³Ê¹« Æ÷°ıÀûÀÌÁö ¾ÊÀº ´Ü¾î·Î ´Ü 1°³¸¸ Ãâ·ÂÇØ! µÚ¿¡ ÀÔ´Ï´Ù ºÙÀÌÁö ¸¶! ÆÇÅ¸Áö, ÇÈ¼¿¾ÆÆ® ±İÁö!";
     public string APIResponse = null;
-    private string apiUrl;
+    private string apiUrl = null;
     private string apiKey;
     [System.Serializable]
     private class ApiKeyData
@@ -58,12 +85,23 @@ public class GameManager : MonoBehaviour
     public bool is_rannum2 = true;
     [SerializeField]
     private bool _is_ingame = false;
-    public bool is_border;
+    [SerializeField]
+    private bool _is_boss = false;
 
     [Header("GetComponents")]
+    public itemboxcontroller currentbox;
     public minigamemanager mg;
+    public itemmanager im;
     public timer tm;
+    public scanner sc;
+    public playercontroller pc;
+    public bosscontroller boscon;
+    public TMP_Text hint_count;
+    public Image speedcount;
+    public Slider healthSlider;
     public Transform player;
+    public RectTransform[] health_list;
+    public RectTransform[] item_list;
     public RectTransform[] ui_list;
     public int[] rannum3;
     public int[] rannum3_2;
@@ -79,18 +117,27 @@ public class GameManager : MonoBehaviour
             Debug.Log($"is_ingame °ª º¯°æµÊ: {_is_ingame}");
         }
     }
+    public bool is_boss
+    {
+        get => _is_boss;
+        set
+        {
+            _is_boss = value;
+            Debug.Log($"is_boss °ª º¯°æµÊ: {_is_boss}");
+        }
+    }
 
     void Awake()
     {
-        // ?‹±ê¸??†¤ ?¸?Š¤?„´?Š¤ ?„¤? •
+        // Instance Á¸Àç À¯¹«¿¡ µû¶ó °ÔÀÓ ¸Å´ÏÀú ÆÄ±« ¿©ºÎ Á¤ÇÔ
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject); // ?”¬ ? „?™˜ ?‹œ ?‚­? œ?˜ì§? ?•Š?„ë¡? ?„¤? •
+            DontDestroyOnLoad(gameObject); // ±âÁ¸¿¡ Á¸Àç ¾ÈÇÏ¸é ÀÌ°É·Î ´ëÃ¼ÇÏ°í ÆÄ±«ÇÏÁö ¾Ê±â
         }
         else
         {
-            Destroy(gameObject); // ì¤‘ë³µ?œ GameManagerê°? ?ƒ?„±?˜ì§? ?•Š?„ë¡? ?‚­? œ
+            Destroy(gameObject); // ±âÁ¸¿¡ Á¸ÀçÇÏ¸é ÀÚ½ÅÆÄ±«
         }
 
         string path = Path.Combine(Application.streamingAssetsPath, "config.json");
@@ -106,13 +153,11 @@ public class GameManager : MonoBehaviour
 
     private void OnEnable()
     {
-        // ?”¬?´ ë¡œë“œ?  ?•Œ ?˜¸ì¶?
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
     private void OnDisable()
     {
-        // ?”¬ ë¡œë“œ ?´ë²¤íŠ¸ ?•´? œ
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
@@ -120,42 +165,156 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log($"Scene Loaded: {scene.name}");
 
-        // ?”¬ ë¡œë“œ ?›„ ?•„?š”?•œ ì´ˆê¸°?™” ë¡œì§
         InitializeScene(scene);
     }
 
     private void InitializeScene(Scene scene)
     {
-        // ?”¬ë³? ì´ˆê¸°?™” ë¡œì§
+        // ¾ÀÀÌ ÃÊ±âÈ­µÇ¸é ·Î±× ¶ç¿ò
         Debug.Log($"Initializing scene: {scene.name}");
 
-        //StartCoroutine(WaitOneSecond());
+        // °¢ º¯¼öµé ÃÊ±âÈ­
+        speed = 3;
+        originspeed = 3;
+        speed_for_boss_stage = 1.5f;
+
+        // Ingame µé¾î°¡¸é ÃÊ±âÈ­ ÀÛ¾÷ ½ÇÇà
         if (is_ingame == true)
         {
-            mg = GameObject.Find("MinigameManager").GetComponent<minigamemanager>();
-            player = GameObject.Find("Player").GetComponent<Transform>();
+            // API °ü·Ã º¯¼öµé ÃÊ±âÈ­
+            maxtokens = 6;
+            promptmessage = "3°³ÀÇ ÀÌ¹ÌÁö °øÅëÁ¡À» ³Ê¹« Æ÷°ıÀûÀÌÁö ¾ÊÀº ´Ü¾î·Î ´Ü 1°³¸¸ Ãâ·ÂÇØ! µÚ¿¡ ÀÔ´Ï´Ù ºÙÀÌÁö ¸¶! ÆÇÅ¸Áö, ÇÈ¼¿¾ÆÆ® ±İÁö!";
 
-            ui_list = new RectTransform[6];
+            // ³­ÀÌµµ ¼±ÅÃ¿¡ µû¶ó °ÔÀÓ ¼³Á¤µé º¯°æ
+            switch (diff)
+            {
+                case 1:
+                    health = 5;
+                    maxHealth = 5;
+                    switch (stage)
+                    {
+                        case 1:
+                            req_key = 3;
+                            break;
+                        case 2:
+                            req_key = 5;
+                            break;
+                        case 3:
+                            req_key = 7;
+                            break;
+                        default:
+                            Debug.LogError("Out of StageNum!");
+                            break;
+                    }
+                    break;
+                case 2:
+                    health = 3;
+                    maxHealth = 3;
+                    switch (stage)
+                    {
+                        case 1:
+                            req_key = 3;
+                            break;
+                        case 2:
+                            req_key = 5;
+                            break;
+                        case 3:
+                            req_key = 7;
+                            break;
+                        default:
+                            Debug.LogError("Out of StageNum!");
+                            break;
+                    }
+                    break;
+                case 3:
+                    health = 1;
+                    maxHealth = 1;
+                    switch (stage)
+                    {
+                        case 1:
+                            req_key = 5;
+                            break;
+                        case 2:
+                            req_key = 7;
+                            break;
+                        case 3:
+                            req_key = 9;
+                            break;
+                        default:
+                            Debug.LogError("Out of StageNum!");
+                            break;
+                    }
+                    break;
+                default:
+                    Debug.LogError("Out of Diff!");
+                    break;
+            }
+
+            // ÇÊ¿äÇÑ ÄÄÆ÷³ÍÆ®µé °¡Á®¿À±â
+            mg = GameObject.Find("MinigameManager").GetComponent<minigamemanager>();
+            im = GameObject.Find("ItemManager").GetComponent<itemmanager>();
+            tm = GameObject.Find("TIME").GetComponent<timer>();
+            sc = GameObject.Find("Scanner").GetComponent<scanner>();
+            hint_count = GameObject.Find("hintcount").GetComponent<TMP_Text>();
+            player = GameObject.Find("Player").GetComponent<Transform>();
+            pc = player.GetComponent<playercontroller>();
+
+            // ui_list¿¡ ÇÊ¿äÇÑ UIµé ¹Ì¸® °¡Á®¿À±â
+            ui_list = new RectTransform[8];
             ui_list[0] = GameObject.Find("InGameUI").GetComponent<RectTransform>();
             ui_list[1] = GameObject.Find("MiniGameUI").GetComponent<RectTransform>();
             ui_list[2] = GameObject.Find("PauseMenuUI").GetComponent<RectTransform>();
             ui_list[3] = GameObject.Find("GRayout5X5").GetComponent<RectTransform>();
             ui_list[4] = GameObject.Find("GRayout6X6").GetComponent<RectTransform>();
             ui_list[5] = GameObject.Find("GRayout7X7").GetComponent<RectTransform>();
+            ui_list[6] = GameObject.Find("ChatUI").GetComponent<RectTransform>();
+            ui_list[7] = GameObject.Find("OverUI").GetComponent<RectTransform>();
 
-            tm = ui_list[0].Find("TIME").GetComponent<timer>();
+            // Ã¼·Â°ú ¾ÆÀÌÅÛ UI ÀÚ½Äµé °¡Á®¿À±â
+            health_list = GameObject.Find("HPUI").GetComponentsInChildren<RectTransform>();
+            item_list = GameObject.Find("ITEMUI").GetComponentsInChildren<RectTransform>();
 
-            // ë¶ˆí•„?š”?•œ ui ë¹„í™œ?„±
+            //½ºÇÇµå Ä«¿îÆ® ·»´õ·¯
+            speedcount = item_list[3].GetComponent<Image>();
+
+            // Find·Î Ã£¾ÒÀ¸´Ï UI Listµé ´Ù½Ã ºñÈ°¼ºÈ­
             ui_list[1].gameObject.SetActive(false);
             ui_list[2].gameObject.SetActive(false);
             ui_list[3].gameObject.SetActive(false);
             ui_list[4].gameObject.SetActive(false);
             ui_list[5].gameObject.SetActive(false);
+            ui_list[6].gameObject.SetActive(false);
+            ui_list[7].gameObject.SetActive(false);
+            health_list[6].gameObject.SetActive(false);
+            health_list[7].gameObject.SetActive(false);
+            health_list[8].gameObject.SetActive(false);
+            item_list[4].gameObject.SetActive(false);
+            item_list[5].gameObject.SetActive(false);
+            item_list[6].gameObject.SetActive(false);
+            item_list[7].gameObject.SetActive(false);
+
+            // ½Ã°£ Á¤»óÈ­, ¹Ì´Ï°ÔÀÓ OFF
             Time.timeScale = 1;
             is_minigame = false;
 
+            // ¹Ì´Ï°ÔÀÓ¿ë ÀÌ¹ÌÁö¶û º¸±â ¸®½ºÆ® °¡Á®¿À±â
             if (spr_list.Length == 0) spr_list = mg.ImageSet();
             if (ans_list.Length == 0) ans_list = mg.AnswerSet();
+        }
+
+        if (is_boss)
+        {
+            player = GameObject.Find("Player").GetComponent<Transform>();
+            pc = player.GetComponent<playercontroller>();
+            healthSlider = GameObject.Find("Slider").GetComponent<Slider>();
+            boscon = GameObject.Find("BOSS").GetComponent<bosscontroller>();
+            ui_list = new RectTransform[8];
+            ui_list[2] = GameObject.Find("PauseMenuUI").GetComponent<RectTransform>();
+            ui_list[6] = GameObject.Find("ChatUI").GetComponent<RectTransform>();
+            ui_list[7] = GameObject.Find("OverUI").GetComponent<RectTransform>();
+            ui_list[2].gameObject.SetActive(false);
+            ui_list[6].gameObject.SetActive(false);
+            ui_list[7].gameObject.SetActive(false);
         }
     }
 
@@ -170,6 +329,11 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (health == 0 && (is_boss || is_ingame))
+        {
+            GameOver();
+        }
+
         if (is_ingame == true)
         {
             if (is_rannum)
@@ -201,46 +365,66 @@ public class GameManager : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.Escape))
             {
-                // ë©”ë‰´ê°? ?™œ?„±?™”?˜?–´ ?ˆ?œ¼ë©? ë¹„í™œ?„±?™”?•˜ê³?, ë¹„í™œ?„±?™”?˜?—ˆ?œ¼ë©? ?™œ?„±?™”
+                // ESC ¸Ş´º ¿©´İ±â
                 if (ui_list[2] != null)
                 {
-                    ui_list[2].gameObject.SetActive(!ui_list[2].gameObject.activeSelf); // ë©”ë‰´?˜ ?™œ?„±?™”/ë¹„í™œ?„±?™” ?ƒ?ƒœ ? „?™˜
+                    ui_list[2].gameObject.SetActive(!ui_list[2].gameObject.activeSelf);
                 }
             }
 
             if (Input.GetKeyDown(KeyCode.M))
             {
                 // ·¹º§ ¹× ³­ÀÌµµ º° Ç¥½ÃÇÒ ¸Ê
-                switch (level)
+                switch (diff)
                 {
                     case 1:
                         // °ª1ÀÏ ¶§ ½ÇÇàÇÒ ÄÚµå
-                        if (ui_list[3] != null)
+                        if (ui_list[3] != null && stage == 1)
                         {
                             ui_list[3].gameObject.SetActive(!ui_list[3].gameObject.activeSelf);
+                        }
+                        else if (ui_list[4] != null && stage == 2)
+                        {
+                            ui_list[4].gameObject.SetActive(!ui_list[4].gameObject.activeSelf);
+                        }
+                        else if (ui_list[5] != null && stage == 3)
+                        {
+                            ui_list[5].gameObject.SetActive(!ui_list[5].gameObject.activeSelf);
                         }
                         break;
                     case 2:
                         // °ª2ÀÏ ¶§ ½ÇÇàÇÒ ÄÚµå
-                        if (ui_list[4] != null)
+                        if (ui_list[3] != null && stage == 1)
+                        {
+                            ui_list[3].gameObject.SetActive(!ui_list[3].gameObject.activeSelf);
+                        }
+                        else if (ui_list[4] != null && stage == 2)
                         {
                             ui_list[4].gameObject.SetActive(!ui_list[4].gameObject.activeSelf);
+                        }
+                        else if (ui_list[5] != null && stage == 3)
+                        {
+                            ui_list[5].gameObject.SetActive(!ui_list[5].gameObject.activeSelf);
                         }
                         break;
                     case 3:
                         // °ª3ÀÏ ¶§ ½ÇÇàÇÒ ÄÚµå
-                        if (ui_list[5] != null)
+                        if (ui_list[4] != null && stage == 1)
+                        {
+                            ui_list[4].gameObject.SetActive(!ui_list[4].gameObject.activeSelf);
+                        }
+                        else if (ui_list[5] != null && stage >= 2)
                         {
                             ui_list[5].gameObject.SetActive(!ui_list[5].gameObject.activeSelf);
                         }
                         break;
                     default:
-                        // ¸ğµç case¿¡ ÇØ´çÇÏÁö ¾ÊÀ» ¶§ ½ÇÇàÇÒ ÄÚµå
+                        Debug.LogError("Out of Diff!");
                         break;
                 }
             }
 
-            if (is_closebox == true && is_minigame == false && is_delay == false && is_mgset == true && is_catch == true)
+            if (is_closebox == true && is_minigame == false && is_delay == false && is_mgset == true && is_catch == true && !currentbox.isOpen)
             {
                 if (Input.GetKeyDown(KeyCode.F))
                 {
@@ -248,9 +432,27 @@ public class GameManager : MonoBehaviour
                     ui_list[1].gameObject.SetActive(true);
                 }
             }
+
             if (is_delay && is_CoroutineRunning == false)
             {
                 StartCoroutine(SelectedIncurrect());
+                StartCoroutine(WaitFiveSecond());
+            }
+
+            hint_count.text = key + " / " + req_key;
+            updatehealth();
+            updateshoe();
+        }
+
+        if (is_boss)
+        {
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                // ESC ¸Ş´º ¿©´İ±â
+                if (ui_list[2] != null)
+                {
+                    ui_list[2].gameObject.SetActive(!ui_list[2].gameObject.activeSelf);
+                }
             }
         }
 
@@ -260,15 +462,37 @@ public class GameManager : MonoBehaviour
             {
                 is_ingame = true;
             }
+            if (is_boss)
+            {
+                is_boss = false;
+            }
             is_running = true;
-            level = 1;
-            SceneManager.LoadScene("Stage_1");
+            diff = 1;
+            stage = 1;
+            speed = originspeed;
+            SceneManager.LoadScene("Test");
+        }
+
+        if (Input.GetKeyDown(KeyCode.Y))
+        {
+            if (is_ingame)
+            {
+                is_ingame = false;
+            }
+            if (!is_boss)
+            {
+                is_boss = true;
+            }
+            health = 5;
+            is_running = true;
+            speed = speed_for_boss_stage;
+            SceneManager.LoadScene("Stage_Boss");
         }
     }
 
     private IEnumerator LLMAPIRequest(string prompt, int maxTokens)
     {
-        // ?´ë¯¸ì?? ?ŒŒ?¼ ?´ë¦? ë°°ì—´ (Resources ?´?” ?‚´?˜ ?´ë¯¸ì?? ?´ë¦?)
+        // Àü¼ÛÇÒ ÀÌ¹ÌÁö 3Àå ¹è¿­¿¡ ´ã±â
         string[] imageNames = new string[3];
         for (int i = 0; i < 3; i++)
         {
@@ -292,41 +516,41 @@ public class GameManager : MonoBehaviour
 
         foreach (string imageName in imageNames)
         {
-            // Resources ?´?”?—?„œ ?´ë¯¸ì??ë¥? ë¶ˆëŸ¬?˜´
+            // Resources¿¡¼­ ÀÌ¹ÌÁö °¡Á®¿À±â
             Texture2D image = Resources.Load<Texture2D>(imageName);
 
             if (image == null)
             {
                 Debug.LogError($"Image '{imageName}' not found in Resources folder.");
-                yield break; // ?—?Ÿ¬ ë°œìƒ ?‹œ ë£¨í”„ ì¢…ë£Œ
+                yield break; // ·Î±×¿¡·¯ ¶ç¿ì°í ÄÚ·çÆ¾ ³¡³»±â
             }
 
             Texture2D uncompressedImage = new Texture2D(image.width, image.height, TextureFormat.RGBA32, false);
             uncompressedImage.SetPixels(image.GetPixels());
             uncompressedImage.Apply();
 
-            // ?´ë¯¸ì?? ?°?´?„°ë¥? byte ë°°ì—´ë¡? ë³??™˜ (JPG ?¬ë§·ìœ¼ë¡? ?¸ì½”ë”©)
+            // ÀÌ¹ÌÁö¸¦ ÀÎ¶óÀÎ µ¥ÀÌÅÍ·Î º¸³»±â À§ÇØ ¹ÙÀÌÆ®Çü ¹è¿­¿¡ ´ãÀ½
             byte[] imageBytes = image.EncodeToJPG();
             string base64Image = Convert.ToBase64String(imageBytes); // Base64ë¡? ?¸ì½”ë”©
             base64Images.Add(base64Image);
         }
 
-        // ?š”ì²??•  JSON ?°?´?„° ?ƒ?„±
+        // POST·Î º¸³»±â À§ÇØ JSON Çü½Ä µ¥ÀÌÅÍ·Î ¸¸µë
         string jsonData = "{\"contents\":[{\"parts\":[{\"text\":\"" + prompt + "\"},{\"inlineData\": {\"mimeType\": \"image/png\",\"data\": \"" + base64Images[0] + "\"}},{\"inlineData\": {\"mimeType\": \"image/png\",\"data\": \"" + base64Images[1] + "\"}},{\"inlineData\": {\"mimeType\": \"image/png\",\"data\": \"" + base64Images[2] + "\"}}]}], \"generationConfig\": {\"maxOutputTokens\": " + maxTokens + "}}";
 
-        // UnityWebRequest ?ƒ?„±
+        // UnityWebRequest º¸³»±â À§ÇØ ÇÊ¿äÇÑ °Í µé
         UnityWebRequest request = new UnityWebRequest(apiUrl, "POST");
         byte[] bodyRaw = Encoding.UTF8.GetBytes(jsonData);
         request.uploadHandler = new UploadHandlerRaw(bodyRaw);
         request.downloadHandler = new DownloadHandlerBuffer();
 
-        // ?—¤?” ?„¤? •
+        // Header ÀÛ¼º
         request.SetRequestHeader("Content-Type", "application/json");
 
-        // ?š”ì²? ? „?†¡
+        // ¸®Äù½ºÆ® º¸³¿
         yield return request.SendWebRequest();
 
-        // ?‘?‹µ ì²˜ë¦¬
+        // ¼º°øÇÏ¸é ÀÀ´ä¹Ş°í ÅØ½ºÆ® ÆÄ½Ì
         if (request.result == UnityWebRequest.Result.Success)
         {
             string responseText = request.downloadHandler.text;
@@ -343,10 +567,10 @@ public class GameManager : MonoBehaviour
 
     void ParseResponse(string jsonResponse)
     {
-        // JSON ?ŒŒ?‹±
+        // JSON ÆÄ½Ì
         JObject response = JObject.Parse(jsonResponse);
 
-        // candidates[0].content.parts[0].text ?•„?“œë¥? ì¶”ì¶œ
+        // candidates[0].content.parts[0].text ÆÄ½Ì
         string modelResponse = response["candidates"]?[0]?["content"]?["parts"]?[0]?["text"]?.ToString();
 
         if (modelResponse != null)
@@ -363,10 +587,16 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private IEnumerator WaitOneSecond()
+    private IEnumerator WaitFiveSecond()
     {
-        // 1ì´? ???ê¸?
-        yield return new WaitForSeconds(1f);
+        // 5ÃÊ ±â´Ù¸®°í ÀÀ´ä¾øÀ¸¸é ÇÁ¸®¼Â Àû¿ë
+        yield return new WaitForSeconds(5f);
+        if (!is_catch)
+        {
+            Debug.Log("ÀÀ´ä ³Ê¹« ´À¸²");
+            mg.FailRequest();
+            is_catch = true;
+        }
     }
 
     public IEnumerator SelectedIncurrect()
@@ -379,69 +609,182 @@ public class GameManager : MonoBehaviour
         Debug.Log("ÆĞ³ÎÆ¼ ÇØÁ¦");
     }
 
-    public void getItem(Item item)
+    public void SelectItem(int rannum1)
     {
-        if (item.GetItemType == ItemType.Expendables)
+        int itemnum = 10;
+
+        if (rannum1 >= 11 && rannum1 <= 50)
         {
-            if (item.GetItemID == 1)//Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-            {
-                if (health_item < item.GetNumNesting)
-                {
-                    maxHealth++;
-                    health++;
-                }
-                else if (maxHealth > health)//ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ê°ï¿½ï¿½ï¿½ È¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Û°ï¿½ ï¿½ï¿½ï¿½ï¿½ È¿ï¿½ï¿½
-                {
-                    health++;
-                }
-            }
-            else if (item.GetItemID == 2)//È¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-            {
-                if (maxHealth > health)
-                {
-                    health++;
-                }
-            }
+            itemnum = 1;
+            Debug.Log("Ã¼·Â È¸º¹");
         }
-        else if (item.GetItemType == ItemType.Passive)
+        else if (rannum1 >= 51 && rannum1 <= 69)
         {
-            if (item.GetItemID == 4 && speed_item < item.GetNumNesting)//ï¿½Óµï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-            {
-                speed += 0.1f;
-            }
-            else if (item.GetItemID == 6)//ï¿½Ç°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-            {
-                is_attacked_speed = true;
-            }
-            else if (item.GetItemID == 7 && stealthTime < item.GetNumNesting)//ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-            {
-                stealthTime++;
-            }
-            else if (item.GetItemID == 8)//ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-            {
-                is_preview = true;
-            }
+            itemnum = 2;
+            Debug.Log("½¯µå È¹µæ");
         }
-        else if (item.GetItemType == ItemType.Temporary)
+        else if (rannum1 >= 70 && rannum1 <= 79)
         {
-            if (item.GetItemID == 3)//ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-            {
-                armor++;
-            }
+            itemnum = 3;
+            Debug.Log("ÀÌ¼Ó Áõ°¡");
         }
-        else if (item.GetItemType == ItemType.Resurrection)
+        else if (rannum1 >= 80 && rannum1 <= 84)
         {
-            if (item.GetItemID == 5 && ressurectiom_item < item.GetNumNesting)//ï¿½ï¿½È° ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-            {
-                ressurection++;
-            }
+            itemnum = 0;
+            Debug.Log("ÃÖ´ë Ã¼·Â Áõ°¡");
         }
-        else if (item.GetItemType == ItemType.Key)
+        else if (rannum1 >= 85 && rannum1 <= 89)
         {
-            if (item.GetItemID == 9)//ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
-            {
-                key++;
-            }
+            itemnum = 5;
+            Debug.Log("ÇÇ°İ ½Ã ÀÌ¼Ó Áõ°¡");
         }
+        else if (rannum1 >= 90 && rannum1 <= 94)
+        {
+            itemnum = 6;
+            Debug.Log("°¨Áö ½Ã°£ Áö¿¬");
+        }
+        else if (rannum1 >= 95 && rannum1 <= 99)
+        {
+            itemnum = 7;
+            Debug.Log("»óÀÚ Åõ½Ã");
+        }
+        else if (rannum1 >= 1 && rannum1 <= 10)
+        {
+            itemnum = 8;
+            Debug.Log("¿­¼è Á¶°¢ È¹µæ");
+        }
+        else if (rannum1 == 100)
+        {
+            itemnum = 4;
+            Debug.Log("ºÎÈ° ÅÛ È¹µæ!");
+        }
+        else
+        {
+            Debug.LogError("Out of ItemNum");
+        }
+        im.getItem(im.itemlist[itemnum]);
+    }
+
+    public void updatehealth()
+    {
+        switch (health)
+        {
+            case 0:
+                health_list[1].gameObject.SetActive(false);
+                health_list[2].gameObject.SetActive(false);
+                health_list[3].gameObject.SetActive(false);
+                health_list[4].gameObject.SetActive(false);
+                health_list[5].gameObject.SetActive(false);
+                health_list[6].gameObject.SetActive(false);
+                health_list[7].gameObject.SetActive(false);
+                break;
+            case 1:
+                health_list[1].gameObject.SetActive(true);
+                health_list[2].gameObject.SetActive(false);
+                health_list[3].gameObject.SetActive(false);
+                health_list[4].gameObject.SetActive(false);
+                health_list[5].gameObject.SetActive(false);
+                health_list[6].gameObject.SetActive(false);
+                health_list[7].gameObject.SetActive(false);
+                break;
+            case 2:
+                health_list[1].gameObject.SetActive(true);
+                health_list[2].gameObject.SetActive(true);
+                health_list[3].gameObject.SetActive(false);
+                health_list[4].gameObject.SetActive(false);
+                health_list[5].gameObject.SetActive(false);
+                health_list[6].gameObject.SetActive(false);
+                health_list[7].gameObject.SetActive(false);
+                break;
+            case 3:
+                health_list[1].gameObject.SetActive(true);
+                health_list[2].gameObject.SetActive(true);
+                health_list[3].gameObject.SetActive(true);
+                health_list[4].gameObject.SetActive(false);
+                health_list[5].gameObject.SetActive(false);
+                health_list[6].gameObject.SetActive(false);
+                health_list[7].gameObject.SetActive(false);
+                break;
+            case 4:
+                health_list[1].gameObject.SetActive(true);
+                health_list[2].gameObject.SetActive(true);
+                health_list[3].gameObject.SetActive(true);
+                health_list[4].gameObject.SetActive(true);
+                health_list[5].gameObject.SetActive(false);
+                health_list[6].gameObject.SetActive(false);
+                health_list[7].gameObject.SetActive(false);
+                break;
+            case 5:
+                health_list[1].gameObject.SetActive(true);
+                health_list[2].gameObject.SetActive(true);
+                health_list[3].gameObject.SetActive(true);
+                health_list[4].gameObject.SetActive(true);
+                health_list[5].gameObject.SetActive(true);
+                health_list[6].gameObject.SetActive(false);
+                health_list[7].gameObject.SetActive(false);
+                break;
+            case 6:
+                health_list[1].gameObject.SetActive(true);
+                health_list[2].gameObject.SetActive(true);
+                health_list[3].gameObject.SetActive(true);
+                health_list[4].gameObject.SetActive(true);
+                health_list[5].gameObject.SetActive(true);
+                health_list[6].gameObject.SetActive(true);
+                health_list[7].gameObject.SetActive(false);
+                break;
+            case 7:
+                health_list[1].gameObject.SetActive(true);
+                health_list[2].gameObject.SetActive(true);
+                health_list[3].gameObject.SetActive(true);
+                health_list[4].gameObject.SetActive(true);
+                health_list[5].gameObject.SetActive(true);
+                health_list[6].gameObject.SetActive(true);
+                health_list[7].gameObject.SetActive(true);
+                break;
+            default:
+                Debug.LogError("Out of Health!");
+                break;
+        }
+    }
+
+    public void updateshoe()
+    {
+        string spriteName = "Speed";
+        spriteName += speed_item;
+        speedcount.sprite = Resources.Load<Sprite>(spriteName);
+    }
+
+    // º¸½º Ã¼·Â ºñÀ² ¹İÈ¯
+    public float GetNormalizedHealth()
+    {
+        return boss_health / boss_max_health;
+    }
+
+    public void GameOver()
+    {
+        if (is_running)
+        {
+            is_running = false;
+            Debug.Log("Ä³¸¯ÅÍ »ç¸Á!");
+            ui_list[7].gameObject.SetActive(true);
+            //Time.timeScale = 0;
+            speed = 0;
+            StartCoroutine(WaitThreeSecond());
+        }
+    }
+
+    public IEnumerator WaitThreeSecond()
+    {
+        // 5ÃÊ ±â´Ù¸®°í Å¸ÀÌÆ² È­¸éÀ¸·Î °¨
+        yield return new WaitForSeconds(3f);
+        if (is_ingame)
+        {
+            is_ingame = false;
+        }
+        if (is_boss)
+        {
+            is_boss = false;
+        }
+        SceneManager.LoadScene("MainMenuScene");
     }
 }

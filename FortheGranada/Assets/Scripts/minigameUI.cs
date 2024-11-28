@@ -123,7 +123,10 @@ public class minigameUI : MonoBehaviour
         {
             GameManager.Instance.is_mgset = false;
         }
+
+        GameManager.Instance.SelectItem(Random.Range(1, 101));
         Time.timeScale = 1;
+        GameManager.Instance.currentbox.isOpen = true;
         GameManager.Instance.is_running = true;
         GameManager.Instance.is_catch = false;
         GameManager.Instance.is_rannum = true;

@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 283cf51f1a201c1498b89e0095aad90d, type: 3}
   m_Name: Armor
   m_EditorClassIdentifier: 
-  item_ID: 2
-  num_nesting: 999
+  item_ID: 3
+  num_nesting: 1
   item_type: 2

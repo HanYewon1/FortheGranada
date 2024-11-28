@@ -4,18 +4,20 @@ using UnityEngine;
 
 public class playercontroller : MonoBehaviour
 {
-    public float player_speed;//?��?��?��?�� ?��?��?��?��
+
+    public float player_speed;//?嚙踝蕭?嚙踝蕭?嚙踝蕭?嚙踝蕭 ?嚙踝蕭?嚙踝蕭?嚙踝蕭?嚙踝蕭
     public Sprite deadSprite;
+
 
     Rigidbody2D rigidbody2d;
     Animator animator;
     SpriteRenderer spriteRenderer;
     Color originalColor;
 
-    float player_x;//좌우 ???직임
-    float player_y;//?��?�� ???직임
+    float player_x;//鮈 ???鴔�
+    float player_y;//?嚙踝蕭?嚙踝蕭 ???鴔�
 
-    bool is_horizon_move; //4방향 결정
+    bool is_horizon_move; //4諻拗 窶域�
     bool isDead = false;
 
     private void Awake()
@@ -34,37 +36,37 @@ public class playercontroller : MonoBehaviour
     private void FixedUpdate()
     {
         Vector2 move_vec = is_horizon_move ? new Vector2(player_x, 0) : new Vector2(0, player_y);
-        rigidbody2d.linearVelocity = move_vec * player_speed;
+        rigidbody2d.linearVelocity = move_vec * GameManager.Instance.speed;
     }
 
     private void PlayerMove()
     {
-        player_x = Input.GetAxisRaw("Horizontal"); //좌우 ?��?��
-        player_y = Input.GetAxisRaw("Vertical"); //?��?�� ?��?��
+        player_x = Input.GetAxisRaw("Horizontal"); //鮈 ?嚙踝蕭?嚙踝蕭
+        player_y = Input.GetAxisRaw("Vertical"); //?嚙踝蕭?嚙踝蕭 ?嚙踝蕭?嚙踝蕭
 
-        //?���? 버튼 체크
+        //?嚙踝蕭嚙�? 貒 麮渣
         bool player_x_down = Input.GetButtonDown("Horizontal");
         bool player_x_up = Input.GetButtonUp("Horizontal");
         bool player_y_down = Input.GetButtonDown("Vertical");
         bool player_y_up = Input.GetButtonUp("Vertical");
 
-        //?��?��좌우 ?��?��?�� ?��?�� 조건
+        //?嚙踝蕭?嚙踝蕭鮈 ?嚙踝蕭?嚙踝蕭?嚙踝蕭 ?嚙踝蕭?嚙踝蕭 魽國探
         if (player_x_down)
         {
-            is_horizon_move = true; //좌우 ?��?��
+            is_horizon_move = true; //鮈 ?嚙踝蕭?嚙踝蕭
         }
         else if (player_y_down)
-            is_horizon_move = false; //?��?�� ?��?��
+            is_horizon_move = false; //?嚙踝蕭?嚙踝蕭 ?嚙踝蕭?嚙踝蕭
         else if (player_x_up || player_y_up)
             is_horizon_move = player_x != 0;
 
-        //?��?��메이?��
-        if (animator.GetInteger("player_move_x") != player_x) //좌우
+        //?嚙踝蕭?嚙踝蕭諰?嚙踝蕭
+        if (animator.GetInteger("player_move_x") != player_x) //鮈
         {
             animator.SetBool("is_change", true);
             animator.SetInteger("player_move_x", (int)player_x);
         }
-        else if (animator.GetInteger("player_move_y") != player_y) //?��?��
+        else if (animator.GetInteger("player_move_y") != player_y) //?嚙踝蕭?嚙踝蕭
         {
             animator.SetBool("is_change", true);
             animator.SetInteger("player_move_y", (int)player_y);
@@ -73,32 +75,50 @@ public class playercontroller : MonoBehaviour
             animator.SetBool("is_change", false);
     }
 
-    //���ݹ޾��� ��
+    //嚙踝蕭嚙豎嫡橘蕭嚙踝蕭 嚙踝蕭
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.gameObject.CompareTag("Enemy"))
+        if (collision.gameObject.CompareTag("Enemy"))
             StartCoroutine(ChangeColor());
+
+        if (collision.gameObject.CompareTag("Chest"))
+        {
+            Transform target = collision.gameObject.GetComponent<Transform>();
+            if (target != null)
+            {
+                GameManager.Instance.currentbox = target.gameObject.GetComponent<itemboxcontroller>();
+                Debug.Log("高 渡脾");
+            }
+        }
     }
 
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        Debug.Log("trigger: " + collision.name);
+        if (collision.tag == "Door")
+        {
+            Debug.Log(2);
+        }
+    }
     private IEnumerator ChangeColor()
     {
-        spriteRenderer.color = Color.red; //���������� ����
-        yield return new WaitForSeconds(1f); //1�ʵ��� ����
-        spriteRenderer.color = originalColor; //���� ������ ���ƿ�
+        spriteRenderer.color = Color.red; //嚙踝蕭嚙踝蕭嚙踝蕭嚙踝蕭嚙踝蕭 嚙踝蕭嚙踝蕭
+        yield return new WaitForSeconds(1f); //1嚙褊蛛蕭嚙踝蕭 嚙踝蕭嚙踝蕭
+        spriteRenderer.color = originalColor; //嚙踝蕭嚙踝蕭 嚙踝蕭嚙踝蕭嚙踝蕭 嚙踝蕭嚙複選蕭
     }
-    //���ݹ��� ���
+    //嚙踝蕭嚙豎對蕭嚙踝蕭 嚙踝蕭嚙�
     void Damaged()
     {
-        
+
     }
     public void Dead()
     {
-        if (isDead) return; // �̹� ���� ���¶�� �������� ����
+        if (isDead) return; // 嚙諒對蕭 嚙踝蕭嚙踝蕭 嚙踝蕭嚙蝓塚蕭嚙� 嚙踝蕭嚙踝蕭嚙踝蕭嚙踝蕭 嚙踝蕭嚙踝蕭
 
-        isDead = true; // ���� ���� ����
-        spriteRenderer.color = Color.gray; // ���� ����
-        spriteRenderer.sprite = deadSprite; // ��������Ʈ ����
-        animator.enabled = false; // �ִϸ��̼� ��Ȱ��ȭ
+        isDead = true; // 嚙踝蕭嚙踝蕭 嚙踝蕭嚙踝蕭 嚙踝蕭嚙踝蕭
+        spriteRenderer.color = Color.gray; // 嚙踝蕭嚙踝蕭 嚙踝蕭嚙踝蕭
+        spriteRenderer.sprite = deadSprite; // 嚙踝蕭嚙踝蕭嚙踝蕭嚙踝蕭 嚙踝蕭嚙踝蕭
+        animator.enabled = false; // 嚙誰棲賂蕭嚙諒潘蕭 嚙踝蕭嚙踝蕭
         Debug.Log("Game Over");
     }
 }
