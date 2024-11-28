@@ -17098,6 +17098,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1506953934636987352, guid: 868f14d6e0428d04fa4a16202498ca3d, type: 3}
+      propertyPath: deadSprite
+      value: 
+      objectReference: {fileID: 1400998785, guid: cdeef39a8c35d994a82b6432ab248b83, type: 3}
+    - target: {fileID: 1506953934636987352, guid: 868f14d6e0428d04fa4a16202498ca3d, type: 3}
+      propertyPath: player_speed
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5592056279853745845, guid: 868f14d6e0428d04fa4a16202498ca3d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
