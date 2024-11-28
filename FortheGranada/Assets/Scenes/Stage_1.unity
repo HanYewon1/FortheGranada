@@ -119,6 +119,17 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!114 &515857473 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7904188421694516403, guid: 868f14d6e0428d04fa4a16202498ca3d, type: 3}
+  m_PrefabInstance: {fileID: 674364510}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c81a8bb4c3787024a91a1931fd241eb7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &642805569 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7039924690744251656, guid: 868f14d6e0428d04fa4a16202498ca3d, type: 3}
@@ -137,6 +148,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4261837401284487663, guid: 868f14d6e0428d04fa4a16202498ca3d, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5592056279853745845, guid: 868f14d6e0428d04fa4a16202498ca3d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -180,6 +195,14 @@ PrefabInstance:
     - target: {fileID: 7039924690744251656, guid: 868f14d6e0428d04fa4a16202498ca3d, type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 8390860038653597463, guid: 868f14d6e0428d04fa4a16202498ca3d, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8390860038653597463, guid: 868f14d6e0428d04fa4a16202498ca3d, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -238,6 +261,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameManager
       objectReference: {fileID: 0}
+    - target: {fileID: 5914913824883140479, guid: 0974ef68ab29ae6469085863387d0fe1, type: 3}
+      propertyPath: sc
+      value: 
+      objectReference: {fileID: 515857473}
     - target: {fileID: 5914913824883140479, guid: 0974ef68ab29ae6469085863387d0fe1, type: 3}
       propertyPath: player
       value: 
@@ -320,6 +347,10 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 642805575}
+    - target: {fileID: 6550976904344186402, guid: 7ba08bea7f45a6247825fc14f0518407, type: 3}
+      propertyPath: scanner
+      value: 
+      objectReference: {fileID: 515857473}
     - target: {fileID: 7414582163308454231, guid: 7ba08bea7f45a6247825fc14f0518407, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

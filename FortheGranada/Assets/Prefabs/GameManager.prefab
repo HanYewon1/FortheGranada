@@ -93,7 +93,7 @@ MonoBehaviour:
   hint_count: {fileID: 0}
   speedcount: {fileID: 0}
   healthSlider: {fileID: 0}
-  player: {fileID: 0}
+  player: {fileID: 5592056279853745845, guid: 868f14d6e0428d04fa4a16202498ca3d, type: 3}
   health_list: []
   item_list: []
   ui_list: []
