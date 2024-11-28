@@ -1,11 +1,12 @@
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class itemboxcontroller : MonoBehaviour
 {
     public bool isOpen;
     public Sprite[] ItemBoxSprites;
-
+    public inneritem ii;
     SpriteRenderer spriteRenderer;
 
     private void Awake()
@@ -16,6 +17,7 @@ public class itemboxcontroller : MonoBehaviour
         ItemBoxSprites[0] = sprites[535] as Sprite;
         ItemBoxSprites[1] = sprites[536] as Sprite;
         spriteRenderer.sprite = ItemBoxSprites[0]; // 상자 닫힌 상태로 시작
+        ii = GetComponentInChildren<inneritem>(true);
     }
     private void Update()
     {
@@ -40,20 +42,6 @@ public class itemboxcontroller : MonoBehaviour
         }
         else if (!isOpen && (!GameManager.Instance.is_catch || GameManager.Instance.is_delay))// 아이템 상자가 비활성화된 경우
         {
-            /*Color originalColor = spriteRenderer.color; // 상자 원래 색
-            float darkenFactor = 0.1f; // 어두워지는 정도 (0: 원래 색, 1: 완전히 검은색, 0.5: 반만 어두워짐)
-            Color darkerColor = Color.Lerp(originalColor, Color.black, darkenFactor); // 러프로 반만 어두워지게 함
-            spriteRenderer.color = darkerColor; // 색 적용
-            
-            Color originalColor = spriteRenderer.color; // 원래 색
-            float darkenAmount = 0.1f; // 어둡게 할 정도 (0: 원래 색, 1: 완전히 검은색, 0.5: 반만 어두워짐)
-            Color darkerColor = new Color(
-                originalColor.r * (1 - darkenAmount),
-                originalColor.g * (1 - darkenAmount),
-                originalColor.b * (1 - darkenAmount),
-                originalColor.a // 알파값 유지
-            );
-            spriteRenderer.color = darkerColor; // 색 적용*/
             spriteRenderer.color = Color.gray;
         }
     }

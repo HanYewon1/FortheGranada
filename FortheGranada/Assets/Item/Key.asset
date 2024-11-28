@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: Key
   m_EditorClassIdentifier: 
   item_ID: 9
+  item_sprite: {fileID: 1694913177206695654, guid: 86f0f26b337dffc4391b0076f1cbefb6, type: 3}
   num_nesting: 9
   item_type: 4

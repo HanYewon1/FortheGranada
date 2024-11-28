@@ -124,7 +124,7 @@ public class minigameUI : MonoBehaviour
             GameManager.Instance.is_mgset = false;
         }
 
-        GameManager.Instance.SelectItem(Random.Range(1, 101));
+        GameManager.Instance.im.getItem(GameManager.Instance.currentbox.ii.item);
         Time.timeScale = 1;
         GameManager.Instance.currentbox.isOpen = true;
         GameManager.Instance.is_running = true;

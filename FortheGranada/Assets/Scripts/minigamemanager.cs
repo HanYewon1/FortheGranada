@@ -29,6 +29,16 @@ public class minigamemanager : MonoBehaviour
         return uniqueNumbers.ToArray();
     }
 
+    public int[] RanNumGenWithNum(int num1, int num2)
+    {
+        HashSet<int> uniqueNumbers = new HashSet<int>();
+        while (uniqueNumbers.Count < num1)
+        {
+            uniqueNumbers.Add(Random.Range(0, num2));
+        }
+        return uniqueNumbers.ToArray();
+    }
+
     public void FailRequest()
     {
         int r = Random.Range(1, 13);

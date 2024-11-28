@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public enum ItemType
 {
@@ -20,6 +21,14 @@ public class Item : ScriptableObject
     public int GetItemID
     {
         get { return item_ID; }
+    }
+
+    [Header("아이템의 이미지")]
+    [SerializeField] private Sprite item_sprite;
+
+    public Sprite GetItemSprite
+    {
+        get { return item_sprite; }
     }
 
     [Header("아이템이 중첩가능한 갯수")]
