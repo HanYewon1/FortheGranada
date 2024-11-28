@@ -12,6 +12,9 @@ public class playercontroller : MonoBehaviour
     float player_x;//ì¢Œìš° ???ì§ì„
     float player_y;//?ƒ?•˜ ???ì§ì„
 
+
+    bool isDead = false;
+    bool is_door;
     bool is_horizon_move; //4ë°©í–¥ ê²°ì •
 
     private void Awake()
@@ -24,7 +27,14 @@ public class playercontroller : MonoBehaviour
     void Update()
     {
         PlayerMove();
-        Damaged();
+
+        if(Input.GetKeyDown(KeyCode.F))
+        {
+            Debug.Log(1);
+            useDoor();
+        }
+        
+>>>>>>> Stashed changes
     }
 
     private void FixedUpdate()
@@ -100,9 +110,29 @@ public class playercontroller : MonoBehaviour
         yield return new WaitForSeconds(1f); //1ÃÊµ¿¾È À¯Áö
         spriteRenderer.color = originalColor; //¿ø·¡ »öÀ¸·Î µ¹¾Æ¿È
     }
-    //°ø°İ¹ŞÀ» °æ¿ì
-    void Damaged()
+
+    //?™è¸??š™è±å°??š™è¸è•­ ?™è¸??š™ï¿?
+ 
+    public void Dead()
     {
+        if (isDead) return; // ?™è«’å°è•­ ?™è¸??š™è¸è•­ ?™è¸??š™?“å¡š??š™ï¿??™è¸??š™è¸è•­?™è¸??š™è¸è•­ ?™è¸??š™è¸è•­
+
+        isDead = true; // ?™è¸??š™è¸è•­ ?™è¸??š™è¸è•­ ?™è¸??š™è¸è•­
+        spriteRenderer.color = Color.gray; // ?™è¸??š™è¸è•­ ?™è¸??š™è¸è•­
+        spriteRenderer.sprite = deadSprite; // ?™è¸??š™è¸è•­?™è¸??š™è¸è•­???™è¸??š™è¸è•­
+        animator.enabled = false; // ?™èª°æ£²è³‚??š™è«’æ½˜???™è¸??Ÿº?™è¸??Ÿ·
+        Debug.Log("Game Over");
+    }
+
+    void useDoor()
+    {
+        Debug.Log("use_door: " + is_door);
+        if (is_door)
+        {
+            Debug.Log(2);
+            this.transform.position = this.transform.position + add_door_position;
+        }
+
 
     }
 }
