@@ -9,6 +9,7 @@ TagManager:
   - Enemy
   - Chest
   - Door
+  - Obstacle
   layers:
   - Default
   - TransparentFX
