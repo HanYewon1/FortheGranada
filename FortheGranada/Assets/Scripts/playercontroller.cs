@@ -11,8 +11,6 @@ public class playercontroller : MonoBehaviour
     SpriteRenderer spriteRenderer;
     Color originalColor;
 
-    public Sprite deadSprite;
-
     float player_x;//醫뚯슦 ???吏곸엫
     float player_y;//?긽?븯 ???吏곸엫
 
@@ -90,12 +88,5 @@ public class playercontroller : MonoBehaviour
     void Damaged()
     {
         
-    }
-
-    void isDead()
-    {
-        spriteRenderer.color = Color.gray; //회색으로 변함
-        spriteRenderer.sprite = deadSprite; //스프라이트 변경
-        animator.enabled = false; //애니메이션 중단
     }
 }
