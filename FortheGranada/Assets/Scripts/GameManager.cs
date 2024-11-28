@@ -37,6 +37,7 @@ public class GameManager : MonoBehaviour
     public int haste_item = 0;
     public int preview_item = 0;
     public int ressurection_item = 0;
+    public KeyCode interactKey = KeyCode.F;
 
     [Header("Game Settings")]
     [SerializeField] private float _boss_health;
@@ -59,8 +60,9 @@ public class GameManager : MonoBehaviour
     }
     public int diff = 0;
     public int stage = 0;
-    public int maxtokens = 6;
-    public string promptmessage = "3개의 이미지 공통점을 너무 포괄적이지 않은 단어로 단 1개만 출력해! 뒤에 입니다 붙이지 마! 판타지, 픽셀아트 금지!";
+    public int maxstage = 0;
+    public int maxtokens = 0;
+    public string promptmessage = null;
     public string APIResponse = null;
     private string apiUrl = null;
     private string apiKey;
@@ -150,6 +152,8 @@ public class GameManager : MonoBehaviour
         }
 
         apiUrl = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=" + apiKey;
+
+        interactKey = KeyCode.F;
     }
 
     private void OnEnable()
@@ -175,6 +179,7 @@ public class GameManager : MonoBehaviour
         Debug.Log($"Initializing scene: {scene.name}");
 
         // 각 변수들 초기화
+        maxstage = 3;
         speed = 3;
         originspeed = 3;
         speed_for_boss_stage = 1.5f;
@@ -494,6 +499,23 @@ public class GameManager : MonoBehaviour
             speed = speed_for_boss_stage;
             SceneManager.LoadScene("Stage_Boss");
         }
+
+        if (Input.GetKeyDown(KeyCode.U))
+        {
+            if (!is_ingame)
+            {
+                is_ingame = true;
+            }
+            if (is_boss)
+            {
+                is_boss = false;
+            }
+            is_running = true;
+            diff = 1;
+            stage = 1;
+            speed = originspeed;
+            SceneManager.LoadScene("PlayScene");
+        }
     }
 
     private IEnumerator LLMAPIRequest(string prompt, int maxTokens)
@@ -773,6 +795,7 @@ public class GameManager : MonoBehaviour
         }
         else if (is_running)
         {
+            pc.Dead();
             is_running = false;
             Debug.Log("캐릭터 사망!");
             ui_list[7].gameObject.SetActive(true);

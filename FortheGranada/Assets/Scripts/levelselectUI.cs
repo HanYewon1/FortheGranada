@@ -57,7 +57,7 @@ public class diffselectUI : MonoBehaviour
         GameManager.Instance.diff = 2;
         GameManager.Instance.stage++;
         GameManager.Instance.speed = GameManager.Instance.originspeed;
-        SceneManager.LoadScene("PlayScene");
+        SceneManager.LoadScene("Stage_1");
     }
 
     public void OnClickChallengeButton()
@@ -74,7 +74,7 @@ public class diffselectUI : MonoBehaviour
         GameManager.Instance.diff = 3;
         GameManager.Instance.stage++;
         GameManager.Instance.speed = GameManager.Instance.originspeed;
-        SceneManager.LoadScene("PlayScene");
+        SceneManager.LoadScene("Stage_1");
     }
 
     public void OnClickMapTest()

@@ -5,7 +5,7 @@ using UnityEngine;
 public class playercontroller : MonoBehaviour
 {
 
-    public float player_speed;//?嚙踝蕭?嚙踝蕭?嚙踝蕭?嚙踝蕭 ?嚙踝蕭?嚙踝蕭?嚙踝蕭?嚙踝蕭
+    public float player_speed;//??��踝蕭??��踝蕭??��踝蕭??��踝蕭 ??��踝蕭??��踝蕭??��踝蕭??��踝蕭
     public Sprite deadSprite;
 
 
@@ -15,8 +15,8 @@ public class playercontroller : MonoBehaviour
     Color originalColor;
     Vector3 add_door_position;
 
-    float player_x;//鮈 ???鴔�
-    float player_y;//?嚙踝蕭?嚙踝蕭 ???鴔�
+    float player_x;//鮈�? ???鴔�?
+    float player_y;//??��踝蕭??��踝蕭 ???鴔�?
 
     bool isDead = false;
     bool is_door;
@@ -35,11 +35,11 @@ public class playercontroller : MonoBehaviour
         PlayerMove();
 
         if(Input.GetKeyDown(KeyCode.F))
+
         {
             Debug.Log(1);
             useDoor();
         }
-        
 
     }
 
@@ -51,32 +51,32 @@ public class playercontroller : MonoBehaviour
 
     private void PlayerMove()
     {
-        player_x = Input.GetAxisRaw("Horizontal"); //鮈 ?嚙踝蕭?嚙踝蕭
-        player_y = Input.GetAxisRaw("Vertical"); //?嚙踝蕭?嚙踝蕭 ?嚙踝蕭?嚙踝蕭
+        player_x = Input.GetAxisRaw("Horizontal"); //鮈�? ??��踝蕭??��踝蕭
+        player_y = Input.GetAxisRaw("Vertical"); //??��踝蕭??��踝蕭 ??��踝蕭??��踝蕭
 
-        //?嚙踝蕭嚙�? 貒 麮渣
+        //??��踝蕭?���?? 貒?�� �?渣
         bool player_x_down = Input.GetButtonDown("Horizontal");
         bool player_x_up = Input.GetButtonUp("Horizontal");
         bool player_y_down = Input.GetButtonDown("Vertical");
         bool player_y_up = Input.GetButtonUp("Vertical");
 
-        //?嚙踝蕭?嚙踝蕭鮈 ?嚙踝蕭?嚙踝蕭?嚙踝蕭 ?嚙踝蕭?嚙踝蕭 魽國探
+        //??��踝蕭??��踝蕭鮈�? ??��踝蕭??��踝蕭??��踝蕭 ??��踝蕭??��踝蕭 魽國?��
         if (player_x_down)
         {
-            is_horizon_move = true; //鮈 ?嚙踝蕭?嚙踝蕭
+            is_horizon_move = true; //鮈�? ??��踝蕭??��踝蕭
         }
         else if (player_y_down)
-            is_horizon_move = false; //?嚙踝蕭?嚙踝蕭 ?嚙踝蕭?嚙踝蕭
+            is_horizon_move = false; //??��踝蕭??��踝蕭 ??��踝蕭??��踝蕭
         else if (player_x_up || player_y_up)
             is_horizon_move = player_x != 0;
 
-        //?嚙踝蕭?嚙踝蕭諰?嚙踝蕭
-        if (animator.GetInteger("player_move_x") != player_x) //鮈
+        //??��踝蕭??��踝蕭諰�???��踝蕭
+        if (animator.GetInteger("player_move_x") != player_x) //鮈�?
         {
             animator.SetBool("is_change", true);
             animator.SetInteger("player_move_x", (int)player_x);
         }
-        else if (animator.GetInteger("player_move_y") != player_y) //?嚙踝蕭?嚙踝蕭
+        else if (animator.GetInteger("player_move_y") != player_y) //??��踝蕭??��踝蕭
         {
             animator.SetBool("is_change", true);
             animator.SetInteger("player_move_y", (int)player_y);
@@ -85,7 +85,7 @@ public class playercontroller : MonoBehaviour
             animator.SetBool("is_change", false);
     }
 
-    //嚙踝蕭嚙豎嫡橘蕭嚙踝蕭 嚙踝蕭
+    //?��踝蕭?��豎嫡橘蕭?��踝蕭 ?��踝蕭
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Enemy"))
@@ -97,7 +97,7 @@ public class playercontroller : MonoBehaviour
             if (target != null)
             {
                 GameManager.Instance.currentbox = target.gameObject.GetComponent<itemboxcontroller>();
-                Debug.Log("高 渡脾");
+                Debug.Log("Near Box");
             }
         }
     }
@@ -138,11 +138,10 @@ public class playercontroller : MonoBehaviour
     }
     private IEnumerator ChangeColor()
     {
-        spriteRenderer.color = Color.red; //嚙踝蕭嚙踝蕭嚙踝蕭嚙踝蕭嚙踝蕭 嚙踝蕭嚙踝蕭
-        yield return new WaitForSeconds(1f); //1嚙褊蛛蕭嚙踝蕭 嚙踝蕭嚙踝蕭
-        spriteRenderer.color = originalColor; //嚙踝蕭嚙踝蕭 嚙踝蕭嚙踝蕭嚙踝蕭 嚙踝蕭嚙複選蕭
+        spriteRenderer.color = Color.red; //?��踝蕭?��踝蕭?��踝蕭?��踝蕭?��踝蕭 ?��踝蕭?��踝蕭
+        yield return new WaitForSeconds(1f); //1?��褊蛛?��?��踝蕭 ?��踝蕭?��踝蕭
+        spriteRenderer.color = originalColor; //?��踝蕭?��踝蕭 ?��踝蕭?��踝蕭?��踝蕭 ?��踝蕭?��複選?��
     }
-
 
     //?�踝??��豎對??��踝蕭 ?�踝??���?
  
