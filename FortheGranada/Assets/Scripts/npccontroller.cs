@@ -20,7 +20,7 @@ public class npccontroller : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         npc_sight = GetComponent<npcsight>();
-        moveSpeed = 3f * 0.75f;
+        moveSpeed = 4f * 0.75f;
     }
 
     // Update is called once per frame
