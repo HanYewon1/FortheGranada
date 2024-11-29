@@ -21,8 +21,11 @@ public class itemboxcontroller : MonoBehaviour
     }
     private void Update()
     {
-        IsPossible();
-        IsItemBoxOpen();
+        if (spriteRenderer != null)
+        {
+            IsPossible();
+            IsItemBoxOpen();
+        }
     }
 
     void IsItemBoxOpen()

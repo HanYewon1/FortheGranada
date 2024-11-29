@@ -3,7 +3,7 @@ using UnityEngine;
 public class CameraFollow : MonoBehaviour
 {
     [SerializeField] private Transform player; // 플레이어 Transform
-    [SerializeField] private scanner scanner; // Scanner 참조
+    [SerializeField] private scanner scanner;  // Scanner 참조
     private float cameraZ = -10f;
 
     private void Start()
@@ -47,4 +47,3 @@ public class CameraFollow : MonoBehaviour
         transform.position = targetPosition;
     }
 }
-

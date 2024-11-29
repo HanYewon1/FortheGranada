@@ -72,12 +72,12 @@ public class MapManager : MonoBehaviour
                 text_size.text = "Size: " + stage_size[stage] + "X" + stage_size[stage];
             }
         }
-        if (Input.GetKeyDown(KeyCode.Escape))
+        /*if (Input.GetKeyDown(KeyCode.Escape))
         {
             GameManager.Instance.is_ingame = false;
             GameManager.Instance.is_running = false;
             SceneManager.LoadScene("MainMenuScene");
-        }
+        }*/
     }
     void CreateMap(int stage_num)
     {
