@@ -37,7 +37,7 @@ public class diffselectUI : MonoBehaviour
         }
         GameManager.Instance.is_running = true;
         GameManager.Instance.diff = 1;
-        GameManager.Instance.stage++;
+        GameManager.Instance.stage = 1;
         GameManager.Instance.speed = GameManager.Instance.originspeed;
         GameManager.Instance.health = 5;
         //SceneManager.LoadScene("PlayScene");
@@ -56,7 +56,7 @@ public class diffselectUI : MonoBehaviour
         }
         GameManager.Instance.is_running = true;
         GameManager.Instance.diff = 2;
-        GameManager.Instance.stage++;
+        GameManager.Instance.stage = 1;
         GameManager.Instance.speed = GameManager.Instance.originspeed;
         GameManager.Instance.health = 3;
         SceneManager.LoadScene("Stage_1");
@@ -74,7 +74,7 @@ public class diffselectUI : MonoBehaviour
         }
         GameManager.Instance.is_running = true;
         GameManager.Instance.diff = 3;
-        GameManager.Instance.stage++;
+        GameManager.Instance.stage = 1;
         GameManager.Instance.speed = GameManager.Instance.originspeed;
         GameManager.Instance.health = 1;
         SceneManager.LoadScene("Stage_1");
