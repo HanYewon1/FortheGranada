@@ -38,6 +38,7 @@ public class stageclear : MonoBehaviour
                 }
                 else
                 {
+                    if (!GameManager.Instance.is_ingame) GameManager.Instance.is_ingame = true;
                     GameManager.Instance.stage++;
                     stagename = "Stage_" + GameManager.Instance.stage;
                     SceneManager.LoadScene(stagename);
