@@ -22,7 +22,7 @@ public class belongings : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        SR.sprite = sprites[GameManager.Instance.stage];
+        if (SR != null) SR.sprite = sprites[GameManager.Instance.stage];
         transform.localScale = new Vector3(0.1f, 0.1f, 1f); // 크기 조정
     }
 
@@ -34,7 +34,7 @@ public class belongings : MonoBehaviour
             originalColor.b * (1 - darkenAmount),
             0 // 알파값 변경(originalColor.a)
         );
-        SR.color = darkerColor;
+        if (SR != null) SR.color = darkerColor;
     }
 
     public void Alpha255()
@@ -45,6 +45,6 @@ public class belongings : MonoBehaviour
             originalColor.b * (1 - darkenAmount),
             255 // 알파값 변경(originalColor.a)
             );
-        SR.color = darkerColor;
+        if (SR != null) SR.color = darkerColor;
     }
 }

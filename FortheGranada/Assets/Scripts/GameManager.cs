@@ -91,6 +91,7 @@ public class GameManager : MonoBehaviour
     private bool _is_boss = false;
 
     [Header("GetComponents")]
+    private GameObject tmp;
     public itemboxcontroller currentbox;
     public minigamemanager mg;
     public itemmanager im;
@@ -257,49 +258,65 @@ public class GameManager : MonoBehaviour
             }
 
             // 필요한 컴포넌트들 가져오기
-            mg = GameObject.Find("MinigameManager").GetComponent<minigamemanager>();
-            im = GameObject.Find("ItemManager").GetComponent<itemmanager>();
-            tm = GameObject.Find("TIME").GetComponent<timer>();
-            sc = GameObject.Find("Scanner").GetComponent<scanner>();
-            hint_count = GameObject.Find("hintcount").GetComponent<TMP_Text>();
-            player = GameObject.Find("Player").GetComponent<Transform>();
-            pc = player.GetComponent<playercontroller>();
+            tmp = GameObject.Find("MinigameManager");
+            if (tmp != null) mg = tmp.GetComponent<minigamemanager>();
+            tmp = GameObject.Find("ItemManager");
+            if (tmp != null) im = tmp.GetComponent<itemmanager>();
+            tmp = GameObject.Find("TIME");
+            if (tmp != null) tm = tmp.GetComponent<timer>();
+            tmp = GameObject.Find("Scanner");
+            if (tmp != null) sc = tmp.GetComponent<scanner>();
+            tmp = GameObject.Find("hintcount");
+            if (tmp != null) hint_count = tmp.GetComponent<TMP_Text>();
+            tmp = GameObject.Find("Player");
+            if (tmp != null) player = tmp.GetComponent<Transform>();
+            if (player != null) pc = player.GetComponent<playercontroller>();
             // InnerItem 스크립트를 가진 모든 오브젝트 찾기
             innerItems = FindObjectsOfType<inneritem>(true);
 
             // ui_list에 필요한 UI들 미리 가져오기
             ui_list = new RectTransform[8];
-            ui_list[0] = GameObject.Find("InGameUI").GetComponent<RectTransform>();
-            ui_list[1] = GameObject.Find("MiniGameUI").GetComponent<RectTransform>();
-            ui_list[2] = GameObject.Find("PauseMenuUI").GetComponent<RectTransform>();
-            ui_list[3] = GameObject.Find("GRayout5X5").GetComponent<RectTransform>();
-            ui_list[4] = GameObject.Find("GRayout6X6").GetComponent<RectTransform>();
-            ui_list[5] = GameObject.Find("GRayout7X7").GetComponent<RectTransform>();
-            ui_list[6] = GameObject.Find("ChatUI").GetComponent<RectTransform>();
-            ui_list[7] = GameObject.Find("OverUI").GetComponent<RectTransform>();
+            tmp = GameObject.Find("InGameUI");
+            if (tmp != null) ui_list[0] = tmp.GetComponent<RectTransform>();
+            tmp = GameObject.Find("MiniGameUI");
+            if (tmp != null) ui_list[1] = tmp.GetComponent<RectTransform>();
+            tmp = GameObject.Find("PauseMenuUI");
+            if (tmp != null) ui_list[2] = tmp.GetComponent<RectTransform>();
+            tmp = GameObject.Find("GRayout5X5");
+            if (tmp != null) ui_list[3] = tmp.GetComponent<RectTransform>();
+            tmp = GameObject.Find("GRayout6X6");
+            if (tmp != null) ui_list[4] = tmp.GetComponent<RectTransform>();
+            tmp = GameObject.Find("GRayout7X7");
+            if (tmp != null) ui_list[5] = tmp.GetComponent<RectTransform>();
+            tmp = GameObject.Find("ChatUI");
+            if (tmp != null) ui_list[6] = tmp.GetComponent<RectTransform>();
+            tmp = GameObject.Find("OverUI");
+            if (tmp != null) ui_list[7] = tmp.GetComponent<RectTransform>();
 
             // 체력과 아이템 UI 자식들 가져오기
-            health_list = GameObject.Find("HPUI").GetComponentsInChildren<RectTransform>();
-            item_list = GameObject.Find("ITEMUI").GetComponentsInChildren<RectTransform>();
+            tmp = GameObject.Find("HPUI");
+            health_list = tmp.GetComponentsInChildren<RectTransform>();
+            tmp = GameObject.Find("ITEMUI");
+            item_list = tmp.GetComponentsInChildren<RectTransform>();
 
             //스피드 카운트 렌더러
-            speedcount = item_list[3].GetComponent<Image>();
+            if (item_list != null) speedcount = item_list[3].GetComponent<Image>();
 
             // Find로 찾았으니 UI List들 다시 비활성화
-            ui_list[1].gameObject.SetActive(false);
-            ui_list[2].gameObject.SetActive(false);
-            ui_list[3].gameObject.SetActive(false);
-            ui_list[4].gameObject.SetActive(false);
-            ui_list[5].gameObject.SetActive(false);
-            ui_list[6].gameObject.SetActive(false);
-            ui_list[7].gameObject.SetActive(false);
-            health_list[6].gameObject.SetActive(false);
-            health_list[7].gameObject.SetActive(false);
-            health_list[8].gameObject.SetActive(false);
-            item_list[4].gameObject.SetActive(false);
-            item_list[5].gameObject.SetActive(false);
-            item_list[6].gameObject.SetActive(false);
-            item_list[7].gameObject.SetActive(false);
+            if (ui_list != null) ui_list[1].gameObject.SetActive(false);
+            if (ui_list != null) ui_list[2].gameObject.SetActive(false);
+            if (ui_list != null) ui_list[3].gameObject.SetActive(false);
+            if (ui_list != null) ui_list[4].gameObject.SetActive(false);
+            if (ui_list != null) ui_list[5].gameObject.SetActive(false);
+            if (ui_list != null) ui_list[6].gameObject.SetActive(false);
+            if (ui_list != null) ui_list[7].gameObject.SetActive(false);
+            if (health_list != null) health_list[6].gameObject.SetActive(false);
+            if (health_list != null) health_list[7].gameObject.SetActive(false);
+            if (health_list != null) health_list[8].gameObject.SetActive(false);
+            if (item_list != null) item_list[4].gameObject.SetActive(false);
+            if (item_list != null) item_list[5].gameObject.SetActive(false);
+            if (item_list != null) item_list[6].gameObject.SetActive(false);
+            if (item_list != null) item_list[7].gameObject.SetActive(false);
 
             // 시간 정상화, 미니게임 OFF
             Time.timeScale = 1;
@@ -310,22 +327,28 @@ public class GameManager : MonoBehaviour
             if (ans_list.Length == 0) ans_list = mg.AnswerSet();
 
             // 모든 상자에 키랑 아이템 할당
-            SetItems();
+            if (innerItems.Length >= req_key) SetItems();
         }
 
         if (is_boss)
         {
-            player = GameObject.Find("Player").GetComponent<Transform>();
-            pc = player.GetComponent<playercontroller>();
-            healthSlider = GameObject.Find("Slider").GetComponent<Slider>();
-            boscon = GameObject.Find("BOSS").GetComponent<bosscontroller>();
+            tmp = GameObject.Find("Player");
+            if (tmp != null) player = tmp.GetComponent<Transform>();
+            if (player != null) pc = player.GetComponent<playercontroller>();
+            tmp = GameObject.Find("Slider");
+            if (tmp != null) healthSlider = tmp.GetComponent<Slider>();
+            tmp = GameObject.Find("BOSS");
+            if (tmp != null) boscon = tmp.GetComponent<bosscontroller>();
             ui_list = new RectTransform[8];
-            ui_list[2] = GameObject.Find("PauseMenuUI").GetComponent<RectTransform>();
-            ui_list[6] = GameObject.Find("ChatUI").GetComponent<RectTransform>();
-            ui_list[7] = GameObject.Find("OverUI").GetComponent<RectTransform>();
-            ui_list[2].gameObject.SetActive(false);
-            ui_list[6].gameObject.SetActive(false);
-            ui_list[7].gameObject.SetActive(false);
+            tmp = GameObject.Find("PauseMenuUI");
+            if (tmp != null) ui_list[2] = tmp.GetComponent<RectTransform>();
+            tmp = GameObject.Find("ChatUI");
+            if (tmp != null) ui_list[6] = tmp.GetComponent<RectTransform>();
+            tmp = GameObject.Find("OverUI");
+            if (tmp != null) ui_list[7] = tmp.GetComponent<RectTransform>();
+            if (ui_list != null) ui_list[2].gameObject.SetActive(false);
+            if (ui_list != null) ui_list[6].gameObject.SetActive(false);
+            if (ui_list != null) ui_list[7].gameObject.SetActive(false);
         }
     }
 
@@ -349,17 +372,17 @@ public class GameManager : MonoBehaviour
         {
             if (is_rannum)
             {
-                rannum3 = mg.RanNumGen();
+                if (mg != null) rannum3 = mg.RanNumGen();
                 is_rannum = false;
             }
 
             if (is_rannum2)
             {
-                rannum3_2 = mg.RanNumGen();
+                if (mg != null) rannum3_2 = mg.RanNumGen();
                 is_rannum2 = false;
             }
 
-            if (is_catch)
+            if (is_catch && ans_list != null && ans_list.Length != 0)
             {
                 foreach (var rannum in rannum3_2)
                 {
@@ -450,9 +473,9 @@ public class GameManager : MonoBehaviour
                 StartCoroutine(WaitFiveSecond());
             }
 
-            hint_count.text = key + " / " + req_key;
-            updatehealth();
-            updateshoe();
+            if (hint_count != null) hint_count.text = key + " / " + req_key;
+            if (health_list != null && health_list.Length != 0) updatehealth();
+            if (item_list != null && item_list.Length != 0) updateshoe();
         }
 
         if (is_boss)
@@ -522,45 +545,51 @@ public class GameManager : MonoBehaviour
     {
         // 전송할 이미지 3장 배열에 담기
         string[] imageNames = new string[3];
-        for (int i = 0; i < 3; i++)
+        if (rannum3 != null && rannum3.Length != 0)
         {
-            string num;
-            if (rannum3[i] == 100)
+            for (int i = 0; i < 3; i++)
             {
-                num = rannum3[i].ToString();
+                string num;
+                if (rannum3[i] == 100)
+                {
+                    num = rannum3[i].ToString();
+                }
+                else if (rannum3[i] >= 10)
+                {
+                    num = "0" + rannum3[i].ToString();
+                }
+                else
+                {
+                    num = "00" + rannum3[i].ToString();
+                }
+                imageNames[i] = "MG_1_" + num;
             }
-            else if (rannum3[i] >= 10)
-            {
-                num = "0" + rannum3[i].ToString();
-            }
-            else
-            {
-                num = "00" + rannum3[i].ToString();
-            }
-            imageNames[i] = "MG_1_" + num;
         }
 
         List<string> base64Images = new List<string>();
 
-        foreach (string imageName in imageNames)
+        if (imageNames.Length != 0)
         {
-            // Resources에서 이미지 가져오기
-            Texture2D image = Resources.Load<Texture2D>(imageName);
-
-            if (image == null)
+            foreach (string imageName in imageNames)
             {
-                Debug.LogError($"Image '{imageName}' not found in Resources folder.");
-                yield break; // 로그에러 띄우고 코루틴 끝내기
+                // Resources에서 이미지 가져오기
+                Texture2D image = Resources.Load<Texture2D>(imageName);
+
+                if (image == null)
+                {
+                    Debug.LogError($"Image '{imageName}' not found in Resources folder.");
+                    yield break; // 로그에러 띄우고 코루틴 끝내기
+                }
+
+                Texture2D uncompressedImage = new Texture2D(image.width, image.height, TextureFormat.RGBA32, false);
+                uncompressedImage.SetPixels(image.GetPixels());
+                uncompressedImage.Apply();
+
+                // 이미지를 인라인 데이터로 보내기 위해 바이트형 배열에 담음
+                byte[] imageBytes = image.EncodeToJPG();
+                string base64Image = Convert.ToBase64String(imageBytes); // Base64濡? ?씤肄붾뵫
+                base64Images.Add(base64Image);
             }
-
-            Texture2D uncompressedImage = new Texture2D(image.width, image.height, TextureFormat.RGBA32, false);
-            uncompressedImage.SetPixels(image.GetPixels());
-            uncompressedImage.Apply();
-
-            // 이미지를 인라인 데이터로 보내기 위해 바이트형 배열에 담음
-            byte[] imageBytes = image.EncodeToJPG();
-            string base64Image = Convert.ToBase64String(imageBytes); // Base64濡? ?씤肄붾뵫
-            base64Images.Add(base64Image);
         }
 
         // POST로 보내기 위해 JSON 형식 데이터로 만듬
@@ -795,10 +824,10 @@ public class GameManager : MonoBehaviour
         }
         else if (is_running)
         {
-            pc.Dead();
+            if (pc != null) pc.Dead();
             is_running = false;
             Debug.Log("캐릭터 사망!");
-            ui_list[7].gameObject.SetActive(true);
+            if (ui_list != null && ui_list.Length != 0) ui_list[7].gameObject.SetActive(true);
             //Time.timeScale = 0;
             speed = 0;
             StartCoroutine(WaitThreeSecond());
