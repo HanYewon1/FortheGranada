@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class npcchase : MonoBehaviour
 {
@@ -8,6 +9,13 @@ public class npcchase : MonoBehaviour
     public float stopChase;
 
     private Transform target;
+    private int[,] gridMap = {
+        { 0, 0, 0, 1, 0 },
+        { 0, 1, 0, 1, 0 },
+        { 0, 1, 0, 0, 0 },
+        { 0, 0, 0, 1, 0 },
+        { 0, 1, 0, 0, 0 }
+    };
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -25,11 +33,5 @@ public class npcchase : MonoBehaviour
 
     void Chase()
     {
-        //player detected
-        if (npc_sight.DetectPlayer == true && Vector2.Distance(transform.position, target.position) >= stopChase) 
-        {
-            npc_controller.moveSpeed *= 1.5f; //평소 속도의 1.5배
-            transform.position = Vector2.MoveTowards(transform.position,target.position,Time.deltaTime);
-        }
     }
 }

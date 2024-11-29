@@ -34,14 +34,14 @@ public class npcattack : MonoBehaviour
         }
     }
 
-    void Attack()
+    void Attack() //АјАн
     {
         GameObject weapon = Instantiate(weaponPrefab, transform.position,Quaternion.identity);
         Vector2 playerDirection = (target.position - transform.position).normalized;
         Rigidbody2D rb = weapon.GetComponent<Rigidbody2D>();
         if(rb != null)
         {
-            rb.AddForce(playerDirection * Time.deltaTime);
+            rb.AddForce(playerDirection * weaponSpeed, ForceMode2D.Impulse);
         }
     }
 }
