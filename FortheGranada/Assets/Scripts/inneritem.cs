@@ -26,7 +26,7 @@ public class inneritem : MonoBehaviour
     {
         itemnumber = 10;
         SR = GetComponent<SpriteRenderer>();
-        originalColor = SR.color; // 원래 색
+        if (SR != null) originalColor = SR.color; // 원래 색
         darkenAmount = 0f; // 어둡게 할 정도 (0: 원래 색, 1: 완전히 검은색, 0.5: 반만 어두워짐)
         Alpha0();
     }
@@ -46,7 +46,7 @@ public class inneritem : MonoBehaviour
             //newPPU = 200f;
             //sprite.texture.filterMode = FilterMode.Point;
             item = GameManager.Instance.im.itemlist[itemnumber];
-            SR.sprite = item.GetItemSprite;
+            if (SR != null) SR.sprite = item.GetItemSprite;
             transform.localScale = new Vector3(0.1f, 0.1f, 1f); // 크기 조정
         }
     }
@@ -59,7 +59,7 @@ public class inneritem : MonoBehaviour
             originalColor.b * (1 - darkenAmount),
             0 // 알파값 변경(originalColor.a)
         );
-        SR.color = darkerColor;
+        if (SR != null) SR.color = darkerColor;
     }
 
     public void Alpha255()
@@ -70,7 +70,7 @@ public class inneritem : MonoBehaviour
             originalColor.b * (1 - darkenAmount),
             255 // 알파값 변경(originalColor.a)
             );
-        SR.color = darkerColor;
+        if (SR != null) SR.color = darkerColor;
     }
 
     /*Color originalColor = spriteRenderer.color; // 상자 원래 색

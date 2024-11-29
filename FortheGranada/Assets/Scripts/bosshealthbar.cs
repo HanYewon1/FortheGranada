@@ -7,6 +7,7 @@ public class bosshealthbar : MonoBehaviour
 
     public void Start()
     {
+        GameManager.Instance.speed = GameManager.Instance.speed_for_boss_stage;
         healthSlider = GetComponent<Slider>();
     }
 

@@ -28,10 +28,16 @@ public class chatUI : MonoBehaviour
         else
         {
             idx = 0;
+            Time.timeScale = 1;
             gameObject.SetActive(false);
         }
 
         if (Input.GetKeyDown(KeyCode.Space))
+        {
+            idx++;
+        }
+
+        if (Input.GetKeyDown(KeyCode.F))
         {
             idx++;
         }

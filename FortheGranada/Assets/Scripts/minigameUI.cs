@@ -22,14 +22,14 @@ public class minigameUI : MonoBehaviour
     public void UpdateMinigame()
     {
         GameManager.Instance.is_minigame = true;
-        if (GameManager.Instance.is_mgset == true && GameManager.Instance.APIResponse != null)
+        if (GameManager.Instance.is_mgset == true && GameManager.Instance.APIResponse != null && img_list.Length != 0 && img_list != null && GameManager.Instance.rannum3 != null && GameManager.Instance.rannum3.Length != 0)
         {
             img_list[2].sprite = GameManager.Instance.spr_list[GameManager.Instance.rannum3[0]];
             img_list[3].sprite = GameManager.Instance.spr_list[GameManager.Instance.rannum3[1]];
             img_list[4].sprite = GameManager.Instance.spr_list[GameManager.Instance.rannum3[2]];
         }
 
-        if (GameManager.Instance.is_mgset == true && GameManager.Instance.APIResponse != null)
+        if (GameManager.Instance.is_mgset == true && GameManager.Instance.APIResponse != null && txt_list.Length != 0 && txt_list != null && btn_list != null && btn_list.Length != 0 && GameManager.Instance.rannum3_2 != null && GameManager.Instance.rannum3_2.Length != 0)
         {
             for (int k = 1; k < 5; k++)
             {
