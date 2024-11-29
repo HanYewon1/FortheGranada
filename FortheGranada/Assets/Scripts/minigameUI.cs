@@ -59,6 +59,12 @@ public class minigameUI : MonoBehaviour
             }
             if (txt_list[4].text == "NULL" && LLM == 4) txt_list[4].text = GameManager.Instance.APIResponse.Length > 6 ? GameManager.Instance.APIResponse.Substring(0, 6).Trim() : GameManager.Instance.APIResponse.Trim();
 
+            // 버튼 초기화
+            btn_list[1].onClick.RemoveAllListeners();
+            btn_list[2].onClick.RemoveAllListeners();
+            btn_list[3].onClick.RemoveAllListeners();
+            btn_list[4].onClick.RemoveAllListeners();
+
             for (int i = 1; i < 5; i++)
             {
                 if (i == LLM)

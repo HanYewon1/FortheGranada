@@ -181,8 +181,8 @@ public class GameManager : MonoBehaviour
 
         // 각 변수들 초기화
         maxstage = 3;
-        speed = 3;
-        originspeed = 3;
+        speed = 4;
+        originspeed = 4;
         speed_for_boss_stage = 1.5f;
 
         // Ingame 들어가면 초기화 작업 실행
@@ -402,6 +402,15 @@ public class GameManager : MonoBehaviour
                 // ESC 메뉴 여닫기
                 if (ui_list[2] != null)
                 {
+                    if (Time.timeScale == 1)
+                    {
+                        Time.timeScale = 0;
+                    }
+                    else
+                    {
+                        Time.timeScale = 1;
+                    }
+
                     ui_list[2].gameObject.SetActive(!ui_list[2].gameObject.activeSelf);
                 }
             }
@@ -485,6 +494,15 @@ public class GameManager : MonoBehaviour
                 // ESC 메뉴 여닫기
                 if (ui_list[2] != null)
                 {
+                    if (Time.timeScale == 1)
+                    {
+                        Time.timeScale = 0;
+                    }
+                    else
+                    {
+                        Time.timeScale = 1;
+                    }
+
                     ui_list[2].gameObject.SetActive(!ui_list[2].gameObject.activeSelf);
                 }
             }
