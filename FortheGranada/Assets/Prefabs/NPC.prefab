@@ -224,7 +224,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39f3f82a8f828a84da046cdf45ce7c43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 5
+  moveSpeed: 2
+  isChasing: 0
   points:
   - {fileID: 0}
   - {fileID: 0}
@@ -243,7 +244,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3de3fa40c19e69a42af388a5c99b4d87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radius: 2
+  radius: 10
   angle: 90
   targetLayer:
     serializedVersion: 2

@@ -4,14 +4,17 @@ public class npccontroller : MonoBehaviour
 {
     Rigidbody2D rb;
     Animator animator;
-    npcsight npc_sight;
 
     public float moveSpeed;
+    public bool isChasing = false;
     public GameObject[] points;
     public Vector2 movement = Vector2.zero;
 
-    int nextPoint = 0;
-    float distToPoint;
+
+    private int nextPoint = 0;
+    private float distToPoint;
+    
+    private bool returnDefault = false;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -19,42 +22,119 @@ public class npccontroller : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
-        npc_sight = GetComponent<npcsight>();
-        moveSpeed = 4f * 0.75f;
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        NPCMoveDefault();
-    }
-    void NPCMoveDefault() //°æ·Î¿¡ µû¸¥ ¿òÁ÷ÀÓ
-    {
-        if (npc_sight.DetectPlayer == false)
+        Debug.Log($"isChasing: {isChasing}, returnDefault: {returnDefault}");
+
+        if (isChasing)
         {
-            //point »çÀÌ °Å¸®
-            distToPoint = Vector2.Distance(transform.position, points[nextPoint].transform.position);
+            Debug.Log("NPC is chasing, skipping patrol.");
+            return;
+        }
 
-            transform.position = Vector2.MoveTowards(transform.position, points[nextPoint].transform.position, moveSpeed * Time.deltaTime);
+        if (returnDefault)
+        {
+            Debug.Log("NPC is returning to the closest patrol point.");
+            ReturnDefault();
+            if (!returnDefault)
+            {
+                Debug.Log("Switching to patrol mode after ReturnDefault.");
+                NPCMoveDefault();
+            }
+        }
+        else
+        {
+            Debug.Log("NPC is patrolling.");
+            NPCMoveDefault();
+        }
+    }
+    void NPCMoveDefault() //ï¿½ï¿½Î¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    {
+        if(points.Length == 0)
+        {
+            Debug.Log("No patrol points available.");
+            return;
+        }
+        //point ï¿½ï¿½ï¿½ï¿½ ï¿½Å¸ï¿½
+        distToPoint = Vector2.Distance(transform.position, points[nextPoint].transform.position);
+        Debug.Log($"Patrolling to point {nextPoint}: {points[nextPoint].transform.position}, Distance: {distToPoint}");
+        transform.position = Vector2.MoveTowards(transform.position, points[nextPoint].transform.position, moveSpeed * Time.deltaTime);
 
-            //¿òÁ÷ÀÓ ¹æÇâ °è»ê
+            //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
             movement = (points[nextPoint].transform.position - transform.position).normalized;
 
-            //point¿¡ µµ´ÞÇßÀ» ¶§ È¸Àü
+            //pointï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ È¸ï¿½ï¿½
             if (distToPoint < 0.2f)
             {
 
-                //´ÙÀ½ point
-                nextPoint++;
-                if (nextPoint == points.Length) //point ´Ù µ¹¸é 0ºÎÅÍ ´Ù½Ã ½ÃÀÛ
-                    nextPoint = 0;
-            }
+            //ï¿½ï¿½ï¿½ï¿½ point
+            nextPoint = (nextPoint + 1) % points.Length;
+
         }
 
-        //¾Ö´Ï¸ÞÀÌ¼Ç
+        //ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½
         animator.SetInteger("npc_x", Mathf.RoundToInt(movement.x));
         animator.SetInteger("npc_y", Mathf.RoundToInt(movement.y));
 
+    }
+
+    public void StartChasing()
+    {
+        isChasing = true;
+        returnDefault = false;
+    }
+
+    public void StopChasing()
+    {
+        if (returnDefault)
+        {
+            Debug.Log("StopChasing() ignored because returnDefault is already true.");
+            return; // ï¿½Ì¹ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Â¶ï¿½ï¿½ È£ï¿½ï¿½ ï¿½ß´ï¿½
+        }
+        isChasing = false;
+        returnDefault = true;
+        Debug.Log("Chase stopped. Returning to patrol.");
+        return;
+
+    }
+
+    void ReturnDefault()
+    {
+        int closestPoint = 0;
+        float minDistance = float.MaxValue;
+
+        for(int i=0;i<points.Length; i++)
+        {
+            float distance = Vector2.Distance(transform.position, points[i].transform.position);
+            if (distance < minDistance){
+                minDistance = distance;
+                closestPoint = i;
+            }
+        }
+        //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½Ìµï¿½
+        distToPoint = Vector2.Distance(transform.position, points[closestPoint].transform.position);
+        transform.position = Vector2.MoveTowards(
+            transform.position,
+            points[closestPoint].transform.position,
+            moveSpeed * Time.deltaTime
+            );
+        movement = (points[closestPoint].transform.position - transform.position).normalized;
+
+        if (distToPoint < 1f)
+        {
+            Debug.Log("ReturnDefault completed. Switching to patrol mode.");
+            returnDefault = false; // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¯
+            nextPoint = (nextPoint + 1) % points.Length; // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½
+        }
+        else
+        {
+            Debug.Log($"Returning to point {closestPoint}. Distance remaining: {distToPoint}");
+        }
+        animator.SetInteger("npc_x", Mathf.RoundToInt(movement.x));
+        animator.SetInteger("npc_y", Mathf.RoundToInt(movement.y));
     }
 
 }
