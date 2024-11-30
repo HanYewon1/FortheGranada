@@ -1,4 +1,4 @@
-using TMPro;
+ï»¿using TMPro;
 using System;
 using System.IO;
 using System.Collections;
@@ -16,7 +16,7 @@ using Newtonsoft.Json.Linq;
 
 public class GameManager : MonoBehaviour
 {
-    // ½Ì±ÛÅæ ÆĞÅÏ Àû¿ë
+    // ì‹±ê¸€í†¤ íŒ¨í„´ ì ìš©
     public static GameManager Instance;
 
     [Header("Player Settings")]
@@ -93,6 +93,7 @@ public class GameManager : MonoBehaviour
     [Header("GetComponents")]
     private GameObject tmp;
     public itemboxcontroller currentbox;
+    public popupUI pu;
     public minigamemanager mg;
     public itemmanager im;
     public timer tm;
@@ -100,6 +101,8 @@ public class GameManager : MonoBehaviour
     public playercontroller pc;
     public bosscontroller boscon;
     public TMP_Text hint_count;
+    public TMP_Text stagetext;
+    //public Image keyimage;
     public Image speedcount;
     public Slider healthSlider;
     public Transform player;
@@ -118,7 +121,7 @@ public class GameManager : MonoBehaviour
         set
         {
             _is_ingame = value;
-            Debug.Log($"is_ingame °ª º¯°æµÊ: {_is_ingame}");
+            Debug.Log($"is_ingame ê°’ ë³€ê²½ë¨: {_is_ingame}");
         }
     }
     public bool is_boss
@@ -127,21 +130,21 @@ public class GameManager : MonoBehaviour
         set
         {
             _is_boss = value;
-            Debug.Log($"is_boss °ª º¯°æµÊ: {_is_boss}");
+            Debug.Log($"is_boss ê°’ ë³€ê²½ë¨: {_is_boss}");
         }
     }
 
     void Awake()
     {
-        // Instance Á¸Àç À¯¹«¿¡ µû¶ó °ÔÀÓ ¸Å´ÏÀú ÆÄ±« ¿©ºÎ Á¤ÇÔ
+        // Instance ì¡´ì¬ ìœ ë¬´ì— ë”°ë¼ ê²Œì„ ë§¤ë‹ˆì € íŒŒê´´ ì—¬ë¶€ ì •í•¨
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject); // ±âÁ¸¿¡ Á¸Àç ¾ÈÇÏ¸é ÀÌ°É·Î ´ëÃ¼ÇÏ°í ÆÄ±«ÇÏÁö ¾Ê±â
+            DontDestroyOnLoad(gameObject); // ê¸°ì¡´ì— ì¡´ì¬ ì•ˆí•˜ë©´ ì´ê±¸ë¡œ ëŒ€ì²´í•˜ê³  íŒŒê´´í•˜ì§€ ì•Šê¸°
         }
         else
         {
-            Destroy(gameObject); // ±âÁ¸¿¡ Á¸ÀçÇÏ¸é ÀÚ½ÅÆÄ±«
+            Destroy(gameObject); // ê¸°ì¡´ì— ì¡´ì¬í•˜ë©´ ìì‹ íŒŒê´´
         }
 
         string path = Path.Combine(Application.streamingAssetsPath, "config.json");
@@ -176,26 +179,26 @@ public class GameManager : MonoBehaviour
 
     private void InitializeScene(Scene scene)
     {
-        // ¾ÀÀÌ ÃÊ±âÈ­µÇ¸é ·Î±× ¶ç¿ò
+        // ì”¬ì´ ì´ˆê¸°í™”ë˜ë©´ ë¡œê·¸ ë„ì›€
         Debug.Log($"Initializing scene: {scene.name}");
 
-        // °¢ º¯¼öµé ÃÊ±âÈ­
+        // ê° ë³€ìˆ˜ë“¤ ì´ˆê¸°í™”
         maxstage = 3;
         speed = 4;
         originspeed = 4;
         speed_for_boss_stage = 1.5f;
 
-        // Ingame µé¾î°¡¸é ÃÊ±âÈ­ ÀÛ¾÷ ½ÇÇà
+        // Ingame ë“¤ì–´ê°€ë©´ ì´ˆê¸°í™” ì‘ì—… ì‹¤í–‰
         if (is_ingame == true)
         {
-            // API °ü·Ã º¯¼öµé ÃÊ±âÈ­
+            // API ê´€ë ¨ ë³€ìˆ˜ë“¤ ì´ˆê¸°í™”
             maxtokens = 6;
-            promptmessage = "3°³ÀÇ ÀÌ¹ÌÁö °øÅëÁ¡À» ³Ê¹« Æ÷°ıÀûÀÌÁö ¾ÊÀº ´Ü¾î·Î ´Ü 1°³¸¸ Ãâ·ÂÇØ! µÚ¿¡ ÀÔ´Ï´Ù ºÙÀÌÁö ¸¶! ÆÇÅ¸Áö, ÇÈ¼¿¾ÆÆ® ±İÁö!";
+            promptmessage = "3ê°œì˜ ì´ë¯¸ì§€ ê³µí†µì ì„ ë„ˆë¬´ í¬ê´„ì ì´ì§€ ì•Šì€ ë‹¨ì–´ë¡œ ë‹¨ 1ê°œë§Œ ì¶œë ¥í•´! ë’¤ì— ì…ë‹ˆë‹¤ ë¶™ì´ì§€ ë§ˆ! íŒíƒ€ì§€, í”½ì…€ì•„íŠ¸ ê¸ˆì§€!";
             is_rannum = true;
             is_rannum2 = true;
             is_mgset = false;
 
-            // ³­ÀÌµµ ¼±ÅÃ¿¡ µû¶ó °ÔÀÓ ¼³Á¤µé º¯°æ
+            // ë‚œì´ë„ ì„ íƒì— ë”°ë¼ ê²Œì„ ì„¤ì •ë“¤ ë³€ê²½
             switch (diff)
             {
                 case 1:
@@ -260,7 +263,7 @@ public class GameManager : MonoBehaviour
                     break;
             }
 
-            // ÇÊ¿äÇÑ ÄÄÆ÷³ÍÆ®µé °¡Á®¿À±â
+            // í•„ìš”í•œ ì»´í¬ë„ŒíŠ¸ë“¤ ê°€ì ¸ì˜¤ê¸°
             tmp = GameObject.Find("MinigameManager");
             if (tmp != null) mg = tmp.GetComponent<minigamemanager>();
             tmp = GameObject.Find("ItemManager");
@@ -271,12 +274,16 @@ public class GameManager : MonoBehaviour
             if (tmp != null) sc = tmp.GetComponent<scanner>();
             tmp = GameObject.Find("hintcount");
             if (tmp != null) hint_count = tmp.GetComponent<TMP_Text>();
+            tmp = GameObject.Find("stagetext");
+            if (tmp != null) stagetext = tmp.GetComponent<TMP_Text>();
+            //tmp = GameObject.Find("keyimage");
+            //if (tmp != null) keyimage = tmp.GetComponent<Image>();
             tmp = GameObject.Find("Player");
             if (tmp != null) player = tmp.GetComponent<Transform>();
             if (player != null) pc = player.GetComponent<playercontroller>();
 
-            // ui_list¿¡ ÇÊ¿äÇÑ UIµé ¹Ì¸® °¡Á®¿À±â
-            ui_list = new RectTransform[8];
+            // ui_listì— í•„ìš”í•œ UIë“¤ ë¯¸ë¦¬ ê°€ì ¸ì˜¤ê¸°
+            ui_list = new RectTransform[9];
             tmp = GameObject.Find("InGameUI");
             if (tmp != null) ui_list[0] = tmp.GetComponent<RectTransform>();
             tmp = GameObject.Find("MiniGameUI");
@@ -293,17 +300,24 @@ public class GameManager : MonoBehaviour
             if (tmp != null) ui_list[6] = tmp.GetComponent<RectTransform>();
             tmp = GameObject.Find("OverUI");
             if (tmp != null) ui_list[7] = tmp.GetComponent<RectTransform>();
+            //tmp = GameObject.Find("Canvas");
+            //iftmp != null) CanvasList = tmp.GetComponentsInChildren<RectTransform>(true);
+            tmp = GameObject.Find("PopupUI");
+            if (tmp != null) ui_list[8] = tmp.GetComponent<RectTransform>();
+            if (ui_list[8] != null) pu = ui_list[8].GetComponent<popupUI>();
+            if (pu != null) pu.GetText();
+            if (ui_list[8] != null) ui_list[8].gameObject.SetActive(false);
 
-            // Ã¼·Â°ú ¾ÆÀÌÅÛ UI ÀÚ½Äµé °¡Á®¿À±â
+            // ì²´ë ¥ê³¼ ì•„ì´í…œ UI ìì‹ë“¤ ê°€ì ¸ì˜¤ê¸°
             tmp = GameObject.Find("HPUI");
             health_list = tmp.GetComponentsInChildren<RectTransform>();
             tmp = GameObject.Find("ITEMUI");
             item_list = tmp.GetComponentsInChildren<RectTransform>();
 
-            //½ºÇÇµå Ä«¿îÆ® ·»´õ·¯
+            //ìŠ¤í”¼ë“œ ì¹´ìš´íŠ¸ ë Œë”ëŸ¬
             if (item_list != null) speedcount = item_list[3].GetComponent<Image>();
 
-            // Find·Î Ã£¾ÒÀ¸´Ï UI Listµé ´Ù½Ã ºñÈ°¼ºÈ­
+            // Findë¡œ ì°¾ì•˜ìœ¼ë‹ˆ UI Listë“¤ ë‹¤ì‹œ ë¹„í™œì„±í™”
             if (ui_list != null) ui_list[1].gameObject.SetActive(false);
             if (ui_list != null) ui_list[2].gameObject.SetActive(false);
             if (ui_list != null) ui_list[3].gameObject.SetActive(false);
@@ -319,15 +333,16 @@ public class GameManager : MonoBehaviour
             if (item_list != null) item_list[6].gameObject.SetActive(false);
             if (item_list != null) item_list[7].gameObject.SetActive(false);
 
-            // ½Ã°£ Á¤»óÈ­, ¹Ì´Ï°ÔÀÓ OFF
+            // ì‹œê°„ ì •ìƒí™”, ë¯¸ë‹ˆê²Œì„ OFF
             Time.timeScale = 1;
             is_minigame = false;
 
-            // ¹Ì´Ï°ÔÀÓ¿ë ÀÌ¹ÌÁö¶û º¸±â ¸®½ºÆ® °¡Á®¿À±â
+            // ë¯¸ë‹ˆê²Œì„ìš© ì´ë¯¸ì§€ë‘ ë³´ê¸° ë¦¬ìŠ¤íŠ¸ ê°€ì ¸ì˜¤ê¸°
             if (spr_list.Length == 0) spr_list = mg.ImageSet();
             if (ans_list.Length == 0) ans_list = mg.AnswerSet();
 
             StartCoroutine(SetItemScripts());
+            SetItemIcon();
         }
 
         if (is_boss)
@@ -349,6 +364,17 @@ public class GameManager : MonoBehaviour
             if (ui_list != null) ui_list[2].gameObject.SetActive(false);
             if (ui_list != null) ui_list[6].gameObject.SetActive(false);
             if (ui_list != null) ui_list[7].gameObject.SetActive(false);
+        }
+
+        if (!is_running)
+        {
+            ui_list = new RectTransform[9];
+            tmp = GameObject.Find("ChatUI");
+            if (tmp != null)
+            {
+                ui_list[6] = tmp.GetComponent<RectTransform>();
+                ui_list[6].gameObject.SetActive(false);
+            }
         }
     }
 
@@ -393,13 +419,13 @@ public class GameManager : MonoBehaviour
             if (is_mgset == false)
             {
                 is_mgset = true;
-                Debug.Log("¿äÃ» Àü¼Û");
+                Debug.Log("ìš”ì²­ ì „ì†¡");
                 StartCoroutine(LLMAPIRequest(promptmessage, maxtokens));
             }
 
             if (Input.GetKeyDown(KeyCode.Escape))
             {
-                // ESC ¸Ş´º ¿©´İ±â
+                // ESC ë©”ë‰´ ì—¬ë‹«ê¸°
                 if (ui_list[2] != null)
                 {
                     if (Time.timeScale == 1)
@@ -417,11 +443,11 @@ public class GameManager : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.M))
             {
-                // ·¹º§ ¹× ³­ÀÌµµ º° Ç¥½ÃÇÒ ¸Ê
+                // ë ˆë²¨ ë° ë‚œì´ë„ ë³„ í‘œì‹œí•  ë§µ
                 switch (diff)
                 {
                     case 1:
-                        // °ª1ÀÏ ¶§ ½ÇÇàÇÒ ÄÚµå
+                        // ê°’1ì¼ ë•Œ ì‹¤í–‰í•  ì½”ë“œ
                         if (ui_list[3] != null && stage == 1)
                         {
                             ui_list[3].gameObject.SetActive(!ui_list[3].gameObject.activeSelf);
@@ -436,7 +462,7 @@ public class GameManager : MonoBehaviour
                         }
                         break;
                     case 2:
-                        // °ª2ÀÏ ¶§ ½ÇÇàÇÒ ÄÚµå
+                        // ê°’2ì¼ ë•Œ ì‹¤í–‰í•  ì½”ë“œ
                         if (ui_list[3] != null && stage == 1)
                         {
                             ui_list[3].gameObject.SetActive(!ui_list[3].gameObject.activeSelf);
@@ -451,7 +477,7 @@ public class GameManager : MonoBehaviour
                         }
                         break;
                     case 3:
-                        // °ª3ÀÏ ¶§ ½ÇÇàÇÒ ÄÚµå
+                        // ê°’3ì¼ ë•Œ ì‹¤í–‰í•  ì½”ë“œ
                         if (ui_list[4] != null && stage == 1)
                         {
                             ui_list[4].gameObject.SetActive(!ui_list[4].gameObject.activeSelf);
@@ -485,13 +511,14 @@ public class GameManager : MonoBehaviour
             if (hint_count != null) hint_count.text = key + " / " + req_key;
             if (health_list != null && health_list.Length != 0) updatehealth();
             if (item_list != null && item_list.Length != 0) updateshoe();
+            if (stagetext != null) stagetext.text = "S" + stage;
         }
 
         if (is_boss)
         {
             if (Input.GetKeyDown(KeyCode.Escape))
             {
-                // ESC ¸Ş´º ¿©´İ±â
+                // ESC ë©”ë‰´ ì—¬ë‹«ê¸°
                 if (ui_list[2] != null)
                 {
                     if (Time.timeScale == 1)
@@ -521,6 +548,8 @@ public class GameManager : MonoBehaviour
             is_running = true;
             diff = 1;
             stage = 1;
+            key = 0;
+            key_item = 0;
             speed = originspeed;
             SceneManager.LoadScene("Test");
         }
@@ -536,6 +565,8 @@ public class GameManager : MonoBehaviour
                 is_boss = true;
             }
             health = 5;
+            key = 0;
+            key_item = 0;
             is_running = true;
             speed = speed_for_boss_stage;
             SceneManager.LoadScene("Stage_Boss");
@@ -554,6 +585,8 @@ public class GameManager : MonoBehaviour
             is_running = true;
             diff = 1;
             stage = 1;
+            key = 0;
+            key_item = 0;
             speed = originspeed;
             SceneManager.LoadScene("PlayScene");
         }
@@ -561,7 +594,7 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator LLMAPIRequest(string prompt, int maxTokens)
     {
-        // Àü¼ÛÇÒ ÀÌ¹ÌÁö 3Àå ¹è¿­¿¡ ´ã±â
+        // ì „ì†¡í•  ì´ë¯¸ì§€ 3ì¥ ë°°ì—´ì— ë‹´ê¸°
         string[] imageNames = new string[3];
         if (rannum3 != null && rannum3.Length != 0)
         {
@@ -590,42 +623,42 @@ public class GameManager : MonoBehaviour
         {
             foreach (string imageName in imageNames)
             {
-                // Resources¿¡¼­ ÀÌ¹ÌÁö °¡Á®¿À±â
+                // Resourcesì—ì„œ ì´ë¯¸ì§€ ê°€ì ¸ì˜¤ê¸°
                 Texture2D image = Resources.Load<Texture2D>(imageName);
 
                 if (image == null)
                 {
                     Debug.LogError($"Image '{imageName}' not found in Resources folder.");
-                    yield break; // ·Î±×¿¡·¯ ¶ç¿ì°í ÄÚ·çÆ¾ ³¡³»±â
+                    yield break; // ë¡œê·¸ì—ëŸ¬ ë„ìš°ê³  ì½”ë£¨í‹´ ëë‚´ê¸°
                 }
 
                 Texture2D uncompressedImage = new Texture2D(image.width, image.height, TextureFormat.RGBA32, false);
                 uncompressedImage.SetPixels(image.GetPixels());
                 uncompressedImage.Apply();
 
-                // ÀÌ¹ÌÁö¸¦ ÀÎ¶óÀÎ µ¥ÀÌÅÍ·Î º¸³»±â À§ÇØ ¹ÙÀÌÆ®Çü ¹è¿­¿¡ ´ãÀ½
+                // ì´ë¯¸ì§€ë¥¼ ì¸ë¼ì¸ ë°ì´í„°ë¡œ ë³´ë‚´ê¸° ìœ„í•´ ë°”ì´íŠ¸í˜• ë°°ì—´ì— ë‹´ìŒ
                 byte[] imageBytes = image.EncodeToJPG();
-                string base64Image = Convert.ToBase64String(imageBytes); // Base64ë¡? ?¸ì½”ë”©
+                string base64Image = Convert.ToBase64String(imageBytes); // Base64æ¿¡? ?Âëª„Â”Â”
                 base64Images.Add(base64Image);
             }
         }
 
-        // POST·Î º¸³»±â À§ÇØ JSON Çü½Ä µ¥ÀÌÅÍ·Î ¸¸µë
+        // POSTë¡œ ë³´ë‚´ê¸° ìœ„í•´ JSON í˜•ì‹ ë°ì´í„°ë¡œ ë§Œë“¬
         string jsonData = "{\"contents\":[{\"parts\":[{\"text\":\"" + prompt + "\"},{\"inlineData\": {\"mimeType\": \"image/png\",\"data\": \"" + base64Images[0] + "\"}},{\"inlineData\": {\"mimeType\": \"image/png\",\"data\": \"" + base64Images[1] + "\"}},{\"inlineData\": {\"mimeType\": \"image/png\",\"data\": \"" + base64Images[2] + "\"}}]}], \"generationConfig\": {\"maxOutputTokens\": " + maxTokens + "}}";
 
-        // UnityWebRequest º¸³»±â À§ÇØ ÇÊ¿äÇÑ °Í µé
+        // UnityWebRequest ë³´ë‚´ê¸° ìœ„í•´ í•„ìš”í•œ ê²ƒ ë“¤
         UnityWebRequest request = new UnityWebRequest(apiUrl, "POST");
         byte[] bodyRaw = Encoding.UTF8.GetBytes(jsonData);
         request.uploadHandler = new UploadHandlerRaw(bodyRaw);
         request.downloadHandler = new DownloadHandlerBuffer();
 
-        // Header ÀÛ¼º
+        // Header ì‘ì„±
         request.SetRequestHeader("Content-Type", "application/json");
 
-        // ¸®Äù½ºÆ® º¸³¿
+        // ë¦¬í€˜ìŠ¤íŠ¸ ë³´ëƒ„
         yield return request.SendWebRequest();
 
-        // ¼º°øÇÏ¸é ÀÀ´ä¹Ş°í ÅØ½ºÆ® ÆÄ½Ì
+        // ì„±ê³µí•˜ë©´ ì‘ë‹µë°›ê³  í…ìŠ¤íŠ¸ íŒŒì‹±
         if (request.result == UnityWebRequest.Result.Success)
         {
             string responseText = request.downloadHandler.text;
@@ -642,10 +675,10 @@ public class GameManager : MonoBehaviour
 
     void ParseResponse(string jsonResponse)
     {
-        // JSON ÆÄ½Ì
+        // JSON íŒŒì‹±
         JObject response = JObject.Parse(jsonResponse);
 
-        // candidates[0].content.parts[0].text ÆÄ½Ì
+        // candidates[0].content.parts[0].text íŒŒì‹±
         string modelResponse = response["candidates"]?[0]?["content"]?["parts"]?[0]?["text"]?.ToString();
 
         if (modelResponse != null)
@@ -664,11 +697,11 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator WaitFiveSecond()
     {
-        // 5ÃÊ ±â´Ù¸®°í ÀÀ´ä¾øÀ¸¸é ÇÁ¸®¼Â Àû¿ë
+        // 5ì´ˆ ê¸°ë‹¤ë¦¬ê³  ì‘ë‹µì—†ìœ¼ë©´ í”„ë¦¬ì…‹ ì ìš©
         yield return new WaitForSeconds(5f);
         if (!is_catch)
         {
-            Debug.Log("ÀÀ´ä ³Ê¹« ´À¸²");
+            Debug.Log("ì‘ë‹µ ë„ˆë¬´ ëŠë¦¼");
             mg.FailRequest();
             is_catch = true;
         }
@@ -677,11 +710,11 @@ public class GameManager : MonoBehaviour
     public IEnumerator SelectedIncurrect()
     {
         is_CoroutineRunning = true;
-        // ¹Ì´Ï°ÔÀÓ ¿À´ä ÆĞ³ÎÆ¼
+        // ë¯¸ë‹ˆê²Œì„ ì˜¤ë‹µ íŒ¨ë„í‹°
         yield return new WaitForSeconds(5f);
         is_delay = false;
         is_CoroutineRunning = false;
-        Debug.Log("ÆĞ³ÎÆ¼ ÇØÁ¦");
+        Debug.Log("íŒ¨ë„í‹° í•´ì œ");
     }
 
     public int SelectItem(int rannum1)
@@ -691,42 +724,42 @@ public class GameManager : MonoBehaviour
         if (rannum1 >= 1 && rannum1 <= 50)
         {
             itemnum = 1;
-            //Debug.Log("Ã¼·Â È¸º¹");
+            //Debug.Log("ì²´ë ¥ íšŒë³µ");
         }
         else if (rannum1 >= 51 && rannum1 <= 69)
         {
             itemnum = 2;
-            //Debug.Log("½¯µå È¹µæ");
+            //Debug.Log("ì‰´ë“œ íšë“");
         }
         else if (rannum1 >= 70 && rannum1 <= 79)
         {
             itemnum = 3;
-            //Debug.Log("ÀÌ¼Ó Áõ°¡");
+            //Debug.Log("ì´ì† ì¦ê°€");
         }
         else if (rannum1 >= 80 && rannum1 <= 84)
         {
             itemnum = 0;
-            //Debug.Log("ÃÖ´ë Ã¼·Â Áõ°¡");
+            //Debug.Log("ìµœëŒ€ ì²´ë ¥ ì¦ê°€");
         }
         else if (rannum1 >= 85 && rannum1 <= 89)
         {
             itemnum = 5;
-            //Debug.Log("ÇÇ°İ ½Ã ÀÌ¼Ó Áõ°¡");
+            //Debug.Log("í”¼ê²© ì‹œ ì´ì† ì¦ê°€");
         }
         else if (rannum1 >= 90 && rannum1 <= 94)
         {
             itemnum = 6;
-            //Debug.Log("°¨Áö ½Ã°£ Áö¿¬");
+            //Debug.Log("ê°ì§€ ì‹œê°„ ì§€ì—°");
         }
         else if (rannum1 >= 95 && rannum1 <= 99)
         {
             itemnum = 7;
-            //Debug.Log("»óÀÚ Åõ½Ã");
+            //Debug.Log("ìƒì íˆ¬ì‹œ");
         }
         else if (rannum1 == 100)
         {
             itemnum = 4;
-            //Debug.Log("ºÎÈ° ÅÛ È¹µæ!");
+            //Debug.Log("ë¶€í™œ í…œ íšë“!");
         }
         else
         {
@@ -825,7 +858,7 @@ public class GameManager : MonoBehaviour
         speedcount.sprite = Resources.Load<Sprite>(spriteName);
     }
 
-    // º¸½º Ã¼·Â ºñÀ² ¹İÈ¯
+    // ë³´ìŠ¤ ì²´ë ¥ ë¹„ìœ¨ ë°˜í™˜
     public float GetNormalizedHealth()
     {
         return boss_health / boss_max_health;
@@ -844,7 +877,7 @@ public class GameManager : MonoBehaviour
         {
             if (pc != null) pc.Dead();
             is_running = false;
-            Debug.Log("Ä³¸¯ÅÍ »ç¸Á!");
+            Debug.Log("ìºë¦­í„° ì‚¬ë§!");
             if (ui_list != null && ui_list.Length != 0) ui_list[7].gameObject.SetActive(true);
             //Time.timeScale = 0;
             speed = 0;
@@ -854,15 +887,15 @@ public class GameManager : MonoBehaviour
     public IEnumerator SetItemScripts()
     {
         yield return new WaitForSeconds(1f);
-        // InnerItem ½ºÅ©¸³Æ®¸¦ °¡Áø ¸ğµç ¿ÀºêÁ§Æ® Ã£±â
+        // InnerItem ìŠ¤í¬ë¦½íŠ¸ë¥¼ ê°€ì§„ ëª¨ë“  ì˜¤ë¸Œì íŠ¸ ì°¾ê¸°
         innerItems = FindObjectsOfType<inneritem>(true);
-        // ¸ğµç »óÀÚ¿¡ Å°¶û ¾ÆÀÌÅÛ ÇÒ´ç
+        // ëª¨ë“  ìƒìì— í‚¤ë‘ ì•„ì´í…œ í• ë‹¹
         if (innerItems.Length >= req_key) SetItems();
     }
 
     public IEnumerator WaitThreeSecond()
     {
-        // 5ÃÊ ±â´Ù¸®°í Å¸ÀÌÆ² È­¸éÀ¸·Î °¨
+        // 3ì´ˆ ê¸°ë‹¤ë¦¬ê³  íƒ€ì´í‹€ í™”ë©´ìœ¼ë¡œ ê°
         yield return new WaitForSeconds(3f);
         if (is_ingame)
         {
@@ -875,15 +908,22 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene("MainMenuScene");
     }
 
+    public IEnumerator WaitThreeSecond2()
+    {
+        // 3ì´ˆ ê¸°ë‹¤ë¦¬ê¸°
+        yield return new WaitForSeconds(3f);
+        ui_list[8].gameObject.SetActive(false);
+    }
+
     public void SetItems()
     {
-        // ÃÊ±âÈ­ ÀÛ¾÷
+        // ì´ˆê¸°í™” ì‘ì—…
         for (int k = 0; k < innerItems.Length; k++)
         {
             innerItems[k].is_set = false;
         }
 
-        // ¿­¼è¸¦ ¹Ì¸® ¼¼ÆÃ
+        // ì—´ì‡ ë¥¼ ë¯¸ë¦¬ ì„¸íŒ…
         int[] rankey = mg.RanNumGenWithNum(req_key, innerItems.Length);
 
         foreach (int i in rankey)
@@ -892,7 +932,7 @@ public class GameManager : MonoBehaviour
             innerItems[i].is_set = true;
         }
 
-        // ³ª¸ÓÁö ¾ÆÀÌÅÛ ·£´ı ¼¼ÆÃ
+        // ë‚˜ë¨¸ì§€ ì•„ì´í…œ ëœë¤ ì„¸íŒ…
         for (int j = 0; j < innerItems.Length; j++)
         {
             if (!innerItems[j].is_set)
@@ -900,6 +940,21 @@ public class GameManager : MonoBehaviour
                 innerItems[j].itemnumber = SelectItem(UnityEngine.Random.Range(1, 101));
                 innerItems[j].is_set = true;
             }
+        }
+    }
+
+    public void SetItemIcon()
+    {
+        if (health_list != null && health_list.Length != 0)
+        {
+            if (armor_item >= 1) health_list[8].gameObject.SetActive(true);
+        }
+        if (item_list != null && item_list.Length != 0)
+        {
+            if (ressurection_item >= 1) item_list[4].gameObject.SetActive(true);
+            if (is_attacked_speed) item_list[5].gameObject.SetActive(true);
+            if (stealth_item >= 1) item_list[6].gameObject.SetActive(true);
+            if (preview_item >= 1) item_list[7].gameObject.SetActive(true);
         }
     }
 }
