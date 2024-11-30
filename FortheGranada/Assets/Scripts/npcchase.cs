@@ -3,23 +3,26 @@ using System.Collections.Generic;
 
 public class npcchase : MonoBehaviour
 {
-    public Vector2Int gridSize; // ¸ÊÀÇ Å©±â
-    public float cellSize = 1f; // °İÀÚÀÇ Å©±â
-    public LayerMask obstacleLayer; // Àå¾Ö¹° ·¹ÀÌ¾î
+    public Vector2Int gridSize; // ë§µì˜ í¬ê¸°
+    public float cellSize = 1f; // ê²©ìì˜ í¬ê¸°
+    public float attackRange = 2f;
+    public LayerMask obstacleLayer; // ì¥ì• ë¬¼ ë ˆì´ì–´
 
     npcsight npc_sight;
     npccontroller npc_controller;
+    npcattack npc_attack;
 
-    private Stack<Vector2> dfsStack = new Stack<Vector2>(); // DFS ½ºÅÃ
-    private HashSet<Vector2> visited = new HashSet<Vector2>(); // ¹æ¹®ÇÑ ³ëµå
+    private Stack<Vector2> dfsStack = new Stack<Vector2>(); // DFS ìŠ¤íƒ
+    private HashSet<Vector2> visited = new HashSet<Vector2>(); // ë°©ë¬¸í•œ ë…¸ë“œ
 
-    private bool isSearching = false; // DFS Å½»ö »óÅÂ
-    private Vector2 currentTarget; // ÇöÀç ¸ñÇ¥ À§Ä¡
+    private bool isSearching = false; // DFS íƒìƒ‰ ìƒíƒœ
+    private Vector2 currentTarget; // í˜„ì¬ ëª©í‘œ ìœ„ì¹˜
 
     void Start()
     {
         npc_sight = GetComponent<npcsight>();
         npc_controller = GetComponent<npccontroller>();
+        npc_attack = GetComponent<npcattack>();
     }
 
     void Update()
@@ -27,30 +30,34 @@ public class npcchase : MonoBehaviour
         if (npc_sight.DetectPlayer && npc_sight.Target != null)
         {
             float distanceToPlayer = Vector2.Distance(transform.position, npc_sight.Target.position);
-
-            if (!isSearching)
+            if (distanceToPlayer <= attackRange)
             {
-                npc_controller.StartChasing(); // Ãß°İ ½ÃÀÛ
-                PerformDFS(); // DFS Å½»ö ½ÇÇà
-            }
-
-            // ¸ñÇ¥·Î ÀÌµ¿ ¶Ç´Â ¸ØÃã
-            if (distanceToPlayer > 0.5f)
-            {
-                MoveTo(currentTarget); // DFS Å½»ö °á°ú·Î ÀÌµ¿
+                // ê³µê²© ë²”ìœ„ ì•ˆì— ìˆì„ ê²½ìš° ë©ˆì¶”ê³  ê³µê²©
+                npc_controller.movement = Vector2.zero; // ì •ì§€
+                npc_attack.Attack(); // ê³µê²© ìˆ˜í–‰
             }
             else
             {
-                StopMoving(); // ¸ØÃã
+                // ì¶”ê²©
+                npc_controller.StartChasing();
+                if (!isSearching)
+                {
+                    PerformDFS(); // DFS íƒìƒ‰ ì‹œì‘
+                }
+                MoveTo(currentTarget); // ëª©í‘œë¡œ ì´ë™
+
             }
         }
-        else
+        else if (!npc_sight.DetectPlayer && npc_controller.isChasing)
         {
             if (isSearching)
             {
-                isSearching = false; // Å½»ö Á¾·á
-                npc_controller.StopChasing(); // Ãß°İ Áß´Ü ÈÄ ¼øÂû·Î º¹±Í
+                isSearching = false; // íƒìƒ‰ ì¢…ë£Œ
+
+
             }
+            npc_controller.StopChasing(); // ì¶”ê²© ì¤‘ë‹¨ í›„ ìˆœì°°ë¡œ ë³µê·€  
+
         }
     }
 
@@ -58,7 +65,7 @@ public class npcchase : MonoBehaviour
     {
         if (npc_sight.Target == null || isSearching) return;
 
-        // DFS ÃÊ±âÈ­
+        // DFS ì´ˆê¸°í™”
         dfsStack.Clear();
         visited.Clear();
 
@@ -70,7 +77,7 @@ public class npcchase : MonoBehaviour
 
         isSearching = true;
 
-        int maxIterations = 1000; // Å½»ö Á¦ÇÑ
+        int maxIterations = 1000; // íƒìƒ‰ ì œí•œ
         int iterations = 0;
 
         while (dfsStack.Count > 0)
@@ -79,20 +86,21 @@ public class npcchase : MonoBehaviour
             {
                 Debug.LogWarning($"DFS exceeded iteration limit! Stack size: {dfsStack.Count}, Visited nodes: {visited.Count}");
                 isSearching = false;
-                return; // Å½»ö °­Á¦ Á¾·á
+                return; // íƒìƒ‰ ê°•ì œ ì¢…ë£Œ
             }
 
             Vector2 current = dfsStack.Pop();
 
-            // ¸ñÇ¥ À§Ä¡¿¡ µµ´ŞÇÑ °æ¿ì
+            // ëª©í‘œ ìœ„ì¹˜ì— ë„ë‹¬í•œ ê²½ìš°
             if (Vector2.Distance(current, goal) < cellSize / 2)
             {
                 Debug.Log($"Target reached at {current}. Iterations: {iterations}");
-                currentTarget = goal; // ¸ñÇ¥ ¼³Á¤
+                currentTarget = goal; // ëª©í‘œ ì„¤ì •
+                isSearching = false;
                 return;
             }
 
-            // ÇöÀç À§Ä¡¿¡¼­ Å½»ö °¡´ÉÇÑ ÀÌ¿ô ³ëµå Ãß°¡
+            // í˜„ì¬ ìœ„ì¹˜ì—ì„œ íƒìƒ‰ ê°€ëŠ¥í•œ ì´ì›ƒ ë…¸ë“œ ì¶”ê°€
             foreach (Vector2 neighbor in GetNeighbors(current))
             {
                 if (!visited.Contains(neighbor) && IsValidPosition(neighbor))
@@ -111,31 +119,31 @@ public class npcchase : MonoBehaviour
     {
         float distanceToTarget = Vector2.Distance(transform.position, position);
 
-        if (distanceToTarget > 0.5f)
+        if (distanceToTarget > attackRange)
         {
-            // ¸ñÇ¥ À§Ä¡·Î ÀÌµ¿
+            // ëª©í‘œ ìœ„ì¹˜ë¡œ ì´ë™
             transform.position = Vector2.MoveTowards(
                 transform.position,
                 position,
                 npc_controller.currentSpeed * Time.deltaTime
             );
 
-            // ÀÌµ¿ ¹æÇâ °è»ê
+            // ì´ë™ ë°©í–¥ ê³„ì‚°
             npc_controller.movement = (position - (Vector2)transform.position).normalized;
 
         }
-    }
-
-    void StopMoving()
-    {
-        // ¸ØÃã »óÅÂ·Î ¼³Á¤
-        npc_controller.movement = Vector2.zero;
+        else
+        {
+            // í”Œë ˆì´ì–´ê°€ ê³µê²© ë²”ìœ„ ì•ˆì— ìˆì„ ê²½ìš° ë©ˆì¶”ê³  ê³µê²©
+            npc_controller.movement = Vector2.zero;
+            npc_attack.Attack(); // ê³µê²© ìˆ˜í–‰
+        }
 
     }
 
     Vector2 AlignToGrid(Vector2 position)
     {
-        // °İÀÚ¿¡ Á¤·ÄµÈ À§Ä¡ ¹İÈ¯
+        // ê²©ìì— ì •ë ¬ëœ ìœ„ì¹˜ ë°˜í™˜
         return new Vector2(
             Mathf.Floor(position.x / cellSize) * cellSize,
             Mathf.Floor(position.y / cellSize) * cellSize
@@ -157,14 +165,14 @@ public class npcchase : MonoBehaviour
 
     bool IsValidPosition(Vector2 position)
     {
-        // ¸Ê °æ°è È®ÀÎ
+        // ë§µ ê²½ê³„ í™•ì¸
         if (position.x < 0 || position.x >= gridSize.x * cellSize ||
             position.y < 0 || position.y >= gridSize.y * cellSize)
         {
             return false;
         }
 
-        // Àå¾Ö¹° È®ÀÎ
+        // ì¥ì• ë¬¼ í™•ì¸
         if (Physics2D.OverlapCircle(position, cellSize / 2, obstacleLayer))
         {
             return false;

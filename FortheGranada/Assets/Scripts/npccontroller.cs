@@ -22,10 +22,13 @@ public class npccontroller : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         currentSpeed = moveSpeed;
+        returnDefault = false;
     }
 
     void FixedUpdate()
     {
+        Debug.Log($"FixedUpdate - returnDefault: {returnDefault}, isChasing: {isChasing}");
+
         if (isChasing)
         {
             // 추격 중일 때 다른 동작 중단
@@ -87,7 +90,7 @@ public class npccontroller : MonoBehaviour
 
     public void StopChasing()
     {
-        if (returnDefault == true) // 이미 순찰 복귀 중이라면 호출 중단
+        if (isChasing == false && returnDefault == true) // 이미 순찰 복귀 중이라면 호출 중단
         {
             Debug.Log("StopChasing() ignored. NPC is already returning to patrol.");
             return;

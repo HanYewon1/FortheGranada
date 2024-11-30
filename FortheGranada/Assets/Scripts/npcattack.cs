@@ -8,27 +8,16 @@ public class npcattack : MonoBehaviour
     public float attackRange = 4f;
     public float Cooltime = 1f;
 
-    private npcsight npc_sight;
     private Transform target;
     private float lastAttackTime;
-    private npccontroller npc_controller; // Ãß°Ý »óÅÂ °ü¸®
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        npc_sight = GetComponent<npcsight>();
-        }
+   
 
     // Update is called once per frame
-    void Update()
-    {
-        if (npc_sight.DetectPlayer && targetInRange())
-        {
-            Attack();
-        }
-    }
+    
 
 
-    void Attack() //°ø°Ý
+    public void Attack() //ê³µê²©
     {
         if (Time.time - lastAttackTime < Cooltime) return;
 
@@ -50,12 +39,5 @@ public class npcattack : MonoBehaviour
         lastAttackTime = Time.time;
     }
 
-    bool targetInRange()
-    {
-        if(target ==null) 
-            target = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
-
-        float distanceToTarget = Vector2.Distance(transform.position, target.position);
-        return distanceToTarget <= attackRange;
-    }
+    
 }
