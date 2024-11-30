@@ -10,6 +10,11 @@ public class submenuUI : MonoBehaviour
         this.enabled = true;
     }
 
+    public void Resume()
+    {
+        Time.timeScale = 1;
+    }
+
     private void OnEnable()
     {
         // ?”¬?´ ë¡œë“œ?  ?•Œ ?˜¸ì¶?

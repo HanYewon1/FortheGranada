@@ -83,8 +83,8 @@ public class GameManager : MonoBehaviour
     public bool is_CoroutineRunning = false;
     public bool is_mgset = false;
     public bool is_catch = false;
-    public bool is_rannum = true;
-    public bool is_rannum2 = true;
+    public bool is_rannum = false;
+    public bool is_rannum2 = false;
     [SerializeField]
     private bool _is_ingame = false;
     [SerializeField]
@@ -181,8 +181,8 @@ public class GameManager : MonoBehaviour
 
         // 각 변수들 초기화
         maxstage = 3;
-        speed = 3;
-        originspeed = 3;
+        speed = 4;
+        originspeed = 4;
         speed_for_boss_stage = 1.5f;
 
         // Ingame 들어가면 초기화 작업 실행
@@ -191,6 +191,9 @@ public class GameManager : MonoBehaviour
             // API 관련 변수들 초기화
             maxtokens = 6;
             promptmessage = "3개의 이미지 공통점을 너무 포괄적이지 않은 단어로 단 1개만 출력해! 뒤에 입니다 붙이지 마! 판타지, 픽셀아트 금지!";
+            is_rannum = true;
+            is_rannum2 = true;
+            is_mgset = false;
 
             // 난이도 선택에 따라 게임 설정들 변경
             switch (diff)
@@ -271,8 +274,6 @@ public class GameManager : MonoBehaviour
             tmp = GameObject.Find("Player");
             if (tmp != null) player = tmp.GetComponent<Transform>();
             if (player != null) pc = player.GetComponent<playercontroller>();
-            // InnerItem 스크립트를 가진 모든 오브젝트 찾기
-            innerItems = FindObjectsOfType<inneritem>(true);
 
             // ui_list에 필요한 UI들 미리 가져오기
             ui_list = new RectTransform[8];
@@ -326,8 +327,7 @@ public class GameManager : MonoBehaviour
             if (spr_list.Length == 0) spr_list = mg.ImageSet();
             if (ans_list.Length == 0) ans_list = mg.AnswerSet();
 
-            // 모든 상자에 키랑 아이템 할당
-            if (innerItems.Length >= req_key) SetItems();
+            StartCoroutine(SetItemScripts());
         }
 
         if (is_boss)
@@ -402,6 +402,15 @@ public class GameManager : MonoBehaviour
                 // ESC 메뉴 여닫기
                 if (ui_list[2] != null)
                 {
+                    if (Time.timeScale == 1)
+                    {
+                        Time.timeScale = 0;
+                    }
+                    else
+                    {
+                        Time.timeScale = 1;
+                    }
+
                     ui_list[2].gameObject.SetActive(!ui_list[2].gameObject.activeSelf);
                 }
             }
@@ -485,6 +494,15 @@ public class GameManager : MonoBehaviour
                 // ESC 메뉴 여닫기
                 if (ui_list[2] != null)
                 {
+                    if (Time.timeScale == 1)
+                    {
+                        Time.timeScale = 0;
+                    }
+                    else
+                    {
+                        Time.timeScale = 1;
+                    }
+
                     ui_list[2].gameObject.SetActive(!ui_list[2].gameObject.activeSelf);
                 }
             }
@@ -833,6 +851,14 @@ public class GameManager : MonoBehaviour
             StartCoroutine(WaitThreeSecond());
         }
     }
+    public IEnumerator SetItemScripts()
+    {
+        yield return new WaitForSeconds(1f);
+        // InnerItem 스크립트를 가진 모든 오브젝트 찾기
+        innerItems = FindObjectsOfType<inneritem>(true);
+        // 모든 상자에 키랑 아이템 할당
+        if (innerItems.Length >= req_key) SetItems();
+    }
 
     public IEnumerator WaitThreeSecond()
     {
@@ -851,12 +877,22 @@ public class GameManager : MonoBehaviour
 
     public void SetItems()
     {
+        // 초기화 작업
+        for (int k = 0; k < innerItems.Length; k++)
+        {
+            innerItems[k].is_set = false;
+        }
+
+        // 열쇠를 미리 세팅
         int[] rankey = mg.RanNumGenWithNum(req_key, innerItems.Length);
+
         foreach (int i in rankey)
         {
             innerItems[i].itemnumber = 8;
             innerItems[i].is_set = true;
         }
+
+        // 나머지 아이템 랜덤 세팅
         for (int j = 0; j < innerItems.Length; j++)
         {
             if (!innerItems[j].is_set)
