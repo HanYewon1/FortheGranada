@@ -7,32 +7,32 @@ using UnityEngine.SceneManagement;
 
 public class timer : MonoBehaviour
 {
-    public TMP_Text timerText; // UI Text ÄÄÆ÷³ÍÆ®¿¡ ¿¬°á
-    public float totalTime = 900f; // ÃÑ Å¸ÀÌ¸Ó ½Ã°£ (900ÃÊ)
-    private float timeLeft; // ³²Àº ½Ã°£
-    //private bool is_Running = true; // Å¸ÀÌ¸Ó »óÅÂ (µ¿ÀÛ ÁßÀÎÁö ¿©ºÎ)
+    public TMP_Text timerText; // UI Text ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+    public float totalTime = 10f; // ï¿½ï¿½ Å¸ï¿½Ì¸ï¿½ ï¿½Ã°ï¿½ (900ï¿½ï¿½)
+    private float timeLeft; // ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½
+    //private bool is_Running = true; // Å¸ï¿½Ì¸ï¿½ ï¿½ï¿½ï¿½ï¿½ (ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½)
 
     public void Awake()
     {
         timerText = this.transform.GetComponentInChildren<TMP_Text>();
-        totalTime = 900f;
-        timeLeft = totalTime; // ÃÊ±âÈ­
+        totalTime = 1200f;
+        timeLeft = totalTime; // ï¿½Ê±ï¿½È­
     }
 
     void Start()
     {
-        //timeLeft = totalTime; // ÃÊ±âÈ­
+        //timeLeft = totalTime; // ï¿½Ê±ï¿½È­
         //UpdateTimerText();
     }
 
     public void OnEnable()
     {
-        //timeLeft = totalTime; // ÃÊ±âÈ­
+        //timeLeft = totalTime; // ï¿½Ê±ï¿½È­
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        //timeLeft = totalTime; // ÃÊ±âÈ­
+        //timeLeft = totalTime; // ï¿½Ê±ï¿½È­
     }
 
     void Update()
@@ -46,7 +46,7 @@ public class timer : MonoBehaviour
             {
                 timeLeft = 0;
                 GameManager.Instance.is_running = false;
-                Debug.Log("½Ã°£ ÃÊ°ú!");
+                Debug.Log("ï¿½Ã°ï¿½ ï¿½Ê°ï¿½!");
                 GameManager.Instance.ui_list[7].gameObject.SetActive(true);
                 //Time.timeScale = 0;
                 GameManager.Instance.speed = 0;
@@ -55,19 +55,19 @@ public class timer : MonoBehaviour
         }
     }
 
-    // Å¸ÀÌ¸Ó ¸ØÃß±â
+    // Å¸ï¿½Ì¸ï¿½ ï¿½ï¿½ï¿½ß±ï¿½
     public void PauseTimer()
     {
         GameManager.Instance.is_running = false;
     }
 
-    // Å¸ÀÌ¸Ó ´Ù½Ã ½ÃÀÛÇÏ±â
+    // Å¸ï¿½Ì¸ï¿½ ï¿½Ù½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½
     public void ResumeTimer()
     {
         GameManager.Instance.is_running = true;
     }
 
-    // ³²Àº ½Ã°£À» ÅØ½ºÆ®¿¡ ¾÷µ¥ÀÌÆ®
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½ï¿½ï¿½ ï¿½Ø½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
     private void UpdateTimerText()
     {
         int m, s, t;

@@ -45,6 +45,7 @@ public class stageclear : MonoBehaviour
                 if (GameManager.Instance.stage == GameManager.Instance.maxstage)
                 {
                     GameManager.Instance.key = 0;
+                    GameManager.Instance.key_item = 0;
                     GameManager.Instance.is_ingame = false;
                     GameManager.Instance.is_boss = true;
                     GameManager.Instance.speed = GameManager.Instance.speed_for_boss_stage;
@@ -55,6 +56,7 @@ public class stageclear : MonoBehaviour
                 {
                     if (!GameManager.Instance.is_ingame) GameManager.Instance.is_ingame = true;
                     GameManager.Instance.key = 0;
+                    GameManager.Instance.key_item = 0;
                     GameManager.Instance.stage++;
                     stagename = "Stage_" + GameManager.Instance.stage;
                     SceneManager.LoadScene(stagename);
