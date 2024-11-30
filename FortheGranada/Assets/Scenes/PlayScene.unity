@@ -5580,6 +5580,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 727517812736290635, guid: 71fac40c8161f974594d34ec546caace, type: 3}
+      propertyPath: currentSpeed
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 727517812736290635, guid: 71fac40c8161f974594d34ec546caace, type: 3}
       propertyPath: 'points.Array.data[0]'
       value: 
       objectReference: {fileID: 2129707030}
@@ -5595,6 +5599,14 @@ PrefabInstance:
       propertyPath: 'points.Array.data[3]'
       value: 
       objectReference: {fileID: 1314881398}
+    - target: {fileID: 778973932981899345, guid: 71fac40c8161f974594d34ec546caace, type: 3}
+      propertyPath: Cooltime
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 778973932981899345, guid: 71fac40c8161f974594d34ec546caace, type: 3}
+      propertyPath: weaponSpeed
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 778973932981899345, guid: 71fac40c8161f974594d34ec546caace, type: 3}
       propertyPath: weaponPrefab
       value: 
@@ -5619,6 +5631,10 @@ PrefabInstance:
       propertyPath: viewMeshFilter
       value: 
       objectReference: {fileID: 585316559}
+    - target: {fileID: 4960697140862555050, guid: 71fac40c8161f974594d34ec546caace, type: 3}
+      propertyPath: obstructionLayer.m_Bits
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 9014346470871398516, guid: 71fac40c8161f974594d34ec546caace, type: 3}
       propertyPath: m_LocalPosition.x
       value: -9.11

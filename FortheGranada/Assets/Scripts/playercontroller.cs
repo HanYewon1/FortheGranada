@@ -112,6 +112,9 @@ public class playercontroller : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if(collision.gameObject.CompareTag("Weapon"))
+            StartCoroutine (ChangeColor());
+
         if (collision.tag == "Door")
         {
             next_room_x = room_x;
