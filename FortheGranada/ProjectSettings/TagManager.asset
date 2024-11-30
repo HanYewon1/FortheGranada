@@ -10,6 +10,7 @@ TagManager:
   - Chest
   - Door
   - Obstacle
+  - Weapon
   layers:
   - Default
   - TransparentFX

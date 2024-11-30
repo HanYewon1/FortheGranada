@@ -4,44 +4,58 @@ using UnityEngine;
 public class npcattack : MonoBehaviour
 {
     public GameObject weaponPrefab;
-    public float weaponSpeed = 2f;
-    public float Cooltime = 2f;
+    public float weaponSpeed = 3f;
+    public float attackRange = 4f;
+    public float Cooltime = 1f;
 
     private npcsight npc_sight;
-    //private npcchase npc_chase;
     private Transform target;
     private float lastAttackTime;
+    private npccontroller npc_controller; // 추격 상태 관리
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         npc_sight = GetComponent<npcsight>();
-      //  npc_chase = GetComponent<npcchase>();
-        target = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
-    }
+        }
 
     // Update is called once per frame
     void Update()
     {
-        //플레이어 감지, 공격 거리 충족 시
-        if(npc_sight.DetectPlayer==true && Vector2.Distance(transform.position, target.position) <= 4f)//4는 예시로 넣은 수
+        if (npc_sight.DetectPlayer && targetInRange())
         {
-            //쿨타임 차면 공격
-            if(Time.time - lastAttackTime >= Cooltime)
-            {
-                Attack();
-                lastAttackTime = Time.time; 
-            }
+            Attack();
         }
     }
 
+
     void Attack() //공격
     {
-        GameObject weapon = Instantiate(weaponPrefab, transform.position,Quaternion.identity);
+        if (Time.time - lastAttackTime < Cooltime) return;
+
+        if (target == null)
+            target = GameObject.FindGameObjectWithTag("Player").transform;
+
+        GameObject weapon = Instantiate(weaponPrefab, transform.position, Quaternion.identity);
+
         Vector2 playerDirection = (target.position - transform.position).normalized;
+        float angle = Mathf.Atan2(playerDirection.y, playerDirection.x) * Mathf.Rad2Deg;
+
+        weapon.transform.rotation = Quaternion.Euler(0, 0, angle);
+
         Rigidbody2D rb = weapon.GetComponent<Rigidbody2D>();
         if(rb != null)
         {
             rb.AddForce(playerDirection * weaponSpeed, ForceMode2D.Impulse);
         }
+        lastAttackTime = Time.time;
+    }
+
+    bool targetInRange()
+    {
+        if(target ==null) 
+            target = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
+
+        float distanceToTarget = Vector2.Distance(transform.position, target.position);
+        return distanceToTarget <= attackRange;
     }
 }
