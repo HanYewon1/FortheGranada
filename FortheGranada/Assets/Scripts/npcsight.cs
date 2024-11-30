@@ -2,24 +2,26 @@ using UnityEngine;
 
 public class npcsight : MonoBehaviour
 {
-    public float radius = 5f;
-    [Range(1, 360)] public float angle = 45f;
+    public float radius;
+    [Range(1, 360)] public float angle = 90f;
     public LayerMask targetLayer;
     public LayerMask obstructionLayer;
     public MeshFilter viewMeshFilter;
     public int segments = 50;
 
-    npccontroller Npccontroller;
-    MeshRenderer meshrenderer;
+    npccontroller npc_controller;
+    MeshRenderer mesh_renderer;
 
+    public Transform Target {  get; private set; }
     public bool DetectPlayer { get; private set; }
+    
 
     private Mesh viewMesh;
 
     void Start()
     {
-        Npccontroller = GetComponent<npccontroller>();
-        meshrenderer = viewMeshFilter.GetComponent<MeshRenderer>();
+        npc_controller = GetComponent<npccontroller>();
+        mesh_renderer = viewMeshFilter.GetComponent<MeshRenderer>();
 
         viewMesh = new Mesh();
         viewMesh.name = "View Mesh";
@@ -42,7 +44,7 @@ public class npcsight : MonoBehaviour
             Vector3 directionToTarget = (target.position - transform.position).normalized;
 
             // 시야각 내부에 있는지 확인
-            if (Vector3.Angle(new Vector3(Npccontroller.movement.x, Npccontroller.movement.y, 0), directionToTarget) < angle / 2)
+            if (Vector3.Angle(new Vector3(npc_controller.movement.x, npc_controller.movement.y, 0), directionToTarget) < angle / 2)
             {
                 float distanceToTarget = Vector3.Distance(transform.position, target.position);
 
@@ -50,19 +52,21 @@ public class npcsight : MonoBehaviour
                 if (!Physics2D.Raycast(transform.position, directionToTarget, distanceToTarget, obstructionLayer))
                 {
                     DetectPlayer = true;
+                    Target = target;
                     return;
                 }
             }
         }
 
         DetectPlayer = false;
+        Target = null;
     
 }
 
     //시야 감지
     private void DrawFieldOfView()
     {
-        Vector3 forwardDirection = new Vector3(Npccontroller.movement.x, Npccontroller.movement.y, 0);
+        Vector3 forwardDirection = new Vector3(npc_controller.movement.x, npc_controller.movement.y, 0);
         Vector3[] vertices = new Vector3[segments + 2];
         int[] triangles = new int[segments * 3];
 
@@ -88,9 +92,9 @@ public class npcsight : MonoBehaviour
         viewMesh.RecalculateNormals();
 
         // 플레이어 감지 시 시야 색상 변경
-        if (meshrenderer != null)
+        if (mesh_renderer != null)
         {
-            meshrenderer.material.color = DetectPlayer ? Color.yellow : Color.red;
+            mesh_renderer.material.color = DetectPlayer ? Color.yellow : Color.red;
         }
     }
 

@@ -638,7 +638,7 @@ public class GameManager : MonoBehaviour
 
                 // 이미지를 인라인 데이터로 보내기 위해 바이트형 배열에 담음
                 byte[] imageBytes = image.EncodeToJPG();
-                string base64Image = Convert.ToBase64String(imageBytes); // Base64濡? ?몄
+                string base64Image = Convert.ToBase64String(imageBytes); // Base64 스트링으로 변환
                 base64Images.Add(base64Image);
             }
         }
