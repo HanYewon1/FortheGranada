@@ -1,6 +1,5 @@
 using UnityEngine;
 using System.Collections.Generic;
-using System.Collections;
 
 public class npcchase : MonoBehaviour
 {
@@ -28,10 +27,9 @@ public class npcchase : MonoBehaviour
 
     void Update()
     {
-        if (npc_sight.DetectPlayer && npc_sight.Target != null)//«√∑π¿ÃæÓ ¿ŒΩƒ«œ∞Ì Ω√æﬂø° «√∑π¿ÃæÓ ¿÷¿∏∏È
+        if (npc_sight.DetectPlayer && npc_sight.Target != null)
         {
             float distanceToPlayer = Vector2.Distance(transform.position, npc_sight.Target.position);
-<<<<<<< Updated upstream
             if (distanceToPlayer <= attackRange)
             {
                 // Í≥µÍ≤© Î≤îÏúÑ ÏïàÏóê ÏûàÏùÑ Í≤ΩÏö∞ Î©àÏ∂îÍ≥† Í≥µÍ≤©
@@ -48,52 +46,26 @@ public class npcchase : MonoBehaviour
                 }
                 MoveTo(currentTarget); // Î™©ÌëúÎ°ú Ïù¥Îèô
 
-=======
-            npc_controller.StartChasing();
-            if (distanceToPlayer <= npc_attack.attackRange)
-            {
-                // ∞¯∞› π¸¿ß æ»ø°º≠¥¬ √ﬂ∞› ¡ﬂ¥‹
-                npc_controller.movement = Vector2.zero; //∏ÿ√„
-
             }
-            else
-            {
-                PerformDFS();
-                MoveTo(currentTarget); // DFS ≈Ωªˆ ∞·∞˙∑Œ ¿Ãµø
->>>>>>> Stashed changes
-            }
-
         }
         else if (!npc_sight.DetectPlayer && npc_controller.isChasing)
         {
             if (isSearching)
             {
-<<<<<<< Updated upstream
                 isSearching = false; // ÌÉêÏÉâ Ï¢ÖÎ£å
 
 
             }
             npc_controller.StopChasing(); // Ï∂îÍ≤© Ï§ëÎã® ÌõÑ ÏàúÏ∞∞Î°ú Î≥µÍ∑Ä  
 
-=======
-                npc_controller.movement = Vector2.zero; //∏ÿ√„
-
-                isSearching = false;
-                npc_controller.StopChasing(); // √ﬂ∞› ¡ﬂ¥‹ »ƒ º¯¬˚∑Œ ∫π±Õ
-            }
-            npc_controller.isChasing = false;
->>>>>>> Stashed changes
         }
     }
+
     void PerformDFS()
     {
-<<<<<<< Updated upstream
         if (npc_sight.Target == null || isSearching) return;
 
         // DFS Ï¥àÍ∏∞Ìôî
-=======
-        // DFS √ ±‚»≠
->>>>>>> Stashed changes
         dfsStack.Clear();
         visited.Clear();
 
@@ -147,11 +119,7 @@ public class npcchase : MonoBehaviour
     {
         float distanceToTarget = Vector2.Distance(transform.position, position);
 
-<<<<<<< Updated upstream
         if (distanceToTarget > attackRange)
-=======
-        if (distanceToTarget > npc_attack.attackRange)
->>>>>>> Stashed changes
         {
             // Î™©Ìëú ÏúÑÏπòÎ°ú Ïù¥Îèô
             transform.position = Vector2.MoveTowards(
@@ -166,20 +134,12 @@ public class npcchase : MonoBehaviour
         }
         else
         {
-<<<<<<< Updated upstream
             // ÌîåÎ†àÏù¥Ïñ¥Í∞Ä Í≥µÍ≤© Î≤îÏúÑ ÏïàÏóê ÏûàÏùÑ Í≤ΩÏö∞ Î©àÏ∂îÍ≥† Í≥µÍ≤©
             npc_controller.movement = Vector2.zero;
             npc_attack.Attack(); // Í≥µÍ≤© ÏàòÌñâ
-=======
-            npc_controller.movement = Vector2.zero;
-            Debug.Log("HeyStop");
->>>>>>> Stashed changes
         }
 
     }
-
-   
-    
 
     Vector2 AlignToGrid(Vector2 position)
     {
