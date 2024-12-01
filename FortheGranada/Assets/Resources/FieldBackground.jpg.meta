@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 75d679372b3b2d64e9bd18b8ae828ac3
+guid: 1af3376b4e2e14745a97d669947aa638
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -8390815055626398494
-    second: EndingScene_0
+      213: -5312689065469626296
+    second: FieldBackground_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -126,7 +126,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: EndingScene_0
+      name: FieldBackground_0
       rect:
         serializedVersion: 2
         x: 0
@@ -141,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 2e49361d926dd8b80800000000000000
-      internalID: -8390815055626398494
+      spriteID: 848b49a51798546b0800000000000000
+      internalID: -5312689065469626296
       vertices: []
       indices: 
       edges: []
@@ -161,11 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-<<<<<<< Updated upstream:FortheGranada/Assets/Resources/EndingScene.jpg.meta
-      EndingScene_0: -8390815055626398494
-=======
-      EndingScene01_0: -2600847630380884458
->>>>>>> Stashed changes:FortheGranada/Assets/Resources/EndingScene01.jpg.meta
+      FieldBackground_0: -5312689065469626296
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
