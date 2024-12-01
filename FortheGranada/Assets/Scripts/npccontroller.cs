@@ -2,9 +2,9 @@ using UnityEngine;
 
 public class npccontroller : MonoBehaviour
 {
+    public Animator animator;
     Rigidbody2D rb;
-    Animator animator;
-
+   
     public float moveSpeed;
     public float chaseSpeed;
     public float currentSpeed;

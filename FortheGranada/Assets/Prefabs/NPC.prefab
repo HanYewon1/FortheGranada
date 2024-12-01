@@ -268,7 +268,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 904184a31e6e33e43ac9a062882a7d03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gridSize: {x: 32, y: 32}
+  gridSize: {x: 64, y: 64}
   cellSize: 1
   obstacleLayer:
     serializedVersion: 2

@@ -11,7 +11,14 @@ public class npcattack : MonoBehaviour
     private Transform target;
     private float lastAttackTime;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+<<<<<<< Updated upstream
    
+=======
+    void Start()
+    {
+        npc_sight = GetComponent<npcsight>();
+    }
+>>>>>>> Stashed changes
 
     // Update is called once per frame
     
@@ -39,5 +46,16 @@ public class npcattack : MonoBehaviour
         lastAttackTime = Time.time;
     }
 
+<<<<<<< Updated upstream
     
+=======
+    bool targetInRange()
+    {
+        if(target == null) 
+            target = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
+
+        float distanceToTarget = Vector2.Distance(transform.position, target.position);
+        return distanceToTarget <= attackRange;
+    }
+>>>>>>> Stashed changes
 }
