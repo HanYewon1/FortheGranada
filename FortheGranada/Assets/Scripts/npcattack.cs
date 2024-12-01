@@ -4,7 +4,7 @@ using UnityEngine;
 public class npcattack : MonoBehaviour
 {
     public GameObject weaponPrefab;
-    public float weaponSpeed = 3f;
+    public float weaponSpeed = 8f;
     public float attackRange = 4f;
     public float Cooltime = 1f;
 
@@ -25,7 +25,12 @@ public class npcattack : MonoBehaviour
         }
     }
 
+<<<<<<< Updated upstream
     public void Attack() //ï¿½ï¿½ï¿½ï¿½
+=======
+
+    public void Attack() //°ø°Ý
+>>>>>>> Stashed changes
     {
         if (Time.time - lastAttackTime < Cooltime) return;
 
@@ -48,7 +53,10 @@ public class npcattack : MonoBehaviour
     }
     bool targetInRange()
     {
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
         if (target == null)
             target = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
 

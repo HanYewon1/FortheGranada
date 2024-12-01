@@ -225,8 +225,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   animator: {fileID: 0}
 =======
+>>>>>>> Stashed changes
+=======
+  animator: {fileID: 0}
 >>>>>>> Stashed changes
   moveSpeed: 4
   chaseSpeed: 8
