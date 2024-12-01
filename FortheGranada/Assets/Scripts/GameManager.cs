@@ -283,7 +283,7 @@ public class GameManager : MonoBehaviour
             if (player != null) pc = player.GetComponent<playercontroller>();
 
             // ui_list에 필요한 UI들 미리 가져오기
-            ui_list = new RectTransform[9];
+            ui_list = new RectTransform[10];
             tmp = GameObject.Find("InGameUI");
             if (tmp != null) ui_list[0] = tmp.GetComponent<RectTransform>();
             tmp = GameObject.Find("MiniGameUI");
@@ -354,21 +354,24 @@ public class GameManager : MonoBehaviour
             if (tmp != null) healthSlider = tmp.GetComponent<Slider>();
             tmp = GameObject.Find("BOSS");
             if (tmp != null) boscon = tmp.GetComponent<bosscontroller>();
-            ui_list = new RectTransform[8];
+            ui_list = new RectTransform[10];
             tmp = GameObject.Find("PauseMenuUI");
             if (tmp != null) ui_list[2] = tmp.GetComponent<RectTransform>();
             tmp = GameObject.Find("ChatUI");
             if (tmp != null) ui_list[6] = tmp.GetComponent<RectTransform>();
             tmp = GameObject.Find("OverUI");
             if (tmp != null) ui_list[7] = tmp.GetComponent<RectTransform>();
+            tmp = GameObject.Find("EndingUI");
+            if (tmp != null) ui_list[9] = tmp.GetComponent<RectTransform>();
             if (ui_list != null) ui_list[2].gameObject.SetActive(false);
             if (ui_list != null) ui_list[6].gameObject.SetActive(false);
             if (ui_list != null) ui_list[7].gameObject.SetActive(false);
+            if (ui_list != null) ui_list[9].gameObject.SetActive(false);
         }
 
         if (!is_running)
         {
-            ui_list = new RectTransform[9];
+            ui_list = new RectTransform[10];
             tmp = GameObject.Find("ChatUI");
             if (tmp != null)
             {
@@ -533,6 +536,8 @@ public class GameManager : MonoBehaviour
                     ui_list[2].gameObject.SetActive(!ui_list[2].gameObject.activeSelf);
                 }
             }
+
+            if (boss_health <= 0) StartCoroutine(EndingCoroutine());
         }
 
         if (Input.GetKeyDown(KeyCode.T))
@@ -959,5 +964,13 @@ public class GameManager : MonoBehaviour
             if (stealth_item >= 1) item_list[6].gameObject.SetActive(true);
             if (preview_item >= 1) item_list[7].gameObject.SetActive(true);
         }
+    }
+
+    public IEnumerator EndingCoroutine()
+    {
+        yield return new WaitForSeconds(1.2f);
+        ui_list[9].gameObject.SetActive(true);
+        boss_health = 1;
+        Debug.Log("Ending!");
     }
 }
