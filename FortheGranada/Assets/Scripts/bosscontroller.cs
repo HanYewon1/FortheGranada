@@ -5,19 +5,21 @@ using System.Collections;
 public class bosscontroller : MonoBehaviour
 {
     private Collider2D bossCollider;
+    private Rigidbody2D bossrb;
     private Animator animator;
     private bool isDead = false;
     public float dashSpeed = 20f;
     public float dashDuration = 0.3f;
     private bool isDashing = false;
     private bool isJumping = false;
+    public float jumpForce = 20f;
     public float damageAmount = 5f; // 데미지량
     private Vector3 dashDirection;
     public GameObject firePrefab;
     public Transform[] summonPoints;
     private Coroutine currentCoroutine;
 
-    private void Start()
+    private void Awake()
     {
         // 체력 세팅
         GameManager.Instance.boss_max_health = 100f;
@@ -29,13 +31,15 @@ public class bosscontroller : MonoBehaviour
         {
             Debug.LogError("Animator component not found on Boss!");
         }
-        // 콜라이더 가져오기
+        // 콜라이더, 리지드바디 가져오기
         bossCollider = GetComponent<Collider2D>();
+        bossrb = GetComponent<Rigidbody2D>();
         // IDLE 상태로 전환
         SetIdle(true);
-        // 대쉬 변수들 초기화
+        // 변수들 초기화
         dashSpeed = 10f;
         dashDuration = 1f;
+        jumpForce = 20f;
     }
 
     private void Update()
@@ -75,7 +79,7 @@ public class bosscontroller : MonoBehaviour
     {
         GameManager.Instance.boss_health -= damage;
         GameManager.Instance.boss_health = Mathf.Clamp(GameManager.Instance.boss_health, 0, GameManager.Instance.boss_max_health); // 체력이 0보다 작아지면 0으로 보정
-        
+        PlayHitAnimation();
         Debug.Log($"Boss took {damage} damage! Remaining health: {GameManager.Instance.boss_max_health}");
         
         UpdateHealthBar(); // 체력바 UI 업데이트
@@ -210,6 +214,7 @@ public class bosscontroller : MonoBehaviour
         if (isJumping) return;
         SetIdle(false);
         PlayJumpAnimation();
+        bossrb.linearVelocity = new Vector2(bossrb.linearVelocity.x, jumpForce); // 점프 실행
         PlayLandingAnimation();
         SetIdle(true);
     }
@@ -232,6 +237,7 @@ public class bosscontroller : MonoBehaviour
 
     private void BossDie()
     {
+        SetIdle(false);
         Debug.Log("Boss has been defeated!");
         bossCollider.enabled = false; // 충돌 비활성화
         if (isDead) return; // 이미 사망 상태인 경우 중복 실행 방지
