@@ -37,6 +37,7 @@ public class submenuUI : MonoBehaviour
         GameManager.Instance.is_ingame = false;
         GameManager.Instance.is_running = false;
         GameManager.Instance.is_boss = false;
+        Time.timeScale = 1;
         SceneManager.LoadScene("MainMenuScene");
     }
 
