@@ -13,6 +13,7 @@ TagManager:
   - Weapon
   - Boss
   - Block
+  - Fire
   layers:
   - Default
   - TransparentFX
