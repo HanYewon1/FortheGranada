@@ -11,14 +11,12 @@ public class npcattack : MonoBehaviour
     private npcsight npc_sight;
     private Transform target;
     private float lastAttackTime;
-    private npccontroller npc_controller; // Ãß°Ý »óÅÂ °ü¸®
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+
     void Start()
     {
         npc_sight = GetComponent<npcsight>();
-        }
-
-    // Update is called once per frame
+    }
     void Update()
     {
         if (npc_sight.DetectPlayer && targetInRange())
@@ -27,8 +25,7 @@ public class npcattack : MonoBehaviour
         }
     }
 
-
-    void Attack() //°ø°Ý
+    public void Attack() //ï¿½ï¿½ï¿½ï¿½
     {
         if (Time.time - lastAttackTime < Cooltime) return;
 
@@ -43,19 +40,20 @@ public class npcattack : MonoBehaviour
         weapon.transform.rotation = Quaternion.Euler(0, 0, angle);
 
         Rigidbody2D rb = weapon.GetComponent<Rigidbody2D>();
-        if(rb != null)
+        if (rb != null)
         {
             rb.AddForce(playerDirection * weaponSpeed, ForceMode2D.Impulse);
         }
         lastAttackTime = Time.time;
     }
-
     bool targetInRange()
     {
-        if(target ==null) 
+
+        if (target == null)
             target = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
 
         float distanceToTarget = Vector2.Distance(transform.position, target.position);
         return distanceToTarget <= attackRange;
     }
+
 }
