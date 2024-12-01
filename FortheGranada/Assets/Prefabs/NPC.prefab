@@ -224,9 +224,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39f3f82a8f828a84da046cdf45ce7c43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 3
-  chaseSpeed: 4.5
-  currentSpeed: 3
+
+  animator: {fileID: 0}
+  moveSpeed: 4
+  chaseSpeed: 8
+  currentSpeed: 4
+
   isChasing: 0
   points:
   - {fileID: 0}
