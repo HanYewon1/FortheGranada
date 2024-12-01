@@ -45,7 +45,6 @@ TagManager:
   - 
   - 
   - 
-  - 
   m_SortingLayers:
   - name: Default
     uniqueID: 0
@@ -73,6 +72,9 @@ TagManager:
     locked: 0
   - name: boss
     uniqueID: 2058642763
+    locked: 0
+  - name: npc
+    uniqueID: 877829113
     locked: 0
   m_RenderingLayers:
   - Default
