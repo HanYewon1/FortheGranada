@@ -3,7 +3,6 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 3
-
   tags:
   - border
   - player
@@ -13,20 +12,17 @@ TagManager:
   - Obstacle
   - Weapon
   - Boss
-
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Background
   - Water
   - UI
   - Player
   - NPC
   - Boss
-
   - 
-
   - 
   - 
   - 
@@ -53,7 +49,6 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-
   - name: ground
     uniqueID: 1944506651
     locked: 0
@@ -78,6 +73,5 @@ TagManager:
   - name: boss
     uniqueID: 2058642763
     locked: 0
-
   m_RenderingLayers:
   - Default

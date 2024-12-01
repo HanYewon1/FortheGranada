@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class npccontroller : MonoBehaviour
 {
-    public Animator animator;
     Rigidbody2D rb;
+    Animator animator;
 
     public float moveSpeed;
     public float chaseSpeed;
@@ -22,13 +22,10 @@ public class npccontroller : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         currentSpeed = moveSpeed;
-        returnDefault = false;
     }
 
     void FixedUpdate()
     {
-        Debug.Log($"FixedUpdate - returnDefault: {returnDefault}, isChasing: {isChasing}");
-
         if (isChasing)
         {
             // 추격 중일 때 다른 동작 중단
@@ -54,10 +51,10 @@ public class npccontroller : MonoBehaviour
             Debug.LogWarning("No patrol points assigned.");
             return;
         }
-        currentSpeed = moveSpeed;
+
         // 현재 포인트와의 거리 계산
         distToPoint = Vector2.Distance(transform.position, points[nextPoint].transform.position);
-        currentSpeed = moveSpeed;
+
         // 현재 포인트로 이동
         transform.position = Vector2.MoveTowards(
             transform.position,
@@ -90,7 +87,7 @@ public class npccontroller : MonoBehaviour
 
     public void StopChasing()
     {
-        if (isChasing == false && returnDefault == true) // 이미 순찰 복귀 중이라면 호출 중단
+        if (returnDefault == true) // 이미 순찰 복귀 중이라면 호출 중단
         {
             Debug.Log("StopChasing() ignored. NPC is already returning to patrol.");
             return;
@@ -144,5 +141,5 @@ public class npccontroller : MonoBehaviour
         animator.SetInteger("npc_y", Mathf.RoundToInt(movement.y));
     }
 
-
+    
 }
