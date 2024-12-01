@@ -25,7 +25,7 @@ public class npcattack : MonoBehaviour
         }
     }
 
-
+    public void Attack() //����
     {
         if (Time.time - lastAttackTime < Cooltime) return;
 
@@ -49,6 +49,7 @@ public class npcattack : MonoBehaviour
     bool targetInRange()
     {
 
+        if (target == null)
             target = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
 
         float distanceToTarget = Vector2.Distance(transform.position, target.position);
