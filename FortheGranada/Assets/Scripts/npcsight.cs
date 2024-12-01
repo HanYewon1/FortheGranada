@@ -12,9 +12,9 @@ public class npcsight : MonoBehaviour
     npccontroller npc_controller;
     MeshRenderer mesh_renderer;
 
-    public Transform Target {  get; private set; }
+    public Transform Target { get; private set; }
     public bool DetectPlayer { get; private set; }
-    
+
 
     private Mesh viewMesh;
 
@@ -60,8 +60,8 @@ public class npcsight : MonoBehaviour
 
         DetectPlayer = false;
         Target = null;
-    
-}
+
+    }
 
     //시야 감지
     private void DrawFieldOfView()
