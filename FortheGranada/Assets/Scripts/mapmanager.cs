@@ -37,7 +37,7 @@ public class MapManager : MonoBehaviour
         stage = GameManager.Instance.stage;
         diff= GameManager.Instance.diff;
         queue_room = new Queue<GameObject>();
-        CreateMap(1);
+        CreateMap(stage);
     }
 
     public void OnClick()
@@ -204,6 +204,10 @@ public class MapManager : MonoBehaviour
                 player_controller.room_x = x;
                 player_controller.room_y = y;
                 player_controller.minimap_name = minimap_name + "/Image ";
+            }
+            if(room == 12)
+            {
+                image.color = Color.blue;
             }
 
             if (i > 1)
