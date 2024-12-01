@@ -550,6 +550,7 @@ public class GameManager : MonoBehaviour
             stage = 1;
             key = 0;
             key_item = 0;
+            Time.timeScale = 1;
             speed = originspeed;
             SceneManager.LoadScene("Test");
         }
@@ -567,6 +568,7 @@ public class GameManager : MonoBehaviour
             health = 5;
             key = 0;
             key_item = 0;
+            Time.timeScale = 1;
             is_running = true;
             speed = speed_for_boss_stage;
             SceneManager.LoadScene("Stage_Boss");
@@ -587,6 +589,7 @@ public class GameManager : MonoBehaviour
             stage = 1;
             key = 0;
             key_item = 0;
+            Time.timeScale = 1;
             speed = originspeed;
             SceneManager.LoadScene("PlayScene");
         }

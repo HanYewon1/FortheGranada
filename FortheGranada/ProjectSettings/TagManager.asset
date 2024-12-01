@@ -12,6 +12,7 @@ TagManager:
   - Obstacle
   - Weapon
   - Boss
+  - Block
   layers:
   - Default
   - TransparentFX
