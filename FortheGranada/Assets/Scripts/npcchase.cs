@@ -6,7 +6,6 @@ public class npcchase : MonoBehaviour
 {
     public Vector2Int gridSize; // 留듭쓽 ?ш린
     public float cellSize = 1f; // 寃⑹옄???ш린
-    public float attackRange = 2f;
     public LayerMask obstacleLayer; // ?μ븷臾??덉씠??
 
     npcsight npc_sight;

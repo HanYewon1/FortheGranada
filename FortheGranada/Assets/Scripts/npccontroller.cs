@@ -54,7 +54,7 @@ public class npccontroller : MonoBehaviour
             Debug.LogWarning("No patrol points assigned.");
             return;
         }
-
+        currentSpeed = moveSpeed;
         // 현재 포인트와의 거리 계산
         distToPoint = Vector2.Distance(transform.position, points[nextPoint].transform.position);
         currentSpeed = moveSpeed;

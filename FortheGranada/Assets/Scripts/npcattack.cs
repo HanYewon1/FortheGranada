@@ -26,7 +26,6 @@ public class npcattack : MonoBehaviour
     }
 
 
-    public void Attack() //공격
     {
         if (Time.time - lastAttackTime < Cooltime) return;
 
@@ -41,7 +40,7 @@ public class npcattack : MonoBehaviour
         weapon.transform.rotation = Quaternion.Euler(0, 0, angle);
 
         Rigidbody2D rb = weapon.GetComponent<Rigidbody2D>();
-        if(rb != null)
+        if (rb != null)
         {
             rb.AddForce(playerDirection * weaponSpeed, ForceMode2D.Impulse);
         }
@@ -49,7 +48,7 @@ public class npcattack : MonoBehaviour
     }
     bool targetInRange()
     {
-        if(target == null)
+
             target = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
 
         float distanceToTarget = Vector2.Distance(transform.position, target.position);
