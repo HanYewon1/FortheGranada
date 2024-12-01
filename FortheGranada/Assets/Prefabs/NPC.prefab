@@ -224,17 +224,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39f3f82a8f828a84da046cdf45ce7c43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
+
   animator: {fileID: 0}
-=======
->>>>>>> Stashed changes
-=======
-  animator: {fileID: 0}
->>>>>>> Stashed changes
   moveSpeed: 4
   chaseSpeed: 8
   currentSpeed: 4
+
   isChasing: 0
   points:
   - {fileID: 0}
@@ -254,14 +249,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3de3fa40c19e69a42af388a5c99b4d87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radius: 5
+  radius: 10
   angle: 90
   targetLayer:
     serializedVersion: 2
     m_Bits: 64
   obstructionLayer:
     serializedVersion: 2
-    m_Bits: 512
+    m_Bits: 0
   viewMeshFilter: {fileID: 0}
   segments: 50
 --- !u!114 &9193678066199445705
@@ -280,7 +275,7 @@ MonoBehaviour:
   cellSize: 1
   obstacleLayer:
     serializedVersion: 2
-    m_Bits: 512
+    m_Bits: 1
 --- !u!114 &778973932981899345
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -294,6 +289,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponPrefab: {fileID: 0}
-  weaponSpeed: 8
+  weaponSpeed: 3
   attackRange: 4
   Cooltime: 1
