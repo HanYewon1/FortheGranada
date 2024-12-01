@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using Unity.Mathematics;
+using Unity.VisualScripting;
 using UnityEditor.U2D.Aseprite;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -17,20 +18,24 @@ public class MapManager : MonoBehaviour
         public GameObject prefab;
     }
     public int stage;
+    public int diff = 0;
     public Button button;
     public GameObject player;
     public GameObject[] prefabEntries;
     public Queue<GameObject> queue_room;
     public TextMeshProUGUI text_size;
-    public int[] stage_size = { 5, 6, 7, 7 };
-    public int[] room_count = { 10, 15, 20, 25 };
-    public int[] type_room_count = { 5, 7, 9, 11 };
+    public int[] stage_size = { 0, 5, 6, 7, 7 };
+    public int[] room_count = { 0, 10, 15, 20, 25 };
+    public int[] type_room_count = {0, 5, 7, 9, 11 };
     public int[] type_room = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
 
     bool isCreate = false;
+    string minimap_name;
 
     public void Start()
     {
+        stage = GameManager.Instance.stage;
+        diff= GameManager.Instance.diff;
         queue_room = new Queue<GameObject>();
         CreateMap(stage);
     }
@@ -81,12 +86,18 @@ public class MapManager : MonoBehaviour
     }
     void CreateMap(int stage_num)
     {
+        if(diff == 3)
+        {
+            stage_num++;
+        }   
         var directions = new (int, int)[] { (-1, 0), (1, 0), (0, -1), (0, 1) };
         int size = stage_size[stage_num];
         int count = room_count[stage_num];
         var parent = new (int, int)[size, size];
         int[,] stage_room = new int[size, size];
         bool[,] visited = new bool[size, size];
+        minimap_name = "Canvas/InGameUI/GRayout" + size + "X" + size;
+
         for (int x = 0; x < size; x++)
         {
             for (int y = 0; y < size; y++)
@@ -178,9 +189,25 @@ public class MapManager : MonoBehaviour
             Vector3 position = new Vector3(x * 35, y * (-35), 0);
             quaternion rotation = Quaternion.Euler(0, 0, 0);
             GameObject instance = Instantiate(prefabEntries[room], position, rotation);
+            string minimap_image_name = minimap_name + "/Image " + y + x;
+            GameObject minimap_image = GameObject.Find(minimap_image_name);
+            Image image = minimap_image.GetComponent<Image>();
+            if (image != null)
+            {
+                image.color = Color.white;
+            }
             if (room == 11)
             {
+                image.color = Color.red;
                 player.transform.position = position;
+                playercontroller player_controller = player.GetComponent<playercontroller>();
+                player_controller.room_x = x;
+                player_controller.room_y = y;
+                player_controller.minimap_name = minimap_name + "/Image ";
+            }
+            if(room == 12)
+            {
+                image.color = Color.blue;
             }
 
             if (i > 1)

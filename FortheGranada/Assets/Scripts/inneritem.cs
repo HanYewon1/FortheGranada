@@ -39,7 +39,7 @@ public class inneritem : MonoBehaviour
         }
         else
         {
-            Alpha0();
+            //Alpha0();
         }
         if (is_set && itemnumber != 10)
         {

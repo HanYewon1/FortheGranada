@@ -1,13 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
+using UnityEngine.UI;
 
 public class playercontroller : MonoBehaviour
 {
 
     public float player_speed;//??��踝蕭??��踝蕭??��踝蕭??��踝蕭 ??��踝蕭??��踝蕭??��踝蕭??��踝蕭
     public Sprite deadSprite;
-
+    public int room_x;
+    public int room_y;
+    public int next_room_x;
+    public int next_room_y;
+    public string minimap_name;
 
     Rigidbody2D rigidbody2d;
     Animator animator;
@@ -45,6 +52,7 @@ public class playercontroller : MonoBehaviour
 
     private void FixedUpdate()
     {
+        Debug.Log("move");
         Vector2 move_vec = is_horizon_move ? new Vector2(player_x, 0) : new Vector2(0, player_y);
         rigidbody2d.linearVelocity = move_vec * GameManager.Instance.speed;
     }
@@ -109,22 +117,28 @@ public class playercontroller : MonoBehaviour
 
         if (collision.tag == "Door")
         {
+            next_room_x = room_x;
+            next_room_y = room_y;
             is_door = true;
             Debug.Log("door: " + is_door);
             if (collision.name == "door_up")
             {
+                next_room_y = room_y - 1;
                 add_door_position = new Vector3(0, 7, 0);
             }
             else if (collision.name == "door_down")
             {
+                next_room_y = room_y + 1;
                 add_door_position = new Vector3(0, -7, 0);
             }
             else if (collision.name == "door_right")
             {
+                next_room_x = room_x + 1;
                 add_door_position = new Vector3(7, 0, 0);
             }
             else if (collision.name == "door_left")
             {
+                next_room_x = room_x - 1;
                 add_door_position = new Vector3(-7, 0, 0);
             }
 
@@ -135,7 +149,7 @@ public class playercontroller : MonoBehaviour
     {
         if (collision.tag == "Door")
         {
-            Debug.Log("EXit");
+            Debug.Log("Exit");
             is_door = false;
         }
     }
@@ -164,8 +178,20 @@ public class playercontroller : MonoBehaviour
     {
         Debug.Log("use_door: " + is_door);
         if (is_door)
-        {
-            Debug.Log(2);
+        {   
+            string minimap_current_room = minimap_name + room_y + room_x;
+            string minimap_next_room = minimap_name + next_room_y + next_room_x;
+            Debug.Log(minimap_current_room);
+            Debug.Log(minimap_next_room);
+            GameObject minimap_image = GameObject.Find(minimap_current_room);
+            Image image = minimap_image.GetComponent<Image>();
+            image.color = Color.white;
+            minimap_image = GameObject.Find(minimap_next_room);
+            image = minimap_image.GetComponent<Image>();
+            image.color = Color.red;
+            room_x = next_room_x;
+            room_y = next_room_y;
+
             this.transform.position = this.transform.position + add_door_position;
         }
 

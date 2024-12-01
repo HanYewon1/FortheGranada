@@ -59,7 +59,7 @@ public class minigameUI : MonoBehaviour
             }
             if (txt_list[4].text == "NULL" && LLM == 4) txt_list[4].text = GameManager.Instance.APIResponse.Length > 6 ? GameManager.Instance.APIResponse.Substring(0, 6).Trim() : GameManager.Instance.APIResponse.Trim();
 
-            // ¹öÆ° ÃÊ±âÈ­
+            // ï¿½ï¿½Æ° ï¿½Ê±ï¿½È­
             btn_list[1].onClick.RemoveAllListeners();
             btn_list[2].onClick.RemoveAllListeners();
             btn_list[3].onClick.RemoveAllListeners();
@@ -81,7 +81,7 @@ public class minigameUI : MonoBehaviour
 
     private void OnEnable()
     {
-        // ?”¬?´ ë¡œë“œ?  ?•Œ ?˜¸ì¶?
+        // ?ï¿½ï¿½?ï¿½ï¿½ ë¡œë“œ?ï¿½ï¿½ ?ï¿½ï¿½ ?ï¿½ï¿½ï¿½?
         //SceneManager.sceneLoaded += OnSceneLoaded;
         UpdateMinigame();
         Time.timeScale = 0;
@@ -89,7 +89,7 @@ public class minigameUI : MonoBehaviour
 
     private void OnDisable()
     {
-        // ?”¬ ë¡œë“œ ?´ë²¤íŠ¸ ?•´? œ
+        // ?ï¿½ï¿½ ë¡œë“œ ?ï¿½ï¿½ë²¤íŠ¸ ?ï¿½ï¿½?ï¿½ï¿½
         //SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
@@ -131,12 +131,15 @@ public class minigameUI : MonoBehaviour
         }
 
         GameManager.Instance.im.getItem(GameManager.Instance.currentbox.ii.item);
+        GameManager.Instance.pu.item = GameManager.Instance.currentbox.ii.item;
         Time.timeScale = 1;
         GameManager.Instance.currentbox.isOpen = true;
         GameManager.Instance.is_running = true;
         GameManager.Instance.is_catch = false;
         GameManager.Instance.is_rannum = true;
         GameManager.Instance.is_rannum2 = true;
+        GameManager.Instance.currentbox.ii.Alpha255();
+        GameManager.Instance.ui_list[8].gameObject.SetActive(true);
         GameManager.Instance.ui_list[1].gameObject.SetActive(false);
     }
 
