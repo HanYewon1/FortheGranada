@@ -53,6 +53,7 @@ public class playercontroller : MonoBehaviour
 
     private void FixedUpdate()
     {
+
         Vector2 move_vec = is_horizon_move ? new Vector2(player_x, 0) : new Vector2(0, player_y);
         rigidbody2d.linearVelocity = move_vec * GameManager.Instance.speed;
     }
