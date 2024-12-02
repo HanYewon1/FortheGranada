@@ -4,14 +4,14 @@ using UnityEngine;
 public class npcattack : MonoBehaviour
 {
     public GameObject weaponPrefab;
-    public float weaponSpeed = 3f;
+    public float weaponSpeed = 8f;
     public float attackRange = 4f;
     public float Cooltime = 1f;
 
     private npcsight npc_sight;
     private Transform target;
     private float lastAttackTime;
-    private npccontroller npc_controller; // Ãß°İ »óÅÂ °ü¸®
+    private npccontroller npc_controller; // ÃƒÃŸÂ°Ã Â»Ã³Ã…Ã‚ Â°Ã¼Â¸Â®
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -28,7 +28,8 @@ public class npcattack : MonoBehaviour
     }
 
 
-    void Attack() //°ø°İ
+
+    void Attack() //Â°Ã¸Â°Ã
     {
         if (Time.time - lastAttackTime < Cooltime) return;
 
@@ -52,7 +53,9 @@ public class npcattack : MonoBehaviour
 
     bool targetInRange()
     {
-        if(target ==null) 
+
+        if (target == null)
+
             target = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
 
         float distanceToTarget = Vector2.Distance(transform.position, target.position);

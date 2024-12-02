@@ -11,6 +11,9 @@ TagManager:
   - Door
   - Obstacle
   - Weapon
+  - Boss
+  - Block
+  - Fire
   layers:
   - Default
   - TransparentFX
@@ -20,8 +23,8 @@ TagManager:
   - UI
   - Player
   - NPC
-  - 
-  - 
+  - Boss
+  - Obstacle
   - 
   - 
   - 
@@ -68,6 +71,12 @@ TagManager:
     locked: 0
   - name: player
     uniqueID: 3042622281
+    locked: 0
+  - name: boss
+    uniqueID: 2058642763
+    locked: 0
+  - name: npc
+    uniqueID: 877829113
     locked: 0
   m_RenderingLayers:
   - Default
