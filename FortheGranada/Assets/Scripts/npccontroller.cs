@@ -54,7 +54,7 @@ public class npccontroller : MonoBehaviour
 
         // 현재 포인트와의 거리 계산
         distToPoint = Vector2.Distance(transform.position, points[nextPoint].transform.position);
-
+        currentSpeed = moveSpeed;
         // 현재 포인트로 이동
         transform.position = Vector2.MoveTowards(
             transform.position,
