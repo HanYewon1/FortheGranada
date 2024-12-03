@@ -7,8 +7,6 @@ using UnityEngine.UI;
 
 public class playercontroller : MonoBehaviour
 {
-
-    public float player_speed;//??��踝蕭??��踝蕭??��踝蕭??��踝蕭 ??��踝蕭??��踝蕭??��踝蕭??��踝蕭
     public Sprite deadSprite;
     public int room_x;
     public int room_y;
@@ -35,7 +33,6 @@ public class playercontroller : MonoBehaviour
         animator = GetComponent<Animator>();
         rigidbody2d = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
-        player_speed = GameManager.Instance.speed;
         originalColor = spriteRenderer.color;
     }
     void Update()
