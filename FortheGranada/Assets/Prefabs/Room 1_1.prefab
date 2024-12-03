@@ -245,7 +245,7 @@ GameObject:
   - component: {fileID: 2219197410259907081}
   - component: {fileID: 4969553774204369198}
   - component: {fileID: 1510656921644303514}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: block_object
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11613,7 +11613,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7359831033160768397}
   - component: {fileID: 3714551360184326722}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: rigid (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11682,7 +11682,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1814080822233294451}
   - component: {fileID: 49996647377477291}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: rigid (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12102,7 +12102,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2582802495214745123}
   - component: {fileID: 1612855410652023610}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: rigid (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17931,7 +17931,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5664323072421381283}
   - component: {fileID: 454716589455475037}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: rigid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -21548,6 +21548,10 @@ PrefabInstance:
       propertyPath: 'points.Array.data[3]'
       value: 
       objectReference: {fileID: 7087764016787105175}
+    - target: {fileID: 778973932981899345, guid: 71fac40c8161f974594d34ec546caace, type: 3}
+      propertyPath: weaponPrefab
+      value: 
+      objectReference: {fileID: 1682219582910202907, guid: 78c9c31c33f8c0544a7e4b8cc86cfd12, type: 3}
     - target: {fileID: 4487441435574536890, guid: 71fac40c8161f974594d34ec546caace, type: 3}
       propertyPath: m_Name
       value: NPC_2
@@ -21722,6 +21726,10 @@ PrefabInstance:
       propertyPath: weaponSpeed
       value: 8
       objectReference: {fileID: 0}
+    - target: {fileID: 778973932981899345, guid: 71fac40c8161f974594d34ec546caace, type: 3}
+      propertyPath: weaponPrefab
+      value: 
+      objectReference: {fileID: 1682219582910202907, guid: 78c9c31c33f8c0544a7e4b8cc86cfd12, type: 3}
     - target: {fileID: 4487441435574536890, guid: 71fac40c8161f974594d34ec546caace, type: 3}
       propertyPath: m_Name
       value: NPC_1
@@ -21845,7 +21853,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 749b9069dc4742c5bfa5c74644049926, type: 2}
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -21962,6 +21970,10 @@ PrefabInstance:
       propertyPath: 'points.Array.data[3]'
       value: 
       objectReference: {fileID: 3336484608304360678}
+    - target: {fileID: 778973932981899345, guid: 71fac40c8161f974594d34ec546caace, type: 3}
+      propertyPath: weaponPrefab
+      value: 
+      objectReference: {fileID: 1682219582910202907, guid: 78c9c31c33f8c0544a7e4b8cc86cfd12, type: 3}
     - target: {fileID: 4487441435574536890, guid: 71fac40c8161f974594d34ec546caace, type: 3}
       propertyPath: m_Name
       value: NPC_3

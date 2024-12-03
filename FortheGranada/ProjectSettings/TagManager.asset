@@ -25,7 +25,7 @@ TagManager:
   - NPC
   - Boss
   - Obstacle
-  - 
+  - weapon
   - 
   - 
   - 
@@ -77,6 +77,9 @@ TagManager:
     locked: 0
   - name: npc
     uniqueID: 877829113
+    locked: 0
+  - name: weapon
+    uniqueID: 3069850435
     locked: 0
   m_RenderingLayers:
   - Default
