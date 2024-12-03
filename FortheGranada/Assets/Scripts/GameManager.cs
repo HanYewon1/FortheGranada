@@ -184,7 +184,7 @@ public class GameManager : MonoBehaviour
 
         // 각 변수들 초기화
         maxstage = 3;
-        speed = 4;
+        //speed = 4;
         originspeed = 4;
         speed_for_boss_stage = 1.5f;
 
@@ -341,6 +341,7 @@ public class GameManager : MonoBehaviour
             if (spr_list.Length == 0) spr_list = mg.ImageSet();
             if (ans_list.Length == 0) ans_list = mg.AnswerSet();
 
+            StartCoroutine(SetBorder());
             StartCoroutine(SetItemScripts());
             SetItemIcon();
         }
@@ -899,6 +900,12 @@ public class GameManager : MonoBehaviour
         innerItems = FindObjectsOfType<inneritem>(true);
         // 모든 상자에 키랑 아이템 할당
         if (innerItems.Length >= req_key) SetItems();
+    }
+
+    public IEnumerator SetBorder()
+    {
+        yield return new WaitForSeconds(1f);
+        if (sc != null) sc.UpdateBorder();
     }
 
     public IEnumerator WaitThreeSecond()

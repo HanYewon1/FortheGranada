@@ -21,6 +21,8 @@ public class bosscontroller : MonoBehaviour
     private Vector3 originalScale; // 원래 크기 저장
     private Vector3 targetScale;   // 점프 시 크기
     public GameObject firePrefab;
+    public GameObject shadowPrefab;
+    public GameObject shadow;
     public Transform shadowTransform; // 그림자 오브젝트
     public Transform[] summonPoints;
     private Coroutine currentCoroutine;
@@ -90,7 +92,7 @@ public class bosscontroller : MonoBehaviour
         GameManager.Instance.boss_health = Mathf.Clamp(GameManager.Instance.boss_health, 0, GameManager.Instance.boss_max_health); // 체력이 0보다 작아지면 0으로 보정
         PlayHitAnimation();
         Debug.Log($"Boss took {damage} damage! Remaining health: {GameManager.Instance.boss_max_health}");
-        
+
         UpdateHealthBar(); // 체력바 UI 업데이트
 
         if (GameManager.Instance.boss_health <= 0)
@@ -136,7 +138,7 @@ public class bosscontroller : MonoBehaviour
         if (IsIdle())
         {
             int rr = 0;
-            rr = Random.Range(1,3);
+            rr = Random.Range(1, 3);
 
             switch (rr)
             {
@@ -172,8 +174,8 @@ public class bosscontroller : MonoBehaviour
 
         Vector3 direction = Vector3.zero;
         int dr = 0;
-        dr = Random.Range(1,5);
-        
+        dr = Random.Range(1, 5);
+
         // 4방향 중 랜덤으로 하나 선택
         switch (dr)
         {
@@ -197,7 +199,7 @@ public class bosscontroller : MonoBehaviour
                 Debug.LogError("Out Of Random Range");
                 break;
         }
-        
+
         dashDirection = direction.normalized;
         // 대쉬 실행
         StartCoroutine(DashCoroutine());
@@ -229,7 +231,7 @@ public class bosscontroller : MonoBehaviour
     private IEnumerator JumpCoroutine()
     {
         float timer = 0f;
-
+        SummonShadow();
         // 올라가는 효과
         PlayJumpAnimation();
         while (timer < jumpDuration / 2)
@@ -256,6 +258,7 @@ public class bosscontroller : MonoBehaviour
             transform.localScale = Vector3.Lerp(targetScale, originalScale, progress);
             // 그림자 효과 업데이트
             UpdateShadow(1f - progress);
+            DestroyShadow();
             yield return null;
         }
 
@@ -288,6 +291,16 @@ public class bosscontroller : MonoBehaviour
         PlayFireAnimation();
         // for문으로 여러 개 생성 예정
         Instantiate(firePrefab, summonPoints[0].position, Quaternion.identity);
+    }
+
+    public void SummonShadow()
+    {
+        shadow = Instantiate(shadowPrefab, transform.position, Quaternion.identity);
+    }
+
+    public void DestroyShadow()
+    {
+        Destroy(shadow, 0.5f);
     }
 
     private void BossDie()
