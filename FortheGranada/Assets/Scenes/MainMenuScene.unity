@@ -1965,7 +1965,11 @@ MonoBehaviour:
   m_Intensity: 1
   m_LightVolumeIntensity: 1
   m_LightVolumeEnabled: 0
+<<<<<<< Updated upstream
   m_ApplyToSortingLayers: 00000000
+=======
+  m_ApplyToSortingLayers: 000000001bd1e673ef1acd76b7334ebeb57204cced67264db175005049bb5ab54b65b47a954acf7df99b5234
+>>>>>>> Stashed changes
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0
