@@ -42,7 +42,7 @@ public class playercontroller : MonoBehaviour
     {
         PlayerMove();
 
-        if(Input.GetKeyDown(KeyCode.F))
+        if (Input.GetKeyDown(KeyCode.F))
 
         {
             Debug.Log(1);
@@ -113,8 +113,8 @@ public class playercontroller : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.gameObject.CompareTag("Weapon"))
-            StartCoroutine (ChangeColor());
+        if (collision.gameObject.CompareTag("Weapon"))
+            StartCoroutine(ChangeColor());
 
         if (collision.tag == "Door")
         {
@@ -162,7 +162,7 @@ public class playercontroller : MonoBehaviour
     }
 
     //?�踝??��豎對??��踝蕭 ?�踝??���?
- 
+
     public void Dead()
 
     {
@@ -179,7 +179,7 @@ public class playercontroller : MonoBehaviour
     {
         Debug.Log("use_door: " + is_door);
         if (is_door)
-        {   
+        {
             string minimap_current_room = minimap_name + room_y + room_x;
             string minimap_next_room = minimap_name + next_room_y + next_room_x;
             Debug.Log(minimap_current_room);
@@ -194,9 +194,10 @@ public class playercontroller : MonoBehaviour
             room_y = next_room_y;
 
             this.transform.position = this.transform.position + add_door_position;
+            GameManager.Instance.sc.UpdateBorder();
         }
 
 
     }
-    
+
 }

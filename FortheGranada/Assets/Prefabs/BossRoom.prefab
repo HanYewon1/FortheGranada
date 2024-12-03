@@ -9813,7 +9813,7 @@ GameObject:
   - component: {fileID: 1319843985171516352}
   - component: {fileID: 4229204110834160973}
   m_Layer: 0
-  m_Name: BoosRoom
+  m_Name: BossRoom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

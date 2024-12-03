@@ -40,6 +40,8 @@ public class diffselectUI : MonoBehaviour
         GameManager.Instance.stage = 1;
         GameManager.Instance.speed = GameManager.Instance.originspeed;
         GameManager.Instance.health = 5;
+        GameManager.Instance.key = 0;
+        CleanItems();
         Time.timeScale = 1;
         //SceneManager.LoadScene("PlayScene");
         SceneManager.LoadScene("Stage_1");
@@ -60,6 +62,8 @@ public class diffselectUI : MonoBehaviour
         GameManager.Instance.stage = 1;
         GameManager.Instance.speed = GameManager.Instance.originspeed;
         GameManager.Instance.health = 3;
+        GameManager.Instance.key = 0;
+        CleanItems();
         Time.timeScale = 1;
         SceneManager.LoadScene("Stage_1");
     }
@@ -79,6 +83,8 @@ public class diffselectUI : MonoBehaviour
         GameManager.Instance.stage = 1;
         GameManager.Instance.speed = GameManager.Instance.originspeed;
         GameManager.Instance.health = 1;
+        GameManager.Instance.key = 0;
+        CleanItems();
         Time.timeScale = 1;
         SceneManager.LoadScene("Stage_1");
     }
@@ -87,5 +93,16 @@ public class diffselectUI : MonoBehaviour
     {
 
         SceneManager.LoadScene("SampleScene");
+    }
+
+    public void CleanItems()
+    {
+        GameManager.Instance.armor_item = 0;
+        GameManager.Instance.ressurection_item = 0;
+        GameManager.Instance.preview_item = 0;
+        GameManager.Instance.stealth_item = 0;
+        GameManager.Instance.speed_item = 0;
+        GameManager.Instance.haste_item = 0;
+        GameManager.Instance.key_item = 0;
     }
 }

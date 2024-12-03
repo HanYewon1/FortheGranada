@@ -48,6 +48,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 570061071c14c254ea2d61d049b87496, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dashSpeed: 20
+  dashDuration: 0.3
+  jumpHeight: 1.5
+  jumpDuration: 0.5
+  damageAmount: 5
+  maxShadowScale: 1.5
+  maxShadowOffset: 0.5
+  firePrefab: {fileID: 4708015290378751667, guid: 3f8c9b2f50eb5414bb6b4cf6b81fa332, type: 3}
+  shadowPrefab: {fileID: 5717605662179292968, guid: 54782816a4f34e34cbfeda7628995388, type: 3}
+  shadow: {fileID: 0}
+  shadowTransform: {fileID: 8931393433045413605, guid: 54782816a4f34e34cbfeda7628995388, type: 3}
+  summonPoints: []
 --- !u!212 &8870712566619787963
 SpriteRenderer:
   m_ObjectHideFlags: 0
