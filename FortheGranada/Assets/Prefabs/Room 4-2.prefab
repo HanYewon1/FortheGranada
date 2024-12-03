@@ -6002,7 +6002,7 @@ GameObject:
   - component: {fileID: 7623393995872805211}
   - component: {fileID: 4379674392314114655}
   - component: {fileID: 8457177605306370864}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: border
   m_TagString: border
   m_Icon: {fileID: 0}
