@@ -1,3 +1,4 @@
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class npcattack : MonoBehaviour
@@ -14,6 +15,7 @@ public class npcattack : MonoBehaviour
     void Start()
     {
         npc_sight = GetComponent<npcsight>();
+        weaponPrefab = Resources.Load<GameObject>("weapon");
         if (weaponPrefab == null)
         {
             Debug.LogError("Weapon prefab could not be loaded from Resources folder. Check the path and filename.");
