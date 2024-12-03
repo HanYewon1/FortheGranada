@@ -183,7 +183,10 @@ public class playercontroller : MonoBehaviour
             Debug.Log(minimap_next_room);
             GameObject minimap_image = GameObject.Find(minimap_current_room);
             Image image = minimap_image.GetComponent<Image>();
-            image.color = Color.white;
+            if (image.color != Color.blue)
+            {
+                image.color = Color.white;
+            }
             minimap_image = GameObject.Find(minimap_next_room);
             image = minimap_image.GetComponent<Image>();
             image.color = Color.red;

@@ -86,6 +86,11 @@ public class MapManager : MonoBehaviour
     }
     void CreateMap(int stage_num)
     {
+        isCreate = true;
+        if(stage_num == 0)
+        {
+            return;
+        }
         if(diff == 3)
         {
             stage_num++;
