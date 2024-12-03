@@ -10,6 +10,8 @@ public class bosscontroller : MonoBehaviour
     private bool isDead = false;
     private bool isDashing = false;
     private bool isJumping = false;
+    private bool isPhase2 = false;
+    private bool isFire = false;
     public float dashSpeed = 20f;
     public float dashDuration = 0.3f;
     public float jumpHeight = 1.5f; // Z축으로 올라가는 듯한 높이
@@ -17,7 +19,7 @@ public class bosscontroller : MonoBehaviour
     public float damageAmount = 5f; // 데미지량
     public float maxShadowScale = 1.5f; // 점프 시 그림자 크기 변화
     public float maxShadowOffset = 0.5f; // 그림자 위치 변화 (Y축)
-    private Vector3 dashDirection; // 대쉬 방향
+    private Vector2 dashDirection; // 대쉬 방향
     private Vector3 originalScale; // 원래 크기 저장
     private Vector3 targetScale;   // 점프 시 크기
     public GameObject firePrefab;
@@ -44,13 +46,19 @@ public class bosscontroller : MonoBehaviour
         bossrb = GetComponent<Rigidbody2D>();
         // IDLE 상태로 전환
         SetIdle(true);
-        // 변수들 초기화
+        // 변수들 초기화, 도전 난이도면 다르게
         dashSpeed = 10f;
-        dashDuration = 1f;
+        dashDuration = 4f;
         jumpHeight = 1.5f;
-        jumpDuration = 0.5f;
+        jumpDuration = 3f;
         originalScale = transform.localScale;
         targetScale = originalScale * 1.2f; // 점프 시 커지는 효과
+        summonPoints = new Transform[31];
+        for (int i = 0; i < 31; i++)
+        {
+            string positionname = "FIREPOSITION_" + i;
+            summonPoints[i] = GameObject.Find(positionname).transform;
+        }
     }
 
     private void Update()
@@ -63,6 +71,14 @@ public class bosscontroller : MonoBehaviour
         if (currentCoroutine == null)
         {
             currentCoroutine = StartCoroutine(RandomCoroutine());
+        }
+        // 체력이 절반 이하가 되면 2페이즈 돌입
+        if (GameManager.Instance.boss_health <= 50f) isPhase2 = true;
+        // 한 번만 불길 소환
+        if (isPhase2 && !isFire)
+        {
+            isFire = true;
+            SummonFire();
         }
     }
 
@@ -92,7 +108,7 @@ public class bosscontroller : MonoBehaviour
         GameManager.Instance.boss_health = Mathf.Clamp(GameManager.Instance.boss_health, 0, GameManager.Instance.boss_max_health); // 체력이 0보다 작아지면 0으로 보정
         PlayHitAnimation();
         Debug.Log($"Boss took {damage} damage! Remaining health: {GameManager.Instance.boss_max_health}");
-
+        SetIdle(true); // 데미지 입으면 행동 중단
         UpdateHealthBar(); // 체력바 UI 업데이트
 
         if (GameManager.Instance.boss_health <= 0)
@@ -110,7 +126,7 @@ public class bosscontroller : MonoBehaviour
     public void PlayDashAnimation()
     {
         if (isDead) return;
-        animator.SetTrigger("DASH");
+        animator.SetBool("ISDASH", true);
     }
 
     public void PlayJumpAnimation()
@@ -133,19 +149,22 @@ public class bosscontroller : MonoBehaviour
 
     private IEnumerator RandomCoroutine()
     {
-        yield return new WaitForSeconds(3f);
-        // 3초 대기 후 아이들 상태면 랜덤 행동 실행
-        if (IsIdle())
+        yield return new WaitForSeconds(8f);
+        // 8초 대기 후 아이들 상태면 랜덤 행동 실행
+        if (IsIdle() && !isDashing && !isJumping)
         {
-            int rr = 0;
-            rr = Random.Range(1, 3);
+            int rr = Random.Range(1, 5);
 
             switch (rr)
             {
                 case 1:
+                case 2:
+                case 3:
+                    Debug.Log("Executing Dash()");
                     Dash();
                     break;
-                case 2:
+                case 4:
+                    Debug.Log("Executing Jump()");
                     Jump();
                     break;
                 default:
@@ -167,40 +186,87 @@ public class bosscontroller : MonoBehaviour
 
     public void Dash()
     {
-        if (isDashing) return;
+        if (isDashing)
+        {
+            Debug.Log("Dash is already in progress, skipping...");
+            return;
+        }
+
         SetIdle(false);
         isDashing = true;
         PlayDashAnimation();
 
-        Vector3 direction = Vector3.zero;
+        Vector2 direction = (GameManager.Instance.player.position - transform.position).normalized;
         int dr = 0;
-        dr = Random.Range(1, 5);
+        dr = Random.Range(0, 2);
 
-        // 4방향 중 랜덤으로 하나 선택
-        switch (dr)
+        // 위, 왼쪽일 경우 2방향 중 랜덤으로 하나 선택
+        if (direction.y >= 0 && direction.x < 0)
         {
-            case 1:
-                animator.SetInteger("DIRECTION", 1);
-                direction = Vector3.down;
-                break;
-            case 2:
-                animator.SetInteger("DIRECTION", 2);
-                direction = Vector3.up;
-                break;
-            case 3:
-                animator.SetInteger("DIRECTION", 3);
-                direction = Vector3.left;
-                break;
-            case 4:
-                animator.SetInteger("DIRECTION", 4);
-                direction = Vector3.right;
-                break;
-            default:
-                Debug.LogError("Out Of Random Range");
-                break;
+            switch (dr)
+            {
+                case 0:
+                    animator.SetInteger("DIRECTION", 2);
+                    break;
+                case 1:
+                    animator.SetInteger("DIRECTION", 3);
+                    break;
+                default:
+                    Debug.LogError("Out Of Random Range");
+                    break;
+            }
+        }
+        // 아래, 왼쪽일 경우 2방향 중 랜덤으로 하나 선택
+        else if (direction.y < 0 && direction.x < 0)
+        {
+            switch (dr)
+            {
+                case 0:
+                    animator.SetInteger("DIRECTION", 1);
+                    break;
+                case 1:
+                    animator.SetInteger("DIRECTION", 3);
+                    break;
+                default:
+                    Debug.LogError("Out Of Random Range");
+                    break;
+            }
+        }
+        // 위, 오른쪽일 경우 2방향 중 랜덤으로 하나 선택
+        else if (direction.y >= 0 && direction.x >= 0)
+        {
+            switch (dr)
+            {
+                case 0:
+                    animator.SetInteger("DIRECTION", 2);
+                    break;
+                case 1:
+                    animator.SetInteger("DIRECTION", 4);
+                    break;
+                default:
+                    Debug.LogError("Out Of Random Range");
+                    break;
+            }
+        }
+        // 아래, 오른쪽일 경우 2방향 중 랜덤으로 하나 선택
+        else
+        {
+            switch (dr)
+            {
+                case 0:
+                    animator.SetInteger("DIRECTION", 1);
+                    break;
+                case 1:
+                    animator.SetInteger("DIRECTION", 4);
+                    break;
+                default:
+                    Debug.LogError("Out Of Random Range");
+                    break;
+            }
         }
 
-        dashDirection = direction.normalized;
+        dashDirection = direction;
+        Debug.Log($"Dash Direction: {dashDirection}");
         // 대쉬 실행
         StartCoroutine(DashCoroutine());
     }
@@ -211,11 +277,16 @@ public class bosscontroller : MonoBehaviour
 
         while (timer < dashDuration)
         {
-            transform.position += dashDirection * dashSpeed * Time.deltaTime;
+            if (dashDirection != Vector2.zero)
+            {
+                bossrb.MovePosition(bossrb.position + dashDirection * dashSpeed * Time.deltaTime);
+            }
+
             timer += Time.deltaTime;
             yield return null;
+            if (IsIdle() == true) break;
         }
-
+        animator.SetBool("ISDASH", false);
         isDashing = false;
         SetIdle(true);
     }
@@ -288,9 +359,24 @@ public class bosscontroller : MonoBehaviour
 
     public void SummonFire()
     {
+        SetIdle(false);
         PlayFireAnimation();
-        // for문으로 여러 개 생성 예정
-        Instantiate(firePrefab, summonPoints[0].position, Quaternion.identity);
+        // for문으로 여러 개 생성, 이지, 노말은 반만 소환
+        if (GameManager.Instance.diff != 3)
+        {
+            for (int j = 0; j < 31; j += 2)
+            {
+                Instantiate(firePrefab, summonPoints[j].position, Quaternion.identity);
+            }
+        }
+        else
+        {
+            for (int j = 0; j < 31; j++)
+            {
+                Instantiate(firePrefab, summonPoints[j].position, Quaternion.identity);
+            }
+        }
+        SetIdle(true);
     }
 
     public void SummonShadow()

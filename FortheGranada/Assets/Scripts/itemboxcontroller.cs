@@ -11,12 +11,8 @@ public class itemboxcontroller : MonoBehaviour
 
     private void Awake()
     {
-        Object[] sprites = Resources.LoadAll("FDR_Dungeon");
         spriteRenderer = GetComponent<SpriteRenderer>();
-        ItemBoxSprites = new Sprite[2];
-        ItemBoxSprites[0] = sprites[535] as Sprite;
-        ItemBoxSprites[1] = sprites[536] as Sprite;
-        spriteRenderer.sprite = ItemBoxSprites[0]; // »óÀÚ ´ÝÈù »óÅÂ·Î ½ÃÀÛ
+        spriteRenderer.sprite = ItemBoxSprites[0]; // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Â·ï¿½ ï¿½ï¿½ï¿½ï¿½
         ii = GetComponentInChildren<inneritem>(true);
     }
     private void Update()
@@ -30,20 +26,20 @@ public class itemboxcontroller : MonoBehaviour
 
     void IsItemBoxOpen()
     {
-        // ¾ÆÀÌÅÛ »óÀÚ ¿­·ÈÀ» °æ¿ì
-        if (isOpen) // »óÀÚ ¿­¸®¸é
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
+        if (isOpen) // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         {
-            spriteRenderer.sprite = ItemBoxSprites[1]; // »óÀÚ ¿­¸° sprite·Î º¯°æ
+            spriteRenderer.sprite = ItemBoxSprites[1]; // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ spriteï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         }
     }
 
     void IsPossible()
     {
-        if (!isOpen && GameManager.Instance.is_catch && !GameManager.Instance.is_delay) // ¾ÆÀÌÅÛ »óÀÚ°¡ È°¼ºÈ­µÈ °æ¿ì
+        if (!isOpen && GameManager.Instance.is_catch && !GameManager.Instance.is_delay) // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ú°ï¿½ È°ï¿½ï¿½È­ï¿½ï¿½ ï¿½ï¿½ï¿½
         {
-            spriteRenderer.color = Color.white; // »óÀÚ»ö ÇÏ¾á»öÀ¸·Î º¯°æ
+            spriteRenderer.color = Color.white; // ï¿½ï¿½ï¿½Ú»ï¿½ ï¿½Ï¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         }
-        else if (!isOpen && (!GameManager.Instance.is_catch || GameManager.Instance.is_delay))// ¾ÆÀÌÅÛ »óÀÚ°¡ ºñÈ°¼ºÈ­µÈ °æ¿ì
+        else if (!isOpen && (!GameManager.Instance.is_catch || GameManager.Instance.is_delay))// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ú°ï¿½ ï¿½ï¿½È°ï¿½ï¿½È­ï¿½ï¿½ ï¿½ï¿½ï¿½
         {
             spriteRenderer.color = Color.gray;
         }
