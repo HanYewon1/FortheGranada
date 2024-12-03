@@ -339,7 +339,7 @@ GameObject:
   - component: {fileID: 8384101795964613977}
   - component: {fileID: 5406220108368292251}
   - component: {fileID: 3900249980253984401}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: border
   m_TagString: border
   m_Icon: {fileID: 0}
@@ -3944,6 +3944,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 439923d811b53d0408d43f0198ab919f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SR: {fileID: 0}
+  sprites: []
 --- !u!1 &7413341389244617063
 GameObject:
   m_ObjectHideFlags: 0
@@ -14505,6 +14507,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   is_inRange: 0
   stagename: 
+  blg: {fileID: 0}
+  is_onlyone: 0
+  sprites: []
 --- !u!61 &6442105824004956174
 BoxCollider2D:
   m_ObjectHideFlags: 0

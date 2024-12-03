@@ -17822,7 +17822,7 @@ GameObject:
   - component: {fileID: 1067170776958981648}
   - component: {fileID: 8923768406929129371}
   - component: {fileID: 8410238795823125232}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: border
   m_TagString: border
   m_Icon: {fileID: 0}
