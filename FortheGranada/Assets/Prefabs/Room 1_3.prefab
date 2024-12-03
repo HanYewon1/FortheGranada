@@ -12122,7 +12122,7 @@ GameObject:
   - component: {fileID: 2087496133910349630}
   - component: {fileID: 6571139792913964438}
   - component: {fileID: 6377632390397544775}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: border
   m_TagString: border
   m_Icon: {fileID: 0}
