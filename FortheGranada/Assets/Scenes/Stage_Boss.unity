@@ -20198,7 +20198,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55a86ee9bd6f38045b1582807ad1ec2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player_speed: 0
   deadSprite: {fileID: 0}
   room_x: 0
   room_y: 0
@@ -21999,7 +21998,7 @@ MonoBehaviour:
   m_Intensity: 1
   m_LightVolumeIntensity: 1
   m_LightVolumeEnabled: 0
-  m_ApplyToSortingLayers: 000000001bd1e673ef1acd76b7334ebeb57204cced67264db175005049bb5ab54b65b47a
+  m_ApplyToSortingLayers: 000000001bd1e673ef1acd76b7334ebeb57204cced67264db175005049bb5ab54b65b47af99b5234
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0
