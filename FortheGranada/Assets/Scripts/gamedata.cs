@@ -12,7 +12,7 @@ public class gamedata : MonoBehaviour
         {
             GameSave();
         }
-        
+
     }
 
     public void GameSave()
@@ -20,25 +20,31 @@ public class gamedata : MonoBehaviour
         PlayerPrefs.SetInt("Stage", GameManager.Instance.stage);
         PlayerPrefs.SetInt("Diff", GameManager.Instance.diff);
         PlayerPrefs.SetInt("Health", GameManager.Instance.health);
+        PlayerPrefs.SetInt("Armor", GameManager.Instance.armor);
         PlayerPrefs.SetInt("MaxHealth", GameManager.Instance.maxHealth);
         PlayerPrefs.SetFloat("Speed", GameManager.Instance.speed);
         PlayerPrefs.SetInt("StealthTime", GameManager.Instance.stealthTime);
         PlayerPrefs.SetInt("HealthItem", GameManager.Instance.health_item);
+        PlayerPrefs.SetInt("ArmorItem", GameManager.Instance.armor_item);
+        PlayerPrefs.SetInt("StealthTime", GameManager.Instance.stealthTime);
         PlayerPrefs.SetInt("StealthItem", GameManager.Instance.stealth_item);
         PlayerPrefs.SetInt("SpeedItem", GameManager.Instance.speed_item);
         PlayerPrefs.SetInt("HasteItem", GameManager.Instance.haste_item);
         PlayerPrefs.SetInt("PreviewItem", GameManager.Instance.preview_item);
         PlayerPrefs.SetInt("RessurectionItem", GameManager.Instance.ressurection_item);
+        PlayerPrefs.SetString("AS", GameManager.Instance.is_attacked_speed ? "True" : "False");
+        PlayerPrefs.SetString("RS", GameManager.Instance.is_ressurection ? "True" : "False");
+        PlayerPrefs.SetString("PR", GameManager.Instance.is_preview ? "True" : "False");
         PlayerPrefs.Save();
         Debug.Log("save");
     }
 
     public void GameLoad()
-    {   
+    {
         int stage = PlayerPrefs.GetInt("Stage");
         string stage_scene = "";
-        
-        if(stage <= 3)
+
+        if (stage <= 3)
         {
             stage_scene = "Stage_" + stage;
         }
@@ -61,21 +67,28 @@ public class gamedata : MonoBehaviour
         GameManager.Instance.diff = PlayerPrefs.GetInt("Diff");
         GameManager.Instance.maxHealth = PlayerPrefs.GetInt("MaxHealth");
         GameManager.Instance.health = PlayerPrefs.GetInt("Health");
+        GameManager.Instance.armor = PlayerPrefs.GetInt("Armor");
         GameManager.Instance.speed = PlayerPrefs.GetFloat("Speed");
         GameManager.Instance.originspeed = 4;
         SceneManager.LoadScene(stage_scene);
 
         GameManager.Instance.stealthTime = PlayerPrefs.GetInt("StealthTime");
         GameManager.Instance.health_item = PlayerPrefs.GetInt("HealthItem");
+        GameManager.Instance.armor_item = PlayerPrefs.GetInt("ArmorItem");
+        GameManager.Instance.stealthTime = PlayerPrefs.GetInt("StealthTime");
         GameManager.Instance.stealth_item = PlayerPrefs.GetInt("StealthItem");
         GameManager.Instance.speed_item = PlayerPrefs.GetInt("SpeedItem");
         GameManager.Instance.haste_item = PlayerPrefs.GetInt("HasteItem");
         GameManager.Instance.preview_item = PlayerPrefs.GetInt("PreviewItem");
         GameManager.Instance.ressurection_item = PlayerPrefs.GetInt("RessurectionItem");
 
+        if (PlayerPrefs.GetString("AS") == "True") GameManager.Instance.is_attacked_speed = true;
+        if (PlayerPrefs.GetString("RS") == "True") GameManager.Instance.is_ressurection = true;
+        if (PlayerPrefs.GetString("PR") == "True") GameManager.Instance.is_preview = true;
+
         GameManager.Instance.updatehealth();
         GameManager.Instance.SetItemIcon();
-        
+
         Debug.Log("load");
     }
 }
