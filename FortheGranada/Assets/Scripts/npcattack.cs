@@ -11,12 +11,16 @@ public class npcattack : MonoBehaviour
     private npcsight npc_sight;
     private Transform target;
     private float lastAttackTime;
-    private npccontroller npc_controller; // Ãß°Ý »óÅÂ °ü¸®
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         npc_sight = GetComponent<npcsight>();
+        weaponPrefab = Resources.Load<GameObject>("weapon");
+        if (weaponPrefab == null)
+        {
+            Debug.LogError("Weapon prefab could not be loaded from Resources folder. Check the path and filename.");
         }
+    }
 
     // Update is called once per frame
     void Update()
@@ -31,7 +35,7 @@ public class npcattack : MonoBehaviour
 
     void Attack() //°ø°Ý
     {
-        if (Time.time - lastAttackTime < Cooltime) return;
+        if (Time.time - lastAttackTime < Cooltime || weaponPrefab == null) return;
 
         if (target == null)
             target = GameObject.FindGameObjectWithTag("Player").transform;
@@ -53,9 +57,7 @@ public class npcattack : MonoBehaviour
 
     bool targetInRange()
     {
-
         if (target == null)
-
             target = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
 
         float distanceToTarget = Vector2.Distance(transform.position, target.position);
