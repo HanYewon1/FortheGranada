@@ -70,8 +70,20 @@ public class gamedata : MonoBehaviour
         GameManager.Instance.stealth_item = PlayerPrefs.GetInt("StealthItem");
         GameManager.Instance.speed_item = PlayerPrefs.GetInt("SpeedItem");
         GameManager.Instance.haste_item = PlayerPrefs.GetInt("HasteItem");
+        if(GameManager.Instance.haste_item == 1)
+        {
+            GameManager.Instance.is_attacked_speed = true;
+        }
         GameManager.Instance.preview_item = PlayerPrefs.GetInt("PreviewItem");
+        if(GameManager.Instance.preview_item == 1)
+        {
+            GameManager.Instance.is_preview = true;
+        }
         GameManager.Instance.ressurection_item = PlayerPrefs.GetInt("RessurectionItem");
+        if(GameManager.Instance.ressurection_item == 1)
+        {
+            GameManager.Instance.is_ressurection = true;
+        }
 
         GameManager.Instance.updatehealth();
         GameManager.Instance.SetItemIcon();
