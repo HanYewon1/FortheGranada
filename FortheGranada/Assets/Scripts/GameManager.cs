@@ -345,7 +345,7 @@ public class GameManager : MonoBehaviour
             StartCoroutine(SetItemScripts());
             SetItemIcon();
         }
-
+        // 보스전이면
         if (is_boss)
         {
             tmp = GameObject.Find("Player");
@@ -364,10 +364,45 @@ public class GameManager : MonoBehaviour
             if (tmp != null) ui_list[7] = tmp.GetComponent<RectTransform>();
             tmp = GameObject.Find("EndingUI");
             if (tmp != null) ui_list[9] = tmp.GetComponent<RectTransform>();
+            // UI 찾은 후 비활성화
             if (ui_list != null) ui_list[2].gameObject.SetActive(false);
             if (ui_list != null) ui_list[6].gameObject.SetActive(false);
             if (ui_list != null) ui_list[7].gameObject.SetActive(false);
             if (ui_list != null) ui_list[9].gameObject.SetActive(false);
+            // 블럭 수가 난이도가 이지면 18개, 노말이면 15개, 도전이면 12개
+            tmp = GameObject.Find("Block1_05");
+            if (tmp != null && diff == 3) tmp.SetActive(false);
+            tmp = GameObject.Find("Block1_06");
+            if (tmp != null && (diff == 3 || diff == 2)) tmp.SetActive(false);
+            tmp = GameObject.Find("Block2_05");
+            if (tmp != null && diff == 3) tmp.SetActive(false);
+            tmp = GameObject.Find("Block2_06");
+            if (tmp != null && (diff == 3 || diff == 2)) tmp.SetActive(false);
+            tmp = GameObject.Find("Block3_05");
+            if (tmp != null && diff == 3) tmp.SetActive(false);
+            tmp = GameObject.Find("Block3_06");
+            if (tmp != null && (diff == 3 || diff == 2)) tmp.SetActive(false);
+            tmp = GameObject.Find("HPUI");
+            // 보스전용 체력UI
+            health_list = tmp.GetComponentsInChildren<RectTransform>();
+            if (health_list != null && health_list.Length != 0) health_list[8].gameObject.SetActive(false);
+            switch (diff)
+            {
+                case 1:
+                    health = 5;
+                    maxHealth = 5;
+                    break;
+                case 2:
+                    health = 3;
+                    maxHealth = 3;
+                    break;
+                case 3:
+                    health = 1;
+                    maxHealth = 1;
+                    break;
+                default:
+                    break;
+            }
         }
 
         if (!is_running)
@@ -537,7 +572,7 @@ public class GameManager : MonoBehaviour
                     ui_list[2].gameObject.SetActive(!ui_list[2].gameObject.activeSelf);
                 }
             }
-
+            updatehealth();
             if (boss_health <= 0) StartCoroutine(EndingCoroutine());
         }
 
@@ -574,6 +609,8 @@ public class GameManager : MonoBehaviour
             health = 5;
             key = 0;
             key_item = 0;
+            //diff = 1;
+            stage = 4;
             Time.timeScale = 1;
             is_running = true;
             speed = speed_for_boss_stage;

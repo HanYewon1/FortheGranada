@@ -47,21 +47,30 @@ public class gamedata : MonoBehaviour
         if (stage <= 3)
         {
             stage_scene = "Stage_" + stage;
+            if (!GameManager.Instance.is_ingame)
+            {
+                GameManager.Instance.is_ingame = true;
+            }
+            if (GameManager.Instance.is_boss)
+            {
+                GameManager.Instance.is_boss = false;
+            }
         }
         else
         {
             stage_scene = "Stage_Boss";
+            if (GameManager.Instance.is_ingame)
+            {
+                GameManager.Instance.is_ingame = false;
+            }
+            if (!GameManager.Instance.is_boss)
+            {
+                GameManager.Instance.is_boss = true;
+            }
         }
 
         Scene scene = SceneManager.GetSceneByName(stage_scene);
-        if (!GameManager.Instance.is_ingame)
-        {
-            GameManager.Instance.is_ingame = true;
-        }
-        if (GameManager.Instance.is_boss)
-        {
-            GameManager.Instance.is_boss = false;
-        }
+
         GameManager.Instance.is_running = true;
         GameManager.Instance.stage = stage;
         GameManager.Instance.diff = PlayerPrefs.GetInt("Diff");
@@ -79,17 +88,17 @@ public class gamedata : MonoBehaviour
         GameManager.Instance.stealth_item = PlayerPrefs.GetInt("StealthItem");
         GameManager.Instance.speed_item = PlayerPrefs.GetInt("SpeedItem");
         GameManager.Instance.haste_item = PlayerPrefs.GetInt("HasteItem");
-        if(GameManager.Instance.haste_item == 1)
+        if (GameManager.Instance.haste_item == 1)
         {
             GameManager.Instance.is_attacked_speed = true;
         }
         GameManager.Instance.preview_item = PlayerPrefs.GetInt("PreviewItem");
-        if(GameManager.Instance.preview_item == 1)
+        if (GameManager.Instance.preview_item == 1)
         {
             GameManager.Instance.is_preview = true;
         }
         GameManager.Instance.ressurection_item = PlayerPrefs.GetInt("RessurectionItem");
-        if(GameManager.Instance.ressurection_item == 1)
+        if (GameManager.Instance.ressurection_item == 1)
         {
             GameManager.Instance.is_ressurection = true;
         }
