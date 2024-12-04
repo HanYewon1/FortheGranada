@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class fire : MonoBehaviour
 {
@@ -19,6 +20,14 @@ public class fire : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             Debug.Log("FIRE!");
+            StartCoroutine(GameManager.Instance.pc.ChangeColor());
+            StartCoroutine(HIT());
         }
+    }
+
+    public IEnumerator HIT()
+    {
+        GameManager.Instance.health--;
+        yield return new WaitForSeconds(1f);
     }
 }

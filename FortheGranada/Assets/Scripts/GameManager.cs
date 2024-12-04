@@ -609,6 +609,8 @@ public class GameManager : MonoBehaviour
             health = 5;
             key = 0;
             key_item = 0;
+            //diff = 1;
+            stage = 4;
             Time.timeScale = 1;
             is_running = true;
             speed = speed_for_boss_stage;

@@ -151,7 +151,7 @@ public class playercontroller : MonoBehaviour
             is_door = false;
         }
     }
-    private IEnumerator ChangeColor()
+    public IEnumerator ChangeColor()
     {
         spriteRenderer.color = Color.red; //?��踝蕭?��踝蕭?��踝蕭?��踝蕭?��踝蕭 ?��踝蕭?��踝蕭
         yield return new WaitForSeconds(1f); //1?��褊蛛?��?��踝蕭 ?��踝蕭?��踝蕭
@@ -196,7 +196,6 @@ public class playercontroller : MonoBehaviour
             this.transform.position = this.transform.position + add_door_position;
             GameManager.Instance.sc.UpdateBorder();
         }
-
 
     }
 
