@@ -53,8 +53,8 @@ public class bosscontroller : MonoBehaviour
         jumpDuration = 3f;
         originalScale = transform.localScale;
         targetScale = originalScale * 1.2f; // 점프 시 커지는 효과
-        summonPoints = new Transform[31];
-        for (int i = 0; i < 31; i++)
+        summonPoints = new Transform[60];
+        for (int i = 0; i < 60; i++)
         {
             string positionname = "FIREPOSITION_" + i;
             summonPoints[i] = GameObject.Find(positionname).transform;
@@ -65,7 +65,7 @@ public class bosscontroller : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space)) // 스페이스 바 누르면 체력 100% 감소
         {
-            TakeDamage(100f);
+            TakeDamage(50f);
         }
         // 3초마다 랜덤 행동
         if (currentCoroutine == null)
@@ -78,7 +78,7 @@ public class bosscontroller : MonoBehaviour
         if (isPhase2 && !isFire)
         {
             isFire = true;
-            SummonFire();
+            StartCoroutine(SummonFire());
         }
     }
 
@@ -357,21 +357,29 @@ public class bosscontroller : MonoBehaviour
         }
     }
 
-    public void SummonFire()
+    private IEnumerator SummonFire()
     {
         SetIdle(false);
         PlayFireAnimation();
-        // for문으로 여러 개 생성, 이지, 노말은 반만 소환
-        if (GameManager.Instance.diff != 3)
+        yield return new WaitForSeconds(1f);
+        // for문으로 여러 개 생성, 이지, 노말, 도전 다 다르게 소환
+        if (GameManager.Instance.diff == 1)
         {
-            for (int j = 0; j < 31; j += 2)
+            for (int j = 0; j < 60; j += 2)
             {
                 Instantiate(firePrefab, summonPoints[j].position, Quaternion.identity);
             }
         }
-        else
+        else if (GameManager.Instance.diff == 2)
         {
-            for (int j = 0; j < 31; j++)
+            for (int j = 0; j < 45; j++)
+            {
+                Instantiate(firePrefab, summonPoints[j].position, Quaternion.identity);
+            }
+        }
+        else if (GameManager.Instance.diff == 3)
+        {
+            for (int j = 0; j < 60; j++)
             {
                 Instantiate(firePrefab, summonPoints[j].position, Quaternion.identity);
             }
