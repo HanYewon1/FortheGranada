@@ -109,15 +109,19 @@ public class bosscontroller : MonoBehaviour
     {
         GameManager.Instance.boss_health -= damage;
         GameManager.Instance.boss_health = Mathf.Clamp(GameManager.Instance.boss_health, 0, GameManager.Instance.boss_max_health); // 체력이 0보다 작아지면 0으로 보정
-        PlayHitAnimation();
-        Debug.Log($"Boss took {damage} damage! Remaining health: {GameManager.Instance.boss_max_health}");
+
         SetIdle(true); // 데미지 입으면 행동 중단
         UpdateHealthBar(); // 체력바 UI 업데이트
+
+        Debug.Log($"Boss took {damage} damage! Remaining health: {GameManager.Instance.boss_health}");
 
         if (GameManager.Instance.boss_health <= 0)
         {
             BossDie(); // 보스 사망 트리거 실행
+            return;
         }
+
+        PlayHitAnimation();
     }
 
     public void PlayHitAnimation()
@@ -189,9 +193,9 @@ public class bosscontroller : MonoBehaviour
 
     public void Dash()
     {
-        if (isDashing)
+        if (isDashing || isJumping)
         {
-            Debug.Log("Dash is already in progress, skipping...");
+            Debug.Log("Dashing(Jumping) is already in progress, skipping...");
             return;
         }
 
@@ -200,6 +204,7 @@ public class bosscontroller : MonoBehaviour
         PlayDashAnimation();
 
         Vector2 direction = (GameManager.Instance.player.position - transform.position).normalized;
+
         int dr = 0;
         dr = Random.Range(0, 2);
 
@@ -305,14 +310,13 @@ public class bosscontroller : MonoBehaviour
     private IEnumerator JumpCoroutine()
     {
         float timer = 0f;
-        SummonShadow();
-        // 올라가는 효과
-        PlayJumpAnimation();
+
+        SummonShadow(); // 그림자 생성
+        PlayJumpAnimation(); // 올라가는 효과
         while (timer < jumpDuration / 2)
         {
             timer += Time.deltaTime;
             float progress = timer / (jumpDuration / 2);
-
             // 크기 조정 (Z축 상승 효과)
             transform.localScale = Vector3.Lerp(originalScale, targetScale, progress);
             // 그림자 효과 업데이트
@@ -320,22 +324,20 @@ public class bosscontroller : MonoBehaviour
             yield return null;
         }
 
-        // 내려오는 효과
-        PlayLandingAnimation();
+        PlayLandingAnimation(); // 내려오는 효과
         timer = 0f;
         while (timer < jumpDuration / 2)
         {
             timer += Time.deltaTime;
             float progress = timer / (jumpDuration / 2);
-
             // 크기 복원
             transform.localScale = Vector3.Lerp(targetScale, originalScale, progress);
             // 그림자 효과 업데이트
             UpdateShadow(1f - progress);
-            DestroyShadow();
             yield return null;
         }
 
+        DestroyShadow();
         isJumping = false;
         SetIdle(true);
     }
@@ -409,6 +411,6 @@ public class bosscontroller : MonoBehaviour
         isDead = true; // 사망 상태로 설정
         animator.SetTrigger("DIE");
         //StartCoroutine(GameManager.Instance.EndingCoroutine());
-        Destroy(gameObject, 1.1f);
+        Destroy(gameObject, 0.8f);
     }
 }
