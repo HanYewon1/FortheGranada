@@ -26,6 +26,7 @@ public class bosscontroller : MonoBehaviour
     public GameObject shadowPrefab;
     public GameObject shadow;
     public Transform shadowTransform; // 그림자 오브젝트
+    public Transform summonPoint;
     public Transform[] summonPoints;
     private Coroutine currentCoroutine;
 
@@ -53,12 +54,14 @@ public class bosscontroller : MonoBehaviour
         jumpDuration = 3f;
         originalScale = transform.localScale;
         targetScale = originalScale * 1.2f; // 점프 시 커지는 효과
-        summonPoints = new Transform[60];
+        /*summonPoints = new Transform[60];
         for (int i = 0; i < 60; i++)
         {
             string positionname = "FIREPOSITION_" + i;
             summonPoints[i] = GameObject.Find(positionname).transform;
-        }
+        }*/
+        summonPoint = GameObject.Find("FIREPOSITIONS").GetComponent<Transform>();
+        summonPoints = summonPoint.GetComponentsInChildren<Transform>();
     }
 
     private void Update()
@@ -365,21 +368,21 @@ public class bosscontroller : MonoBehaviour
         // for문으로 여러 개 생성, 이지, 노말, 도전 다 다르게 소환
         if (GameManager.Instance.diff == 1)
         {
-            for (int j = 0; j < 60; j += 2)
+            for (int j = 1; j < 61; j += 2)
             {
                 Instantiate(firePrefab, summonPoints[j].position, Quaternion.identity);
             }
         }
         else if (GameManager.Instance.diff == 2)
         {
-            for (int j = 0; j < 45; j++)
+            for (int j = 1; j < 46; j++)
             {
                 Instantiate(firePrefab, summonPoints[j].position, Quaternion.identity);
             }
         }
         else if (GameManager.Instance.diff == 3)
         {
-            for (int j = 0; j < 60; j++)
+            for (int j = 1; j < 61; j++)
             {
                 Instantiate(firePrefab, summonPoints[j].position, Quaternion.identity);
             }
