@@ -49,9 +49,9 @@ public class bosscontroller : MonoBehaviour
         SetIdle(true);
         // 변수들 초기화, 도전 난이도면 다르게
         dashSpeed = 10f;
-        dashDuration = 4f;
+        dashDuration = 3f;
         jumpHeight = 1.5f;
-        jumpDuration = 3f;
+        jumpDuration = 2f;
         originalScale = transform.localScale;
         targetScale = originalScale * 1.2f; // 점프 시 커지는 효과
         /*summonPoints = new Transform[60];
@@ -139,13 +139,15 @@ public class bosscontroller : MonoBehaviour
     public void PlayJumpAnimation()
     {
         if (isDead) return;
-        animator.SetTrigger("JUMP");
+        animator.SetBool("ISJUMP", true);
+        animator.SetBool("ISLAND", false);
     }
 
     public void PlayLandingAnimation()
     {
         if (isDead) return;
-        animator.SetTrigger("LANDING");
+        animator.SetBool("ISJUMP", true);
+        animator.SetBool("ISLAND", true);
     }
 
     public void PlayFireAnimation()
@@ -156,8 +158,8 @@ public class bosscontroller : MonoBehaviour
 
     private IEnumerator RandomCoroutine()
     {
-        yield return new WaitForSeconds(8f);
-        // 8초 대기 후 아이들 상태면 랜덤 행동 실행
+        yield return new WaitForSeconds(6f);
+        // 6초 대기 후 아이들 상태면 랜덤 행동 실행
         if (IsIdle() && !isDashing && !isJumping)
         {
             int rr = Random.Range(1, 5);
@@ -166,10 +168,10 @@ public class bosscontroller : MonoBehaviour
             {
                 case 1:
                 case 2:
-                case 3:
                     Debug.Log("Executing Dash()");
                     Dash();
                     break;
+                case 3:
                 case 4:
                     Debug.Log("Executing Jump()");
                     Jump();
@@ -205,72 +207,15 @@ public class bosscontroller : MonoBehaviour
 
         Vector2 direction = (GameManager.Instance.player.position - transform.position).normalized;
 
-        int dr = 0;
-        dr = Random.Range(0, 2);
-
-        // 위, 왼쪽일 경우 2방향 중 랜덤으로 하나 선택
-        if (direction.y >= 0 && direction.x < 0)
+        if (Mathf.Abs(direction.y) > Mathf.Abs(direction.x))
         {
-            switch (dr)
-            {
-                case 0:
-                    animator.SetInteger("DIRECTION", 2);
-                    break;
-                case 1:
-                    animator.SetInteger("DIRECTION", 3);
-                    break;
-                default:
-                    Debug.LogError("Out Of Random Range");
-                    break;
-            }
+            if (direction.y > 0) animator.SetInteger("DIRECTION", 2); // Up
+            else animator.SetInteger("DIRECTION", 1); // Down
         }
-        // 아래, 왼쪽일 경우 2방향 중 랜덤으로 하나 선택
-        else if (direction.y < 0 && direction.x < 0)
-        {
-            switch (dr)
-            {
-                case 0:
-                    animator.SetInteger("DIRECTION", 1);
-                    break;
-                case 1:
-                    animator.SetInteger("DIRECTION", 3);
-                    break;
-                default:
-                    Debug.LogError("Out Of Random Range");
-                    break;
-            }
-        }
-        // 위, 오른쪽일 경우 2방향 중 랜덤으로 하나 선택
-        else if (direction.y >= 0 && direction.x >= 0)
-        {
-            switch (dr)
-            {
-                case 0:
-                    animator.SetInteger("DIRECTION", 2);
-                    break;
-                case 1:
-                    animator.SetInteger("DIRECTION", 4);
-                    break;
-                default:
-                    Debug.LogError("Out Of Random Range");
-                    break;
-            }
-        }
-        // 아래, 오른쪽일 경우 2방향 중 랜덤으로 하나 선택
         else
         {
-            switch (dr)
-            {
-                case 0:
-                    animator.SetInteger("DIRECTION", 1);
-                    break;
-                case 1:
-                    animator.SetInteger("DIRECTION", 4);
-                    break;
-                default:
-                    Debug.LogError("Out Of Random Range");
-                    break;
-            }
+            if (direction.x > 0) animator.SetInteger("DIRECTION", 4); // Right
+            else animator.SetInteger("DIRECTION", 3); // Left
         }
 
         dashDirection = direction;
@@ -292,8 +237,9 @@ public class bosscontroller : MonoBehaviour
 
             timer += Time.deltaTime;
             yield return null;
-            if (IsIdle() == true) break;
+            //if (IsIdle() == true) break;
         }
+
         animator.SetBool("ISDASH", false);
         isDashing = false;
         SetIdle(true);
@@ -301,7 +247,7 @@ public class bosscontroller : MonoBehaviour
 
     public void Jump()
     {
-        if (isJumping) return;
+        if (isJumping || isDashing) return;
         SetIdle(false);
         isJumping = true;
         StartCoroutine(JumpCoroutine());
@@ -320,11 +266,14 @@ public class bosscontroller : MonoBehaviour
             // 크기 조정 (Z축 상승 효과)
             transform.localScale = Vector3.Lerp(originalScale, targetScale, progress);
             // 그림자 효과 업데이트
-            UpdateShadow(progress);
+            //UpdateShadow(progress);
             yield return null;
         }
 
+        yield return new WaitForSeconds(1f);
+
         PlayLandingAnimation(); // 내려오는 효과
+        UpdateShadow(0);
         timer = 0f;
         while (timer < jumpDuration / 2)
         {
@@ -333,24 +282,27 @@ public class bosscontroller : MonoBehaviour
             // 크기 복원
             transform.localScale = Vector3.Lerp(targetScale, originalScale, progress);
             // 그림자 효과 업데이트
-            UpdateShadow(1f - progress);
+            //UpdateShadow(1f - progress);
             yield return null;
         }
 
         DestroyShadow();
         isJumping = false;
+        animator.SetBool("ISJUMP", false);
+        animator.SetBool("ISLAND", false);
         SetIdle(true);
     }
 
     public void UpdateShadow(float heightPercentage)
     {
         // 그림자 크기 축소
-        float shadowScale = Mathf.Lerp(maxShadowScale, 1f, heightPercentage);
-        shadowTransform.localScale = new Vector3(shadowScale, shadowScale, 1f);
+        //float shadowScale = Mathf.Lerp(maxShadowScale, 1f, heightPercentage);
+        //shadowTransform.localScale = new Vector3(shadowScale, shadowScale, 1f);
 
         // 그림자 위치 변경
-        float shadowOffset = Mathf.Lerp(maxShadowOffset, 0f, heightPercentage);
-        shadowTransform.localPosition = new Vector3(shadowTransform.localPosition.x, -shadowOffset, 0f);
+        //float shadowOffset = Mathf.Lerp(maxShadowOffset, 0f, heightPercentage);
+        //shadowTransform.localPosition = new Vector3(shadowTransform.localPosition.x, -shadowOffset, 0f);
+        StartCoroutine(WaitPointSeconds());
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -392,14 +344,27 @@ public class bosscontroller : MonoBehaviour
         SetIdle(true);
     }
 
+    private IEnumerator WaitPointSeconds()
+    {
+        yield return new WaitForSeconds(1.2f);
+        shadow.GetComponent<SpriteRenderer>().color = Color.red;
+        shadow.GetComponent<shadow>().isHot = true;
+    }
+
     public void SummonShadow()
     {
+        //Debug.Log("SummonShadow method called");
+        //Debug.Log(shadowPrefab == null ? "shadowPrefab is null" : "shadowPrefab is assigned");
+
         shadow = Instantiate(shadowPrefab, transform.position, Quaternion.identity);
+        shadow.transform.parent = null; // 부모 설정 해제
+        //Debug.Log(shadow == null ? "Shadow instantiation failed" : "Shadow instantiated successfully");
     }
 
     public void DestroyShadow()
     {
-        Destroy(shadow, 0.5f);
+        Destroy(shadow, 0.3f);
+        //Debug.Log("DestroyShadow method called");
     }
 
     private void BossDie()
