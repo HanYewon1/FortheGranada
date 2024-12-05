@@ -24,9 +24,9 @@ public class playercontroller : MonoBehaviour
     float player_y;//??��踝蕭??��踝蕭 ???鴔�?
 
     bool isDead = false;
-    bool is_door;
+    public bool is_door;
     bool is_horizon_move; //4방향 결정
-
+    bool is_finish;
 
     private void Awake()
     {
@@ -108,36 +108,37 @@ public class playercontroller : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerStay2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Weapon"))
             StartCoroutine(ChangeColor());
 
         if (collision.tag == "Door")
         {
+            is_door = true;
             next_room_x = room_x;
             next_room_y = room_y;
             is_door = true;
-            Debug.Log("door: " + is_door);
+            Debug.Log(collision.name + " : " + is_door);
             if (collision.name == "door_up")
             {
                 next_room_y = room_y - 1;
-                add_door_position = new Vector3(0, 7, 0);
+                add_door_position = new Vector3(0, 7.2f, 0);
             }
             else if (collision.name == "door_down")
             {
                 next_room_y = room_y + 1;
-                add_door_position = new Vector3(0, -7, 0);
+                add_door_position = new Vector3(0, -7.2f, 0);
             }
             else if (collision.name == "door_right")
             {
                 next_room_x = room_x + 1;
-                add_door_position = new Vector3(7, 0, 0);
-            }
+                add_door_position = new Vector3(7.2f, 0, 0);
+            }   
             else if (collision.name == "door_left")
             {
                 next_room_x = room_x - 1;
-                add_door_position = new Vector3(-7, 0, 0);
+                add_door_position = new Vector3(-7.2f, 0, 0);
             }
 
         }
@@ -175,6 +176,8 @@ public class playercontroller : MonoBehaviour
     void useDoor()
     {
         Debug.Log("use_door: " + is_door);
+        Debug.Log("current door: " + room_y + " " + room_x);
+        Debug.Log("next door: " + next_room_y + " " + next_room_x);
         if (is_door)
         {
             string minimap_current_room = minimap_name + room_y + room_x;
@@ -183,12 +186,22 @@ public class playercontroller : MonoBehaviour
             Debug.Log(minimap_next_room);
             GameObject minimap_image = GameObject.Find(minimap_current_room);
             Image image = minimap_image.GetComponent<Image>();
-            if (image.color != Color.blue)
+            if (is_finish)
+            {
+                image.color = Color.blue;
+                is_finish = false;
+            }
+            else
             {
                 image.color = Color.white;
             }
             minimap_image = GameObject.Find(minimap_next_room);
             image = minimap_image.GetComponent<Image>();
+            if(image.color == Color.blue)
+            {
+                is_finish = true;
+            }
+           
             image.color = Color.red;
             room_x = next_room_x;
             room_y = next_room_y;
