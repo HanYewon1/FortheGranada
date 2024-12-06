@@ -55,16 +55,31 @@ public class bosscontroller : MonoBehaviour
         if (GameManager.Instance.diff == 3)
         {
             dashSpeed = 50f;
-            jumpDuration = 1.7f;
         }
         else
         {
             dashSpeed = 40f;
-            jumpDuration = 2f;
+
         }
+        jumpDuration = 2f;
         dashDuration = 3f;
         jumpHeight = 1.5f;
-
+        GameManager.Instance.health_item = 0;
+        switch (GameManager.Instance.diff)
+        {
+            case 1:
+                GameManager.Instance.maxHealth = 5;
+                break;
+            case 2:
+                GameManager.Instance.maxHealth = 3;
+                break;
+            case 3:
+                GameManager.Instance.maxHealth = 1;
+                break;
+            default:
+                Debug.Log("Out of Diff");
+                break;
+        }
         originalScale = transform.localScale;
         targetScale = originalScale * 1.2f; // 점프 시 커지는 효과
         /*summonPoints = new Transform[60];
@@ -147,6 +162,8 @@ public class bosscontroller : MonoBehaviour
         animator.SetBool("ISDASH", false);
         animator.SetBool("ISJUMP", false);
         animator.SetBool("ISLAND", false);
+        isDashing = false;
+        isJumping = false;
 
         SetIdle(true);
     }
@@ -180,6 +197,12 @@ public class bosscontroller : MonoBehaviour
     public void PlayFireAnimation()
     {
         if (isDead) return;
+        animator.SetBool("ISDASH", false);
+        animator.SetBool("ISJUMP", false);
+        animator.SetBool("ISLAND", false);
+        isDashing = false;
+        isJumping = false;
+
         animator.SetTrigger("FIRE");
     }
 
@@ -286,11 +309,15 @@ public class bosscontroller : MonoBehaviour
 
         SummonShadow(); // 그림자 생성
         PlayJumpAnimation(); // 올라가는 효과
-        yield return new WaitForSeconds(0.25f);
+        //yield return new WaitForSeconds(0.25f);
+        Vector3 originposition = transform.position;
         while (timer < jumpDuration / 2)
         {
             timer += Time.deltaTime;
-            float progress = timer / (jumpDuration / 2);
+            originposition.y += 1.1f * Time.deltaTime;
+            transform.position = originposition;
+
+            //float progress = timer / (jumpDuration / 2);
             // 크기 조정 (Z축 상승 효과)
             //transform.localScale = Vector3.Lerp(originalScale, targetScale, progress);
             // 그림자 효과 업데이트
@@ -298,7 +325,14 @@ public class bosscontroller : MonoBehaviour
             yield return null;
         }
 
-        yield return new WaitForSeconds(0.75f);
+        if (GameManager.Instance.diff == 3)
+        {
+            yield return new WaitForSeconds(1f);
+        }
+        else
+        {
+            yield return new WaitForSeconds(1.5f);
+        }
 
         PlayLandingAnimation(); // 내려오는 효과
         UpdateShadow(0);
@@ -306,7 +340,10 @@ public class bosscontroller : MonoBehaviour
         while (timer < jumpDuration / 2)
         {
             timer += Time.deltaTime;
-            float progress = timer / (jumpDuration / 2);
+            originposition.y += -1.1f * Time.deltaTime;
+            transform.position = originposition;
+
+            //float progress = timer / (jumpDuration / 2);
             // 크기 복원
             //transform.localScale = Vector3.Lerp(targetScale, originalScale, progress);
             // 그림자 효과 업데이트
@@ -428,14 +465,7 @@ public class bosscontroller : MonoBehaviour
 
     private IEnumerator WaitPointSeconds()
     {
-        if (GameManager.Instance.diff == 3)
-        {
-            yield return new WaitForSeconds(0.85f);
-        }
-        else
-        {
-            yield return new WaitForSeconds(1f);
-        }
+        yield return new WaitForSeconds(1f);
         shadow.GetComponent<SpriteRenderer>().color = Color.red;
         shadow.GetComponent<shadow>().isHot = true;
     }
