@@ -1027,43 +1027,10 @@ Transform:
   - {fileID: 3751403672992500580}
   - {fileID: 7600270730670242344}
   - {fileID: 6433169888528060453}
-  - {fileID: 4139310697149615565}
   - {fileID: 1803730249756671209}
   - {fileID: 4372757301988860622}
   - {fileID: 1415456141623146200}
-  - {fileID: 2233063530730898930}
   m_Father: {fileID: 913356076024679797}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1976234752076137455
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 4139310697149615565}
-  m_Layer: 0
-  m_Name: npc2_point4
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &4139310697149615565
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1976234752076137455}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -13, y: -14, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 8719365583604354070}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2232782736094134537
 GameObject:
@@ -16611,37 +16578,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 8719365583604354070}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &7212753892001159415
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2233063530730898930}
-  m_Layer: 0
-  m_Name: npc3_point4
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2233063530730898930
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7212753892001159415}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 14, y: 13.5, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 8719365583604354070}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7986664150051876378
 GameObject:
   m_ObjectHideFlags: 0
@@ -16788,6 +16724,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: NPC
       objectReference: {fileID: 0}
+    - target: {fileID: 4960697140862555050, guid: 71fac40c8161f974594d34ec546caace, type: 3}
+      propertyPath: viewMeshFilter
+      value: 
+      objectReference: {fileID: 226997396008658537}
     - target: {fileID: 9014346470871398516, guid: 71fac40c8161f974594d34ec546caace, type: 3}
       propertyPath: m_LocalPosition.x
       value: -3.0905762
@@ -16834,17 +16774,28 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 4347180254935871372, guid: 71fac40c8161f974594d34ec546caace, type: 3}
       insertIndex: -1
+<<<<<<< Updated upstream
       addedObject: {fileID: 3427825879437650946}
     - targetCorrespondingSourceObject: {fileID: 4347180254935871372, guid: 71fac40c8161f974594d34ec546caace, type: 3}
       insertIndex: -1
       addedObject: {fileID: 9183917269913516874}
+=======
+      addedObject: {fileID: 226997396008658537}
+    - targetCorrespondingSourceObject: {fileID: 4347180254935871372, guid: 71fac40c8161f974594d34ec546caace, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6116526635329546625}
+>>>>>>> Stashed changes
   m_SourcePrefab: {fileID: 100100000, guid: 71fac40c8161f974594d34ec546caace, type: 3}
 --- !u!1 &4571216215464069806 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4347180254935871372, guid: 71fac40c8161f974594d34ec546caace, type: 3}
   m_PrefabInstance: {fileID: 226430699135477026}
   m_PrefabAsset: {fileID: 0}
+<<<<<<< Updated upstream
 --- !u!33 &3427825879437650946
+=======
+--- !u!33 &226997396008658537
+>>>>>>> Stashed changes
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -16852,7 +16803,11 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4571216215464069806}
   m_Mesh: {fileID: 0}
+<<<<<<< Updated upstream
 --- !u!23 &9183917269913516874
+=======
+--- !u!23 &6116526635329546625
+>>>>>>> Stashed changes
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -16921,7 +16876,7 @@ PrefabInstance:
     - target: {fileID: 727517812736290635, guid: 71fac40c8161f974594d34ec546caace, type: 3}
       propertyPath: 'points.Array.data[1]'
       value: 
-      objectReference: {fileID: 7212753892001159415}
+      objectReference: {fileID: 6425349619382057347}
     - target: {fileID: 727517812736290635, guid: 71fac40c8161f974594d34ec546caace, type: 3}
       propertyPath: 'points.Array.data[2]'
       value: 
@@ -16934,6 +16889,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: NPC (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 4960697140862555050, guid: 71fac40c8161f974594d34ec546caace, type: 3}
+      propertyPath: viewMeshFilter
+      value: 
+      objectReference: {fileID: 542069493475267682}
     - target: {fileID: 9014346470871398516, guid: 71fac40c8161f974594d34ec546caace, type: 3}
       propertyPath: m_LocalPosition.x
       value: 14
@@ -16980,17 +16939,28 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 4347180254935871372, guid: 71fac40c8161f974594d34ec546caace, type: 3}
       insertIndex: -1
+<<<<<<< Updated upstream
       addedObject: {fileID: 5539888403312456452}
     - targetCorrespondingSourceObject: {fileID: 4347180254935871372, guid: 71fac40c8161f974594d34ec546caace, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8188619423182142447}
+=======
+      addedObject: {fileID: 542069493475267682}
+    - targetCorrespondingSourceObject: {fileID: 4347180254935871372, guid: 71fac40c8161f974594d34ec546caace, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7533585196288148259}
+>>>>>>> Stashed changes
   m_SourcePrefab: {fileID: 100100000, guid: 71fac40c8161f974594d34ec546caace, type: 3}
 --- !u!1 &2907968229538444096 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4347180254935871372, guid: 71fac40c8161f974594d34ec546caace, type: 3}
   m_PrefabInstance: {fileID: 1445484894179941580}
   m_PrefabAsset: {fileID: 0}
+<<<<<<< Updated upstream
 --- !u!33 &5539888403312456452
+=======
+--- !u!33 &542069493475267682
+>>>>>>> Stashed changes
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -16998,7 +16968,11 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2907968229538444096}
   m_Mesh: {fileID: 0}
+<<<<<<< Updated upstream
 --- !u!23 &8188619423182142447
+=======
+--- !u!23 &7533585196288148259
+>>>>>>> Stashed changes
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -17075,11 +17049,15 @@ PrefabInstance:
     - target: {fileID: 727517812736290635, guid: 71fac40c8161f974594d34ec546caace, type: 3}
       propertyPath: 'points.Array.data[3]'
       value: 
-      objectReference: {fileID: 1976234752076137455}
+      objectReference: {fileID: 8803715064432833638}
     - target: {fileID: 4487441435574536890, guid: 71fac40c8161f974594d34ec546caace, type: 3}
       propertyPath: m_Name
       value: NPC (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 4960697140862555050, guid: 71fac40c8161f974594d34ec546caace, type: 3}
+      propertyPath: viewMeshFilter
+      value: 
+      objectReference: {fileID: 5054569575752161858}
     - target: {fileID: 9014346470871398516, guid: 71fac40c8161f974594d34ec546caace, type: 3}
       propertyPath: m_LocalPosition.x
       value: -13
@@ -17126,10 +17104,17 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 4347180254935871372, guid: 71fac40c8161f974594d34ec546caace, type: 3}
       insertIndex: -1
+<<<<<<< Updated upstream
       addedObject: {fileID: 2508886200646326766}
     - targetCorrespondingSourceObject: {fileID: 4347180254935871372, guid: 71fac40c8161f974594d34ec546caace, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6067935978663775485}
+=======
+      addedObject: {fileID: 5054569575752161858}
+    - targetCorrespondingSourceObject: {fileID: 4347180254935871372, guid: 71fac40c8161f974594d34ec546caace, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 959426176358327374}
+>>>>>>> Stashed changes
   m_SourcePrefab: {fileID: 100100000, guid: 71fac40c8161f974594d34ec546caace, type: 3}
 --- !u!4 &4529480311533370338 stripped
 Transform:
@@ -17141,7 +17126,11 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 4347180254935871372, guid: 71fac40c8161f974594d34ec546caace, type: 3}
   m_PrefabInstance: {fileID: 4882629884385919894}
   m_PrefabAsset: {fileID: 0}
+<<<<<<< Updated upstream
 --- !u!33 &2508886200646326766
+=======
+--- !u!33 &5054569575752161858
+>>>>>>> Stashed changes
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -17149,7 +17138,11 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9193781337336376346}
   m_Mesh: {fileID: 0}
+<<<<<<< Updated upstream
 --- !u!23 &6067935978663775485
+=======
+--- !u!23 &959426176358327374
+>>>>>>> Stashed changes
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
