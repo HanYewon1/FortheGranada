@@ -70,6 +70,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55a86ee9bd6f38045b1582807ad1ec2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  deadSprite: {fileID: 0}
+  room_x: 0
+  room_y: 0
+  next_room_x: 0
+  next_room_y: 0
+  minimap_name: 
 --- !u!50 &4638608191567833636
 Rigidbody2D:
   serializedVersion: 5
@@ -95,7 +101,7 @@ Rigidbody2D:
     m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!212 &4330735918457703927
 SpriteRenderer:

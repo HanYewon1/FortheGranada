@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using Unity.VisualScripting;
+using System.Collections;
 
 public class inneritem : MonoBehaviour
 {
@@ -21,13 +22,14 @@ public class inneritem : MonoBehaviour
     Color darkerColor;
     float darkenAmount;
     float newPPU;
+    public bool isGet = false;
 
     private void Awake()
     {
         itemnumber = 10;
         SR = GetComponent<SpriteRenderer>();
-        if (SR != null) originalColor = SR.color; // ¿ø·¡ »ö
-        darkenAmount = 0f; // ¾îµÓ°Ô ÇÒ Á¤µµ (0: ¿ø·¡ »ö, 1: ¿ÏÀüÈ÷ °ËÀº»ö, 0.5: ¹Ý¸¸ ¾îµÎ¿öÁü)
+        if (SR != null) originalColor = SR.color; // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
+        darkenAmount = 0f; // ï¿½ï¿½Ó°ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ (0: ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½, 1: ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½, 0.5: ï¿½Ý¸ï¿½ ï¿½ï¿½Î¿ï¿½ï¿½ï¿½)
         Alpha0();
     }
 
@@ -47,8 +49,9 @@ public class inneritem : MonoBehaviour
             //sprite.texture.filterMode = FilterMode.Point;
             item = GameManager.Instance.im.itemlist[itemnumber];
             if (SR != null) SR.sprite = item.GetItemSprite;
-            transform.localScale = new Vector3(0.1f, 0.1f, 1f); // Å©±â Á¶Á¤
+            transform.localScale = new Vector3(0.1f, 0.1f, 1f); // Å©ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         }
+        if (isGet) StartCoroutine(HIDEITEM());
     }
 
     public void Alpha0()
@@ -57,7 +60,7 @@ public class inneritem : MonoBehaviour
             originalColor.r * (1 - darkenAmount),
             originalColor.g * (1 - darkenAmount),
             originalColor.b * (1 - darkenAmount),
-            0 // ¾ËÆÄ°ª º¯°æ(originalColor.a)
+            0 // ï¿½ï¿½ï¿½Ä°ï¿½ ï¿½ï¿½ï¿½ï¿½(originalColor.a)
         );
         if (SR != null) SR.color = darkerColor;
     }
@@ -68,13 +71,19 @@ public class inneritem : MonoBehaviour
             originalColor.r * (1 - darkenAmount),
             originalColor.g * (1 - darkenAmount),
             originalColor.b * (1 - darkenAmount),
-            255 // ¾ËÆÄ°ª º¯°æ(originalColor.a)
+            255 // ï¿½ï¿½ï¿½Ä°ï¿½ ï¿½ï¿½ï¿½ï¿½(originalColor.a)
             );
         if (SR != null) SR.color = darkerColor;
     }
 
-    /*Color originalColor = spriteRenderer.color; // »óÀÚ ¿ø·¡ »ö
-    float darkenFactor = 0.1f; // ¾îµÎ¿öÁö´Â Á¤µµ (0: ¿ø·¡ »ö, 1: ¿ÏÀüÈ÷ °ËÀº»ö, 0.5: ¹Ý¸¸ ¾îµÎ¿öÁü)
-    Color darkerColor = Color.Lerp(originalColor, Color.black, darkenFactor); // ·¯ÇÁ·Î ¹Ý¸¸ ¾îµÎ¿öÁö°Ô ÇÔ
-    spriteRenderer.color = darkerColor; // »ö Àû¿ë*/
+    public IEnumerator HIDEITEM()
+    {
+        yield return new WaitForSeconds(3f);
+        gameObject.SetActive(false);
+    }
+
+    /*Color originalColor = spriteRenderer.color; // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
+    float darkenFactor = 0.1f; // ï¿½ï¿½Î¿ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ (0: ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½, 1: ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½, 0.5: ï¿½Ý¸ï¿½ ï¿½ï¿½Î¿ï¿½ï¿½ï¿½)
+    Color darkerColor = Color.Lerp(originalColor, Color.black, darkenFactor); // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ý¸ï¿½ ï¿½ï¿½Î¿ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
+    spriteRenderer.color = darkerColor; // ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½*/
 }

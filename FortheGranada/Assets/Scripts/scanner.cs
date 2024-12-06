@@ -3,10 +3,10 @@ using UnityEngine;
 public class scanner : MonoBehaviour
 {
     public BoxCollider2D boxCollider;
-    [SerializeField] private Vector2 mapMin = Vector2.zero; // ÇöÀç °æ°è ÃÖ¼Ò ÁÂÇ¥
-    [SerializeField] private Vector2 mapMax = Vector2.zero; // ÇöÀç °æ°è ÃÖ´ë ÁÂÇ¥
-    [SerializeField] private bool hasBorders = false;      // °æ°è°ª À¯È¿ ¿©ºÎ
-    //[SerializeField] private Transform player;             // ÇÃ·¹ÀÌ¾î Transform
+    [SerializeField] private Vector2 mapMin = Vector2.zero; // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½Ö¼ï¿½ ï¿½ï¿½Ç¥
+    [SerializeField] private Vector2 mapMax = Vector2.zero; // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½Ç¥
+    [SerializeField] private bool hasBorders = false;      // ï¿½ï¿½è°ª ï¿½ï¿½È¿ ï¿½ï¿½ï¿½ï¿½
+    //[SerializeField] private Transform player;             // ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ Transform
 
     private void Awake()
     {
@@ -20,27 +20,27 @@ public class scanner : MonoBehaviour
 
     private void ResizeBoxCollider()
     {
-        // ÇØ»óµµ¿¡ µû¸¥ ºñÀ² °è»ê
-        float widthRatio = Screen.width / 1920f; // ±âÁØ ÇØ»óµµ: 1920
-        float heightRatio = Screen.height / 1080f; // ±âÁØ ÇØ»óµµ: 1080
+        // ï¿½Ø»óµµ¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
+        float widthRatio = Screen.width / 1920f; // ï¿½ï¿½ï¿½ï¿½ ï¿½Ø»ï¿½: 1920
+        float heightRatio = Screen.height / 1080f; // ï¿½ï¿½ï¿½ï¿½ ï¿½Ø»ï¿½: 1080
         float offset = (Screen.width <= 1024 || Screen.height <= 768) ? 1.4f : 1f;
 
-        // BoxCollider Å©±â Á¶Á¤
+        // BoxCollider Å©ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         boxCollider.size = new Vector2(
             boxCollider.size.x * widthRatio * offset,
             boxCollider.size.y * heightRatio * offset
         );
     }
 
-    private void Update()
+    public void UpdateBorder()
     {
         if (GameManager.Instance.player == null) return;
 
-        // ¸ðµç Border ÅÂ±×¸¦ °¡Áø °´Ã¼ °Ë»ö
+        // ï¿½ï¿½ï¿½ Border ï¿½Â±×¸ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ã¼ ï¿½Ë»ï¿½
         GameObject[] borders = GameObject.FindGameObjectsWithTag("border");
         if (borders.Length == 0) return;
 
-        // °¡Àå °¡±î¿î Border Ã£±â
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ Border Ã£ï¿½ï¿½
         float shortestDistance = float.MaxValue;
         GameObject nearestBorder = null;
 
@@ -54,7 +54,7 @@ public class scanner : MonoBehaviour
             }
         }
 
-        // °¡±î¿î BorderÀÇ Bounds¸¦ »ç¿ëÇÏ¿© °æ°è ¾÷µ¥ÀÌÆ®
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ Borderï¿½ï¿½ Boundsï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
         if (nearestBorder != null)
         {
             Collider2D borderCollider = nearestBorder.GetComponent<Collider2D>();
@@ -68,19 +68,19 @@ public class scanner : MonoBehaviour
         }
     }
 
-    // ÃÖ¼Ò/ÃÖ´ë ÁÂÇ¥ ¹ÝÈ¯ ¸Þ¼­µå
+    // ï¿½Ö¼ï¿½/ï¿½Ö´ï¿½ ï¿½ï¿½Ç¥ ï¿½ï¿½È¯ ï¿½Þ¼ï¿½ï¿½ï¿½
     public Vector2 GetMapMin() => mapMin;
     public Vector2 GetMapMax() => mapMax;
     public bool HasValidBorders() => hasBorders;
 
-    // µð¹ö±×: °æ°è¸¦ ½Ã°¢È­
+    // ï¿½ï¿½ï¿½ï¿½ï¿½: ï¿½ï¿½è¸¦ ï¿½Ã°ï¿½È­
     private void OnDrawGizmos()
     {
         if (hasBorders)
         {
             Gizmos.color = Color.red;
 
-            // °æ°è »ç°¢Çü ±×¸®±â
+            // ï¿½ï¿½ï¿½ ï¿½ç°¢ï¿½ï¿½ ï¿½×¸ï¿½ï¿½ï¿½
             Gizmos.DrawLine(new Vector3(mapMin.x, mapMin.y, 0), new Vector3(mapMax.x, mapMin.y, 0));
             Gizmos.DrawLine(new Vector3(mapMax.x, mapMin.y, 0), new Vector3(mapMax.x, mapMax.y, 0));
             Gizmos.DrawLine(new Vector3(mapMax.x, mapMax.y, 0), new Vector3(mapMin.x, mapMax.y, 0));
