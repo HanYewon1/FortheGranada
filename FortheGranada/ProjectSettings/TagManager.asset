@@ -14,7 +14,6 @@ TagManager:
   - Boss
   - Block
   - Fire
-  - Item
   layers:
   - Default
   - TransparentFX

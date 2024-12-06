@@ -86,11 +86,6 @@ public class MapManager : MonoBehaviour
     }
     void CreateMap(int stage_num)
     {
-        isCreate = true;
-        if(stage_num == 0)
-        {
-            return;
-        }
         if(diff == 3)
         {
             stage_num++;
@@ -203,14 +198,12 @@ public class MapManager : MonoBehaviour
             }
             if (room == 11)
             {
-                Debug.Log("start_room : " + x + " " + y);
                 image.color = Color.red;
                 player.transform.position = position;
                 playercontroller player_controller = player.GetComponent<playercontroller>();
                 player_controller.room_x = x;
                 player_controller.room_y = y;
                 player_controller.minimap_name = minimap_name + "/Image ";
-                player_controller.is_door = false;
             }
             if(room == 12)
             {
