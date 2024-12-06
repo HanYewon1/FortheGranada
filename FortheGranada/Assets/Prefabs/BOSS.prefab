@@ -48,6 +48,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 570061071c14c254ea2d61d049b87496, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bossrb: {fileID: 0}
+  dashSpeed: 20
+  dashDuration: 0.3
+  jumpHeight: 1.5
+  jumpDuration: 0.5
+  damageAmount: 5
+  maxShadowScale: 1.5
+  maxShadowOffset: 0.5
+  firePrefab: {fileID: 4708015290378751667, guid: 3f8c9b2f50eb5414bb6b4cf6b81fa332, type: 3}
+  pointPrefab: {fileID: 1436547059425348061, guid: ffdaa4f6242a65541b5fd5f5b357ed0c, type: 3}
+  shadowPrefab: {fileID: 5717605662179292968, guid: 54782816a4f34e34cbfeda7628995388, type: 3}
+  shadow: {fileID: 0}
+  shadowTransform: {fileID: 8931393433045413605, guid: 54782816a4f34e34cbfeda7628995388, type: 3}
+  summonPoint: {fileID: 0}
+  summonPoints: []
 --- !u!212 &8870712566619787963
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -111,14 +126,14 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 447631642540538893}
-  m_BodyType: 2
+  m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 100000
   m_LinearDamping: 0
   m_AngularDamping: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -129,7 +144,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!61 &6877142455471662975
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -164,7 +179,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: -0.15}
+  m_Offset: {x: 0, y: -0.17}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -174,7 +189,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.8, y: 0.8}
+  m_Size: {x: 0.6, y: 0.65}
   m_EdgeRadius: 0
 --- !u!95 &7861584605498713639
 Animator:

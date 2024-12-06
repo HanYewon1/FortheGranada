@@ -7,17 +7,18 @@ public class itemboxcontroller : MonoBehaviour
     public bool isOpen;
     public Sprite[] ItemBoxSprites;
     public inneritem ii;
+    public Rigidbody2D otherrb;
     SpriteRenderer spriteRenderer;
+    public Vector3 pushForce; // ë°€ì³ë‚´ëŠ” í˜ì˜ í¬ê¸°
+    public Vector3 pushDirection;
+    public Vector2 V2;
 
     private void Awake()
     {
-        Object[] sprites = Resources.LoadAll("FDR_Dungeon");
         spriteRenderer = GetComponent<SpriteRenderer>();
-        ItemBoxSprites = new Sprite[2];
-        ItemBoxSprites[0] = sprites[535] as Sprite;
-        ItemBoxSprites[1] = sprites[536] as Sprite;
-        spriteRenderer.sprite = ItemBoxSprites[0]; // »óÀÚ ´İÈù »óÅÂ·Î ½ÃÀÛ
+        spriteRenderer.sprite = ItemBoxSprites[0]; // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Â·ï¿½ ï¿½ï¿½ï¿½ï¿½
         ii = GetComponentInChildren<inneritem>(true);
+        pushForce = new Vector3(-50, -50, 0);
     }
     private void Update()
     {
@@ -30,22 +31,52 @@ public class itemboxcontroller : MonoBehaviour
 
     void IsItemBoxOpen()
     {
-        // ¾ÆÀÌÅÛ »óÀÚ ¿­·ÈÀ» °æ¿ì
-        if (isOpen) // »óÀÚ ¿­¸®¸é
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
+        if (isOpen) // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         {
-            spriteRenderer.sprite = ItemBoxSprites[1]; // »óÀÚ ¿­¸° sprite·Î º¯°æ
+            spriteRenderer.sprite = ItemBoxSprites[1]; // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ spriteï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         }
     }
 
     void IsPossible()
     {
-        if (!isOpen && GameManager.Instance.is_catch && !GameManager.Instance.is_delay) // ¾ÆÀÌÅÛ »óÀÚ°¡ È°¼ºÈ­µÈ °æ¿ì
+        if (!isOpen && GameManager.Instance.is_catch && !GameManager.Instance.is_delay) // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ú°ï¿½ È°ï¿½ï¿½È­ï¿½ï¿½ ï¿½ï¿½ï¿½
         {
-            spriteRenderer.color = Color.white; // »óÀÚ»ö ÇÏ¾á»öÀ¸·Î º¯°æ
+            spriteRenderer.color = Color.white; // ï¿½ï¿½ï¿½Ú»ï¿½ ï¿½Ï¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         }
-        else if (!isOpen && (!GameManager.Instance.is_catch || GameManager.Instance.is_delay))// ¾ÆÀÌÅÛ »óÀÚ°¡ ºñÈ°¼ºÈ­µÈ °æ¿ì
+        else if (!isOpen && (!GameManager.Instance.is_catch || GameManager.Instance.is_delay))// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ú°ï¿½ ï¿½ï¿½È°ï¿½ï¿½È­ï¿½ï¿½ ï¿½ï¿½ï¿½
         {
             spriteRenderer.color = Color.gray;
+        }
+    }
+
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        otherrb = collision.rigidbody;
+
+        if (collision.gameObject.CompareTag("Player") && GameManager.Instance.is_delay)
+        {
+            // ë°€ì³ë‚´ëŠ” ë°©í–¥ ê³„ì‚°
+            //pushDirection = (collision.transform.position - transform.position).normalized;           
+            //V2 = (Vector2)Vector3.Scale(pushDirection, pushForce);
+            // í˜ ì ìš©
+            //otherrb.AddForce(V2, ForceMode2D.Impulse);
+            //otherrb.linearVelocity = new Vector3(pushDirection.x + pushForce, pushDirection.y + pushForce, 0);
+
+            // ë°€ì¹˜ëŠ” ë°©í–¥ ê³„ì‚°
+            Vector3 pushDirection = (collision.transform.position - transform.position).normalized;
+
+            // ë°€ì–´ë‚´ëŠ” í˜ì˜ í¬ê¸°ë¥¼ ê³±í•˜ì—¬ ìƒˆë¡œìš´ ìœ„ì¹˜ ê³„ì‚°
+            Vector2 newPosition = otherrb.position + (Vector2)pushDirection * 2f;
+
+            // Rigidbody2Dì˜ ìœ„ì¹˜ ì´ë™
+            otherrb.MovePosition(newPosition);
+
+            // ë””ë²„ê·¸ ì¶œë ¥
+            Debug.Log($"Player moved to: {newPosition}");
+
+            //Debug.Log($"PUSH! Direction: {pushDirection}, Force: {V2}, Magnitude: {V2.magnitude}");
+            //Debug.Log($"Player Velocity: {otherrb.linearVelocity}");
         }
     }
 }

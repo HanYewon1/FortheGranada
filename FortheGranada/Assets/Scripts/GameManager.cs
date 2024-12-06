@@ -95,6 +95,7 @@ public class GameManager : MonoBehaviour
     public itemboxcontroller currentbox;
     public popupUI pu;
     public minigamemanager mg;
+    public minigameUI mgui;
     public itemmanager im;
     public timer tm;
     public scanner sc;
@@ -184,7 +185,7 @@ public class GameManager : MonoBehaviour
 
         // 각 변수들 초기화
         maxstage = 3;
-        speed = 4;
+        //speed = 4;
         originspeed = 4;
         speed_for_boss_stage = 1.5f;
 
@@ -288,6 +289,7 @@ public class GameManager : MonoBehaviour
             if (tmp != null) ui_list[0] = tmp.GetComponent<RectTransform>();
             tmp = GameObject.Find("MiniGameUI");
             if (tmp != null) ui_list[1] = tmp.GetComponent<RectTransform>();
+            if (ui_list[1] != null) mgui = ui_list[1].GetComponent<minigameUI>();
             tmp = GameObject.Find("PauseMenuUI");
             if (tmp != null) ui_list[2] = tmp.GetComponent<RectTransform>();
             tmp = GameObject.Find("GRayout5X5");
@@ -341,10 +343,11 @@ public class GameManager : MonoBehaviour
             if (spr_list.Length == 0) spr_list = mg.ImageSet();
             if (ans_list.Length == 0) ans_list = mg.AnswerSet();
 
+            StartCoroutine(SetBorder());
             StartCoroutine(SetItemScripts());
             SetItemIcon();
         }
-
+        // 보스전이면
         if (is_boss)
         {
             tmp = GameObject.Find("Player");
@@ -363,10 +366,45 @@ public class GameManager : MonoBehaviour
             if (tmp != null) ui_list[7] = tmp.GetComponent<RectTransform>();
             tmp = GameObject.Find("EndingUI");
             if (tmp != null) ui_list[9] = tmp.GetComponent<RectTransform>();
+            // UI 찾은 후 비활성화
             if (ui_list != null) ui_list[2].gameObject.SetActive(false);
             if (ui_list != null) ui_list[6].gameObject.SetActive(false);
             if (ui_list != null) ui_list[7].gameObject.SetActive(false);
             if (ui_list != null) ui_list[9].gameObject.SetActive(false);
+            // 블럭 수가 난이도가 이지면 18개, 노말이면 15개, 도전이면 12개
+            tmp = GameObject.Find("Block1_05");
+            if (tmp != null && diff == 3) tmp.SetActive(false);
+            tmp = GameObject.Find("Block1_06");
+            if (tmp != null && (diff == 3 || diff == 2)) tmp.SetActive(false);
+            tmp = GameObject.Find("Block2_05");
+            if (tmp != null && diff == 3) tmp.SetActive(false);
+            tmp = GameObject.Find("Block2_06");
+            if (tmp != null && (diff == 3 || diff == 2)) tmp.SetActive(false);
+            tmp = GameObject.Find("Block3_05");
+            if (tmp != null && diff == 3) tmp.SetActive(false);
+            tmp = GameObject.Find("Block3_06");
+            if (tmp != null && (diff == 3 || diff == 2)) tmp.SetActive(false);
+            tmp = GameObject.Find("HPUI");
+            // 보스전용 체력UI
+            health_list = tmp.GetComponentsInChildren<RectTransform>();
+            if (health_list != null && health_list.Length != 0) health_list[8].gameObject.SetActive(false);
+            switch (diff)
+            {
+                case 1:
+                    health = 5;
+                    maxHealth = 5;
+                    break;
+                case 2:
+                    health = 3;
+                    maxHealth = 3;
+                    break;
+                case 3:
+                    health = 1;
+                    maxHealth = 1;
+                    break;
+                default:
+                    break;
+            }
         }
 
         if (!is_running)
@@ -409,6 +447,7 @@ public class GameManager : MonoBehaviour
             {
                 if (mg != null) rannum3_2 = mg.RanNumGen();
                 is_rannum2 = false;
+                mgui.UpdateMinigame();
             }
 
             if (is_catch && ans_list != null && ans_list.Length != 0)
@@ -496,11 +535,11 @@ public class GameManager : MonoBehaviour
                 }
             }
 
-            if (is_closebox == true && is_minigame == false && is_delay == false && is_mgset == true && is_catch == true && !currentbox.isOpen && currentbox.ii.is_set)
+            if (is_closebox == true && is_delay == false && is_mgset == true && is_catch == true && !currentbox.isOpen && currentbox.ii.is_set)
             {
                 if (Input.GetKeyDown(KeyCode.F))
                 {
-                    is_running = false;
+                    //is_running = false;
                     ui_list[1].gameObject.SetActive(true);
                 }
             }
@@ -536,7 +575,7 @@ public class GameManager : MonoBehaviour
                     ui_list[2].gameObject.SetActive(!ui_list[2].gameObject.activeSelf);
                 }
             }
-
+            updatehealth();
             if (boss_health <= 0) StartCoroutine(EndingCoroutine());
         }
 
@@ -560,7 +599,7 @@ public class GameManager : MonoBehaviour
             SceneManager.LoadScene("Test");
         }
 
-        if (Input.GetKeyDown(KeyCode.Y))
+        if (Input.GetKeyDown(KeyCode.B) && Input.GetKeyDown(KeyCode.Alpha1))
         {
             if (is_ingame)
             {
@@ -573,6 +612,48 @@ public class GameManager : MonoBehaviour
             health = 5;
             key = 0;
             key_item = 0;
+            diff = 1;
+            stage = 4;
+            Time.timeScale = 1;
+            is_running = true;
+            speed = speed_for_boss_stage;
+            SceneManager.LoadScene("Stage_Boss");
+        }
+        if (Input.GetKeyDown(KeyCode.B) && Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            if (is_ingame)
+            {
+                is_ingame = false;
+            }
+            if (!is_boss)
+            {
+                is_boss = true;
+            }
+            health = 5;
+            key = 0;
+            key_item = 0;
+            diff = 2;
+            stage = 4;
+            Time.timeScale = 1;
+            is_running = true;
+            speed = speed_for_boss_stage;
+            SceneManager.LoadScene("Stage_Boss");
+        }
+        if (Input.GetKeyDown(KeyCode.B) && Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            if (is_ingame)
+            {
+                is_ingame = false;
+            }
+            if (!is_boss)
+            {
+                is_boss = true;
+            }
+            health = 5;
+            key = 0;
+            key_item = 0;
+            diff = 3;
+            stage = 4;
             Time.timeScale = 1;
             is_running = true;
             speed = speed_for_boss_stage;
@@ -678,6 +759,7 @@ public class GameManager : MonoBehaviour
             Debug.LogError("Response: " + request.downloadHandler.text);
             mg.FailRequest();
             is_catch = true;
+            if (mgui != null) mgui.UpdateMinigame();
         }
     }
 
@@ -694,12 +776,14 @@ public class GameManager : MonoBehaviour
             Debug.Log("Model Response: " + modelResponse);
             APIResponse = modelResponse;
             is_catch = true;
+            if (mgui != null) mgui.UpdateMinigame();
         }
         else
         {
             Debug.LogError("Could not parse the response.");
             mg.FailRequest();
             is_catch = true;
+            if (mgui != null) mgui.UpdateMinigame();
         }
     }
 
@@ -712,6 +796,7 @@ public class GameManager : MonoBehaviour
             Debug.Log("응답 너무 느림");
             mg.FailRequest();
             is_catch = true;
+            if (mgui != null) mgui.UpdateMinigame();
         }
     }
 
@@ -899,6 +984,12 @@ public class GameManager : MonoBehaviour
         innerItems = FindObjectsOfType<inneritem>(true);
         // 모든 상자에 키랑 아이템 할당
         if (innerItems.Length >= req_key) SetItems();
+    }
+
+    public IEnumerator SetBorder()
+    {
+        yield return new WaitForSeconds(1f);
+        if (sc != null) sc.UpdateBorder();
     }
 
     public IEnumerator WaitThreeSecond()
