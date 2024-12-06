@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 8154667737131056154}
   - component: {fileID: 8888837533116639554}
   - component: {fileID: 218702523247245470}
-  - component: {fileID: 6560294311366960333}
   m_Layer: 8
   m_Name: FIRE
   m_TagString: Fire
@@ -30,7 +29,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.782, y: -3.521, z: 0}
-  m_LocalScale: {x: 0.8, y: 0.8, z: 1}
+  m_LocalScale: {x: 0.3, y: 0.3, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -76,8 +75,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 1342207409
-  m_SortingLayer: 6
+  m_SortingLayerID: 2058642763
+  m_SortingLayer: 8
   m_SortingOrder: 0
   m_Sprite: {fileID: 1146049360, guid: 13e2cfdb7f362a94aa6f185f87fbfd3f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -124,7 +123,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: -0.19}
+  m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -134,7 +133,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.5, y: 0.64}
+  m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
 --- !u!95 &218702523247245470
 Animator:
@@ -158,15 +157,3 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &6560294311366960333
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4708015290378751667}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1f079de636a017142bce8f34abd8e2dc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

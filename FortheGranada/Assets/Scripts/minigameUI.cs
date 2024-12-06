@@ -83,7 +83,7 @@ public class minigameUI : MonoBehaviour
     {
         // ?��?�� 로드?�� ?�� ?���?
         //SceneManager.sceneLoaded += OnSceneLoaded;
-        //UpdateMinigame();
+        UpdateMinigame();
         Time.timeScale = 0;
     }
 
@@ -139,7 +139,6 @@ public class minigameUI : MonoBehaviour
         GameManager.Instance.is_rannum = true;
         GameManager.Instance.is_rannum2 = true;
         GameManager.Instance.currentbox.ii.Alpha255();
-        GameManager.Instance.currentbox.ii.isGet = true;
         GameManager.Instance.ui_list[8].gameObject.SetActive(true);
         GameManager.Instance.ui_list[1].gameObject.SetActive(false);
     }
