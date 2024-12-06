@@ -382,7 +382,7 @@ public class bosscontroller : MonoBehaviour
         StartCoroutine(WaitPointSeconds());
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
         if (isDashing)
         {
@@ -390,21 +390,35 @@ public class bosscontroller : MonoBehaviour
             isDashing = false;
         }
 
-        // 충돌한 오브젝트가 "Block" 태그를 가지고 있는지 확인
-        if (collision.gameObject.CompareTag("Block"))
-        {
-            TakeDamage(damageAmount);
-        }
-
         if (collision.gameObject.CompareTag("Player"))
         {
+            Debug.Log("Crashed!");
             StartCoroutine(GameManager.Instance.pc.ChangeColor());
             if (damageCoroutine == null)
             {
                 damageCoroutine = StartCoroutine(HIT());
             }
         }
+
+        // 충돌한 오브젝트가 "Block" 태그를 가지고 있는지 확인
+        if (collision.gameObject.CompareTag("Block"))
+        {
+            TakeDamage(damageAmount);
+        }
     }
+
+    /*private void OnCollisionEnter2D(Collider collider)
+    {
+        if (collider.CompareTag("Player"))
+        {
+            Debug.Log("Crashed!");
+            StartCoroutine(GameManager.Instance.pc.ChangeColor());
+            if (damageCoroutine == null)
+            {
+                damageCoroutine = StartCoroutine(HIT());
+            }
+        }
+    }*/
 
     private IEnumerator SummonFire()
     {
