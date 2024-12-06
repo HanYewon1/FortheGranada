@@ -32,6 +32,7 @@ public class bosscontroller : MonoBehaviour
     public Transform[] summonPoints;
     private Coroutine currentCoroutine;
     private Coroutine damageCoroutine;
+    private Coroutine dashCoroutine;
 
     private void Awake()
     {
@@ -54,12 +55,11 @@ public class bosscontroller : MonoBehaviour
         // 변수들 초기화, 도전 난이도면 다르게
         if (GameManager.Instance.diff == 3)
         {
-            dashSpeed = 50f;
+            dashSpeed = 60f;
         }
         else
         {
             dashSpeed = 40f;
-
         }
         jumpDuration = 2f;
         dashDuration = 3f;
@@ -269,22 +269,33 @@ public class bosscontroller : MonoBehaviour
         }
 
         dashDirection = direction;
-        Debug.Log($"Dash Direction: {dashDirection}");
-        // 대쉬 실행
-        StartCoroutine(DashCoroutine());
+        Debug.Log($"Dash Position: {bossrb.position}, Direction: {dashDirection}");
+
+        // 기존 코루틴 중단
+        if (dashCoroutine != null)
+        {
+            StopCoroutine(dashCoroutine);
+        }
+
+        // 새로운 대쉬 코루틴 시작
+        dashCoroutine = StartCoroutine(DashCoroutine());
     }
 
     private IEnumerator DashCoroutine()
     {
         float timer = 0f;
-
+        Debug.DrawLine(transform.position, transform.position + (Vector3)dashDirection * 2, Color.red, 1f);
         while (timer < dashDuration)
         {
             if (dashDirection != Vector2.zero)
             {
                 bossrb.MovePosition(bossrb.position + dashDirection * dashSpeed * Time.deltaTime);
             }
-
+            else
+            {
+                Debug.LogWarning("Dash direction is zero! Check player and boss positions.");
+                yield break; // 대쉬를 중단합니다.
+            }
             timer += Time.deltaTime;
             yield return null;
             if (isDashing == false) break;
@@ -292,6 +303,7 @@ public class bosscontroller : MonoBehaviour
 
         animator.SetBool("ISDASH", false);
         isDashing = false;
+        yield return new WaitForSeconds(0.1f); // 애니메이션 전환 대기
         SetIdle(true);
     }
 
@@ -372,6 +384,12 @@ public class bosscontroller : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+        if (isDashing)
+        {
+            Debug.Log("Collision detected during dash, stopping dash...");
+            isDashing = false;
+        }
+
         // 충돌한 오브젝트가 "Block" 태그를 가지고 있는지 확인
         if (collision.gameObject.CompareTag("Block"))
         {
