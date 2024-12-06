@@ -447,6 +447,7 @@ public class GameManager : MonoBehaviour
             {
                 if (mg != null) rannum3_2 = mg.RanNumGen();
                 is_rannum2 = false;
+                mgui.UpdateMinigame();
             }
 
             if (is_catch && ans_list != null && ans_list.Length != 0)
