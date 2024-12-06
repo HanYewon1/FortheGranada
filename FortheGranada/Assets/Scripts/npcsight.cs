@@ -43,12 +43,12 @@ public class npcsight : MonoBehaviour
             Transform target = rangeCheck[0].transform;
             Vector3 directionToTarget = (target.position - transform.position).normalized;
 
-            // ï¿½Ã¾ß°ï¿½ ï¿½ï¿½ï¿½Î¿ï¿½ ï¿½Ö´ï¿½ï¿½ï¿½ È®ï¿½ï¿½
+            // ½Ã¾ß°¢ ³»ºÎ¿¡ ÀÖ´ÂÁö È®ÀÎ
             if (Vector3.Angle(new Vector3(npc_controller.movement.x, npc_controller.movement.y, 0), directionToTarget) < angle / 2)
             {
                 float distanceToTarget = Vector3.Distance(transform.position, target.position);
 
-                // ï¿½ï¿½Ö¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¾Ò´ï¿½ï¿½ï¿½ È®ï¿½ï¿½
+                // Àå¾Ö¹°¿¡ ÀÇÇØ °¡·ÁÁöÁö ¾Ê¾Ò´ÂÁö È®ÀÎ
                 if (!Physics2D.Raycast(transform.position, directionToTarget, distanceToTarget, obstructionLayer))
                 {
                     DetectPlayer = true;
@@ -63,14 +63,14 @@ public class npcsight : MonoBehaviour
     
 }
 
-    //ï¿½Ã¾ï¿½ ï¿½ï¿½ï¿½ï¿½
+    //½Ã¾ß °¨Áö
     private void DrawFieldOfView()
     {
         Vector3 forwardDirection = new Vector3(npc_controller.movement.x, npc_controller.movement.y, 0);
         Vector3[] vertices = new Vector3[segments + 2];
         int[] triangles = new int[segments * 3];
 
-        vertices[0] = Vector3.zero; // ï¿½ß½ï¿½ï¿½ï¿½
+        vertices[0] = Vector3.zero; // Áß½ÉÁ¡
 
         for (int i = 0; i <= segments; i++)
         {
@@ -91,14 +91,14 @@ public class npcsight : MonoBehaviour
         viewMesh.triangles = triangles;
         viewMesh.RecalculateNormals();
 
-        // ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ã¾ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        // ÇÃ·¹ÀÌ¾î °¨Áö ½Ã ½Ã¾ß »ö»ó º¯°æ
         if (mesh_renderer != null)
         {
             mesh_renderer.material.color = DetectPlayer ? Color.yellow : Color.red;
         }
     }
 
-    //npc ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ã¾ï¿½ ï¿½ï¿½ï¿½ï¿½
+    //npc ¹æÇâ µû¶ó ½Ã¾ß º¯°æ
     private Vector2 RotateVector(Vector3 direction, float offsetAngle)
     {
         float angleRadius = offsetAngle * Mathf.Deg2Rad;
