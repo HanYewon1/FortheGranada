@@ -83,7 +83,7 @@ public class minigameUI : MonoBehaviour
     {
         // ?��?�� 로드?�� ?�� ?���?
         //SceneManager.sceneLoaded += OnSceneLoaded;
-        UpdateMinigame();
+        //UpdateMinigame();
         Time.timeScale = 0;
     }
 
