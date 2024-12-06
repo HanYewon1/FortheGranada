@@ -95,6 +95,7 @@ public class GameManager : MonoBehaviour
     public itemboxcontroller currentbox;
     public popupUI pu;
     public minigamemanager mg;
+    public minigameUI mgui;
     public itemmanager im;
     public timer tm;
     public scanner sc;
@@ -288,6 +289,7 @@ public class GameManager : MonoBehaviour
             if (tmp != null) ui_list[0] = tmp.GetComponent<RectTransform>();
             tmp = GameObject.Find("MiniGameUI");
             if (tmp != null) ui_list[1] = tmp.GetComponent<RectTransform>();
+            if (ui_list[1] != null) mgui = ui_list[1].GetComponent<minigameUI>();
             tmp = GameObject.Find("PauseMenuUI");
             if (tmp != null) ui_list[2] = tmp.GetComponent<RectTransform>();
             tmp = GameObject.Find("GRayout5X5");
@@ -532,11 +534,11 @@ public class GameManager : MonoBehaviour
                 }
             }
 
-            if (is_closebox == true && is_minigame == false && is_delay == false && is_mgset == true && is_catch == true && !currentbox.isOpen && currentbox.ii.is_set)
+            if (is_closebox == true && is_delay == false && is_mgset == true && is_catch == true && !currentbox.isOpen && currentbox.ii.is_set)
             {
                 if (Input.GetKeyDown(KeyCode.F))
                 {
-                    is_running = false;
+                    //is_running = false;
                     ui_list[1].gameObject.SetActive(true);
                 }
             }
@@ -716,6 +718,7 @@ public class GameManager : MonoBehaviour
             Debug.LogError("Response: " + request.downloadHandler.text);
             mg.FailRequest();
             is_catch = true;
+            if (mgui != null) mgui.UpdateMinigame();
         }
     }
 
@@ -732,12 +735,14 @@ public class GameManager : MonoBehaviour
             Debug.Log("Model Response: " + modelResponse);
             APIResponse = modelResponse;
             is_catch = true;
+            if (mgui != null) mgui.UpdateMinigame();
         }
         else
         {
             Debug.LogError("Could not parse the response.");
             mg.FailRequest();
             is_catch = true;
+            if (mgui != null) mgui.UpdateMinigame();
         }
     }
 
@@ -750,6 +755,7 @@ public class GameManager : MonoBehaviour
             Debug.Log("응답 너무 느림");
             mg.FailRequest();
             is_catch = true;
+            if (mgui != null) mgui.UpdateMinigame();
         }
     }
 
