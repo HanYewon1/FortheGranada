@@ -21,9 +21,6 @@ public class npcsight : MonoBehaviour
     void Start()
     {
         npc_controller = GetComponent<npccontroller>();
-        if (viewMeshFilter == null)
-            viewMeshFilter = GetComponentInChildren<MeshFilter>();
-
         mesh_renderer = viewMeshFilter.GetComponent<MeshRenderer>();
 
         viewMesh = new Mesh();
