@@ -29,6 +29,7 @@ public class bosscontroller : MonoBehaviour
     public Transform summonPoint;
     public Transform[] summonPoints;
     private Coroutine currentCoroutine;
+    private Coroutine damageCoroutine;
 
     private void Awake()
     {
@@ -45,10 +46,11 @@ public class bosscontroller : MonoBehaviour
         // 콜라이더, 리지드바디 가져오기
         bossCollider = GetComponent<Collider2D>();
         bossrb = GetComponent<Rigidbody2D>();
+        bossrb.linearVelocity = Vector3.zero;
         // IDLE 상태로 전환
         SetIdle(true);
         // 변수들 초기화, 도전 난이도면 다르게
-        dashSpeed = 10f;
+        dashSpeed = 30f;
         dashDuration = 3f;
         jumpHeight = 1.5f;
         jumpDuration = 2f;
@@ -82,6 +84,10 @@ public class bosscontroller : MonoBehaviour
         {
             isFire = true;
             StartCoroutine(SummonFire());
+        }
+        if (IsIdle() == true)
+        {
+            bossrb.linearVelocity = Vector3.zero;
         }
     }
 
@@ -122,6 +128,10 @@ public class bosscontroller : MonoBehaviour
         }
 
         PlayHitAnimation();
+
+        animator.SetBool("ISDASH", false);
+        animator.SetBool("ISJUMP", false);
+        animator.SetBool("ISLAND", false);
     }
 
     public void PlayHitAnimation()
@@ -312,6 +322,15 @@ public class bosscontroller : MonoBehaviour
         {
             TakeDamage(damageAmount);
         }
+
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            StartCoroutine(GameManager.Instance.pc.ChangeColor());
+            if (damageCoroutine == null)
+            {
+                damageCoroutine = StartCoroutine(HIT());
+            }
+        }
     }
 
     private IEnumerator SummonFire()
@@ -377,5 +396,12 @@ public class bosscontroller : MonoBehaviour
         animator.SetTrigger("DIE");
         //StartCoroutine(GameManager.Instance.EndingCoroutine());
         Destroy(gameObject, 0.8f);
+    }
+
+    public IEnumerator HIT()
+    {
+        GameManager.Instance.health--;
+        yield return new WaitForSeconds(1f);
+        damageCoroutine = null; // 코루틴이 끝난 후 null로 초기화
     }
 }

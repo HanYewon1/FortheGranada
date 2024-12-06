@@ -21,6 +21,8 @@ public class bossblock : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Boss"))
         {
+            Vector2 pushDirection = (collision.transform.position - transform.position).normalized;
+            collision.rigidbody.linearVelocity = pushDirection * 5f;
             StartCoroutine(BossDamage());
         }
     }
@@ -37,7 +39,8 @@ public class bossblock : MonoBehaviour
 
     private IEnumerator BossDamage()
     {
-        GameManager.Instance.boss_health -= 5;
+        //GameManager.Instance.boss_health -= 5;
+        GameManager.Instance.boscon.TakeDamage(5f);
         int hp = Random.Range(1, 101);
         if (!ishp && hp > 75)
         {
