@@ -18756,6 +18756,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: NPC
       objectReference: {fileID: 0}
+    - target: {fileID: 4960697140862555050, guid: 71fac40c8161f974594d34ec546caace, type: 3}
+      propertyPath: viewMeshFilter
+      value: 
+      objectReference: {fileID: 9115511036431110080}
     - target: {fileID: 9014346470871398516, guid: 71fac40c8161f974594d34ec546caace, type: 3}
       propertyPath: m_LocalPosition.x
       value: -3.8547802
@@ -18902,6 +18906,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: NPC (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 4960697140862555050, guid: 71fac40c8161f974594d34ec546caace, type: 3}
+      propertyPath: viewMeshFilter
+      value: 
+      objectReference: {fileID: 4813014597670634110}
     - target: {fileID: 9014346470871398516, guid: 71fac40c8161f974594d34ec546caace, type: 3}
       propertyPath: m_LocalPosition.x
       value: 14.65
@@ -19048,6 +19056,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: NPC (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 4960697140862555050, guid: 71fac40c8161f974594d34ec546caace, type: 3}
+      propertyPath: viewMeshFilter
+      value: 
+      objectReference: {fileID: 8752736861836890180}
     - target: {fileID: 9014346470871398516, guid: 71fac40c8161f974594d34ec546caace, type: 3}
       propertyPath: m_LocalPosition.x
       value: -12.65
