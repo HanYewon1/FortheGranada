@@ -22,8 +22,9 @@ public class bossblock : MonoBehaviour
         if (collision.gameObject.CompareTag("Boss"))
         {
             Vector2 pushDirection = (collision.transform.position - transform.position).normalized;
-            collision.rigidbody.linearVelocity = pushDirection * 5f;
+            GameManager.Instance.boscon.bossrb.linearVelocity = pushDirection * 0.5f;
             StartCoroutine(BossDamage());
+            GameManager.Instance.boscon.bossrb.linearVelocity = Vector2.zero;
         }
     }
 
@@ -47,6 +48,6 @@ public class bossblock : MonoBehaviour
             ishp = true;
             ITEM.SetActive(true);
         }
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(0.5f);
     }
 }

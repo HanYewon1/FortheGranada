@@ -5,7 +5,7 @@ using System.Collections;
 public class bosscontroller : MonoBehaviour
 {
     private Collider2D bossCollider;
-    private Rigidbody2D bossrb;
+    public Rigidbody2D bossrb;
     private Animator animator;
     private bool isDead = false;
     private bool isDashing = false;
@@ -23,6 +23,8 @@ public class bosscontroller : MonoBehaviour
     private Vector3 originalScale; // 원래 크기 저장
     private Vector3 targetScale;   // 점프 시 크기
     public GameObject firePrefab;
+    public GameObject pointPrefab;
+    public GameObject[] points;
     public GameObject shadowPrefab;
     public GameObject shadow;
     public Transform shadowTransform; // 그림자 오브젝트
@@ -50,10 +52,19 @@ public class bosscontroller : MonoBehaviour
         // IDLE 상태로 전환
         SetIdle(true);
         // 변수들 초기화, 도전 난이도면 다르게
-        dashSpeed = 30f;
+        if (GameManager.Instance.diff == 3)
+        {
+            dashSpeed = 50f;
+            jumpDuration = 1.7f;
+        }
+        else
+        {
+            dashSpeed = 40f;
+            jumpDuration = 2f;
+        }
         dashDuration = 3f;
         jumpHeight = 1.5f;
-        jumpDuration = 2f;
+
         originalScale = transform.localScale;
         targetScale = originalScale * 1.2f; // 점프 시 커지는 효과
         /*summonPoints = new Transform[60];
@@ -85,9 +96,13 @@ public class bosscontroller : MonoBehaviour
             isFire = true;
             StartCoroutine(SummonFire());
         }
+    }
+
+    private void FixedUpdate()
+    {
         if (IsIdle() == true)
         {
-            bossrb.linearVelocity = Vector3.zero;
+            //bossrb.linearVelocity = Vector2.zero;
         }
     }
 
@@ -132,6 +147,8 @@ public class bosscontroller : MonoBehaviour
         animator.SetBool("ISDASH", false);
         animator.SetBool("ISJUMP", false);
         animator.SetBool("ISLAND", false);
+
+        SetIdle(true);
     }
 
     public void PlayHitAnimation()
@@ -247,7 +264,7 @@ public class bosscontroller : MonoBehaviour
 
             timer += Time.deltaTime;
             yield return null;
-            //if (IsIdle() == true) break;
+            if (isDashing == false) break;
         }
 
         animator.SetBool("ISDASH", false);
@@ -269,18 +286,19 @@ public class bosscontroller : MonoBehaviour
 
         SummonShadow(); // 그림자 생성
         PlayJumpAnimation(); // 올라가는 효과
+        yield return new WaitForSeconds(0.25f);
         while (timer < jumpDuration / 2)
         {
             timer += Time.deltaTime;
             float progress = timer / (jumpDuration / 2);
             // 크기 조정 (Z축 상승 효과)
-            transform.localScale = Vector3.Lerp(originalScale, targetScale, progress);
+            //transform.localScale = Vector3.Lerp(originalScale, targetScale, progress);
             // 그림자 효과 업데이트
             //UpdateShadow(progress);
             yield return null;
         }
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.75f);
 
         PlayLandingAnimation(); // 내려오는 효과
         UpdateShadow(0);
@@ -290,7 +308,7 @@ public class bosscontroller : MonoBehaviour
             timer += Time.deltaTime;
             float progress = timer / (jumpDuration / 2);
             // 크기 복원
-            transform.localScale = Vector3.Lerp(targetScale, originalScale, progress);
+            //transform.localScale = Vector3.Lerp(targetScale, originalScale, progress);
             // 그림자 효과 업데이트
             //UpdateShadow(1f - progress);
             yield return null;
@@ -337,7 +355,52 @@ public class bosscontroller : MonoBehaviour
     {
         SetIdle(false);
         PlayFireAnimation();
-        yield return new WaitForSeconds(1f);
+        points = new GameObject[61];
+        if (GameManager.Instance.diff == 1)
+        {
+            for (int j = 1; j < 61; j += 2)
+            {
+                points[j] = Instantiate(pointPrefab, summonPoints[j].position, Quaternion.identity);
+            }
+        }
+        else if (GameManager.Instance.diff == 2)
+        {
+            for (int j = 1; j < 46; j++)
+            {
+                points[j] = Instantiate(pointPrefab, summonPoints[j].position, Quaternion.identity);
+            }
+        }
+        else if (GameManager.Instance.diff == 3)
+        {
+            for (int j = 1; j < 61; j++)
+            {
+                points[j] = Instantiate(pointPrefab, summonPoints[j].position, Quaternion.identity);
+            }
+        }
+
+        yield return new WaitForSeconds(2f);
+
+        if (GameManager.Instance.diff == 1)
+        {
+            for (int j = 1; j < 61; j += 2)
+            {
+                points[j].SetActive(false);
+            }
+        }
+        else if (GameManager.Instance.diff == 2)
+        {
+            for (int j = 1; j < 46; j++)
+            {
+                points[j].SetActive(false);
+            }
+        }
+        else if (GameManager.Instance.diff == 3)
+        {
+            for (int j = 1; j < 61; j++)
+            {
+                points[j].SetActive(false);
+            }
+        }
         // for문으로 여러 개 생성, 이지, 노말, 도전 다 다르게 소환
         if (GameManager.Instance.diff == 1)
         {
@@ -365,7 +428,14 @@ public class bosscontroller : MonoBehaviour
 
     private IEnumerator WaitPointSeconds()
     {
-        yield return new WaitForSeconds(1.2f);
+        if (GameManager.Instance.diff == 3)
+        {
+            yield return new WaitForSeconds(0.85f);
+        }
+        else
+        {
+            yield return new WaitForSeconds(1f);
+        }
         shadow.GetComponent<SpriteRenderer>().color = Color.red;
         shadow.GetComponent<shadow>().isHot = true;
     }
