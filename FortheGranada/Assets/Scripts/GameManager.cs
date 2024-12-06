@@ -598,7 +598,7 @@ public class GameManager : MonoBehaviour
             SceneManager.LoadScene("Test");
         }
 
-        if (Input.GetKeyDown(KeyCode.Y))
+        if (Input.GetKeyDown(KeyCode.B) && Input.GetKeyDown(KeyCode.Alpha1))
         {
             if (is_ingame)
             {
@@ -611,7 +611,47 @@ public class GameManager : MonoBehaviour
             health = 5;
             key = 0;
             key_item = 0;
-            //diff = 1;
+            diff = 1;
+            stage = 4;
+            Time.timeScale = 1;
+            is_running = true;
+            speed = speed_for_boss_stage;
+            SceneManager.LoadScene("Stage_Boss");
+        }
+        if (Input.GetKeyDown(KeyCode.B) && Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            if (is_ingame)
+            {
+                is_ingame = false;
+            }
+            if (!is_boss)
+            {
+                is_boss = true;
+            }
+            health = 5;
+            key = 0;
+            key_item = 0;
+            diff = 2;
+            stage = 4;
+            Time.timeScale = 1;
+            is_running = true;
+            speed = speed_for_boss_stage;
+            SceneManager.LoadScene("Stage_Boss");
+        }
+        if (Input.GetKeyDown(KeyCode.B) && Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            if (is_ingame)
+            {
+                is_ingame = false;
+            }
+            if (!is_boss)
+            {
+                is_boss = true;
+            }
+            health = 5;
+            key = 0;
+            key_item = 0;
+            diff = 3;
             stage = 4;
             Time.timeScale = 1;
             is_running = true;
