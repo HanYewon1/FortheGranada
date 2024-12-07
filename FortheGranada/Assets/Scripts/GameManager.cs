@@ -109,6 +109,7 @@ public class GameManager : MonoBehaviour
     public Transform player;
     public inneritem[] innerItems;
     public RectTransform[] health_list;
+    public RectTransform[] health_lose_list;
     public RectTransform[] item_list;
     public RectTransform[] ui_list;
     public int[] rannum3;
@@ -313,6 +314,8 @@ public class GameManager : MonoBehaviour
             // 체력과 아이템 UI 자식들 가져오기
             tmp = GameObject.Find("HPUI");
             health_list = tmp.GetComponentsInChildren<RectTransform>();
+            tmp = GameObject.Find("LOSEHPUI");
+            health_lose_list = tmp.GetComponentsInChildren<RectTransform>();
             tmp = GameObject.Find("ITEMUI");
             item_list = tmp.GetComponentsInChildren<RectTransform>();
 
@@ -330,6 +333,13 @@ public class GameManager : MonoBehaviour
             if (health_list != null) health_list[6].gameObject.SetActive(false);
             if (health_list != null) health_list[7].gameObject.SetActive(false);
             if (health_list != null) health_list[8].gameObject.SetActive(false);
+            if(health_lose_list != null)
+            {
+                for (int i = maxHealth + 1; i < health_lose_list.Length; i++)
+                {
+                    health_lose_list[i].gameObject.SetActive(false);
+                }
+            }
             if (item_list != null) item_list[4].gameObject.SetActive(false);
             if (item_list != null) item_list[5].gameObject.SetActive(false);
             if (item_list != null) item_list[6].gameObject.SetActive(false);

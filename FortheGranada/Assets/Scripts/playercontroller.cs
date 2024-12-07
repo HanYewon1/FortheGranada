@@ -95,7 +95,10 @@ public class playercontroller : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Enemy"))
+        {
             StartCoroutine(ChangeColor());
+            GameManager.Instance.health--;
+        }
 
         if (collision.gameObject.CompareTag("Chest"))
         {
