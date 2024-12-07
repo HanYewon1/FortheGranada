@@ -94,7 +94,7 @@ public class playercontroller : MonoBehaviour
     //?��踝蕭?��豎嫡橘蕭?��踝蕭 ?��踝蕭
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Enemy"))
+        if (collision.gameObject.CompareTag("Enemy") )
         {
             StartCoroutine(ChangeColor());
             GameManager.Instance.health--;
@@ -113,9 +113,10 @@ public class playercontroller : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
+        /*
         if (collision.gameObject.CompareTag("Weapon"))
             StartCoroutine(ChangeColor());
-
+        */
         if (collision.tag == "Door")
         {
             is_door = true;
