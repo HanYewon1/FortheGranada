@@ -12,6 +12,7 @@ public class bosscontroller : MonoBehaviour
     private bool isJumping = false;
     private bool isPhase2 = false;
     private bool isFire = false;
+    private bool isInvincible = false;
     public float dashSpeed = 20f;
     public float dashDuration = 0.3f;
     public float jumpHeight = 1.5f; // Z축으로 올라가는 듯한 높이
@@ -27,6 +28,7 @@ public class bosscontroller : MonoBehaviour
     public GameObject[] points;
     public GameObject shadowPrefab;
     public GameObject shadow;
+    public GameObject bomb;
     public Transform shadowTransform; // 그림자 오브젝트
     public Transform summonPoint;
     public Transform[] summonPoints;
@@ -55,11 +57,11 @@ public class bosscontroller : MonoBehaviour
         // 변수들 초기화, 도전 난이도면 다르게
         if (GameManager.Instance.diff == 3)
         {
-            dashSpeed = 60f;
+            dashSpeed = 80f;
         }
         else
         {
-            dashSpeed = 40f;
+            dashSpeed = 60f;
         }
         jumpDuration = 2f;
         dashDuration = 3f;
@@ -143,22 +145,24 @@ public class bosscontroller : MonoBehaviour
     // 보스 피격 시 체력 감소
     public void TakeDamage(float damage)
     {
-        GameManager.Instance.boss_health -= damage;
-        GameManager.Instance.boss_health = Mathf.Clamp(GameManager.Instance.boss_health, 0, GameManager.Instance.boss_max_health); // 체력이 0보다 작아지면 0으로 보정
-
-        SetIdle(true); // 데미지 입으면 행동 중단
-        UpdateHealthBar(); // 체력바 UI 업데이트
-
-        Debug.Log($"Boss took {damage} damage! Remaining health: {GameManager.Instance.boss_health}");
-
-        if (GameManager.Instance.boss_health <= 0)
+        if (!isInvincible)
         {
-            BossDie(); // 보스 사망 트리거 실행
-            return;
+            GameManager.Instance.boss_health -= damage;
+            GameManager.Instance.boss_health = Mathf.Clamp(GameManager.Instance.boss_health, 0, GameManager.Instance.boss_max_health); // 체력이 0보다 작아지면 0으로 보정
+
+            SetIdle(true); // 데미지 입으면 행동 중단
+            UpdateHealthBar(); // 체력바 UI 업데이트
+
+            Debug.Log($"Boss took {damage} damage! Remaining health: {GameManager.Instance.boss_health}");
+
+            if (GameManager.Instance.boss_health <= 0)
+            {
+                BossDie(); // 보스 사망 트리거 실행
+                return;
+            }
+
+            PlayHitAnimation();
         }
-
-        PlayHitAnimation();
-
         animator.SetBool("ISDASH", false);
         animator.SetBool("ISJUMP", false);
         animator.SetBool("ISLAND", false);
@@ -208,8 +212,8 @@ public class bosscontroller : MonoBehaviour
 
     private IEnumerator RandomCoroutine()
     {
-        yield return new WaitForSeconds(6f);
-        // 6초 대기 후 아이들 상태면 랜덤 행동 실행
+        yield return new WaitForSeconds(8f);
+        // 8초 대기 후 아이들 상태면 랜덤 행동 실행
         if (IsIdle() && !isDashing && !isJumping)
         {
             int rr = Random.Range(1, 5);
@@ -312,6 +316,7 @@ public class bosscontroller : MonoBehaviour
         if (isJumping || isDashing) return;
         SetIdle(false);
         isJumping = true;
+        isInvincible = true;
         StartCoroutine(JumpCoroutine());
     }
 
@@ -368,6 +373,7 @@ public class bosscontroller : MonoBehaviour
         animator.SetBool("ISJUMP", false);
         animator.SetBool("ISLAND", false);
         SetIdle(true);
+        isInvincible = false;
     }
 
     public void UpdateShadow(float heightPercentage)
@@ -427,14 +433,14 @@ public class bosscontroller : MonoBehaviour
         points = new GameObject[61];
         if (GameManager.Instance.diff == 1)
         {
-            for (int j = 1; j < 61; j += 2)
+            for (int j = 1; j < 31; j++)
             {
                 points[j] = Instantiate(pointPrefab, summonPoints[j].position, Quaternion.identity);
             }
         }
         else if (GameManager.Instance.diff == 2)
         {
-            for (int j = 1; j < 46; j++)
+            for (int j = 1; j < 31; j++)
             {
                 points[j] = Instantiate(pointPrefab, summonPoints[j].position, Quaternion.identity);
             }
@@ -451,14 +457,14 @@ public class bosscontroller : MonoBehaviour
 
         if (GameManager.Instance.diff == 1)
         {
-            for (int j = 1; j < 61; j += 2)
+            for (int j = 1; j < 31; j++)
             {
                 points[j].SetActive(false);
             }
         }
         else if (GameManager.Instance.diff == 2)
         {
-            for (int j = 1; j < 46; j++)
+            for (int j = 1; j < 31; j++)
             {
                 points[j].SetActive(false);
             }
@@ -473,14 +479,14 @@ public class bosscontroller : MonoBehaviour
         // for문으로 여러 개 생성, 이지, 노말, 도전 다 다르게 소환
         if (GameManager.Instance.diff == 1)
         {
-            for (int j = 1; j < 61; j += 2)
+            for (int j = 1; j < 31; j++)
             {
                 Instantiate(firePrefab, summonPoints[j].position, Quaternion.identity);
             }
         }
         else if (GameManager.Instance.diff == 2)
         {
-            for (int j = 1; j < 46; j++)
+            for (int j = 1; j < 31; j++)
             {
                 Instantiate(firePrefab, summonPoints[j].position, Quaternion.identity);
             }
@@ -508,7 +514,7 @@ public class bosscontroller : MonoBehaviour
         //Debug.Log(shadowPrefab == null ? "shadowPrefab is null" : "shadowPrefab is assigned");
 
         shadow = Instantiate(shadowPrefab, transform.position, Quaternion.identity);
-        shadow.transform.parent = null; // 부모 설정 해제
+        //shadow.transform.parent = null; // 부모 설정 해제
         //Debug.Log(shadow == null ? "Shadow instantiation failed" : "Shadow instantiated successfully");
     }
 
@@ -520,10 +526,10 @@ public class bosscontroller : MonoBehaviour
 
     private void BossDie()
     {
+        if (isDead) return; // 이미 사망 상태인 경우 중복 실행 방지
         SetIdle(false);
         Debug.Log("Boss has been defeated!");
         bossCollider.enabled = false; // 충돌 비활성화
-        if (isDead) return; // 이미 사망 상태인 경우 중복 실행 방지
         isDead = true; // 사망 상태로 설정
         animator.SetTrigger("DIE");
         //StartCoroutine(GameManager.Instance.EndingCoroutine());

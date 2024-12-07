@@ -371,17 +371,29 @@ public class GameManager : MonoBehaviour
             if (ui_list != null) ui_list[6].gameObject.SetActive(false);
             if (ui_list != null) ui_list[7].gameObject.SetActive(false);
             if (ui_list != null) ui_list[9].gameObject.SetActive(false);
-            // 블럭 수가 난이도가 이지면 18개, 노말이면 15개, 도전이면 12개
-            tmp = GameObject.Find("Block1_05");
+            // 블럭 수가 난이도가 이지면 18개, 노말이면 12개, 도전이면 6개
+            tmp = GameObject.Find("Block1_03");
             if (tmp != null && diff == 3) tmp.SetActive(false);
+            tmp = GameObject.Find("Block1_04");
+            if (tmp != null && diff == 3) tmp.SetActive(false);
+            tmp = GameObject.Find("Block2_03");
+            if (tmp != null && diff == 3) tmp.SetActive(false);
+            tmp = GameObject.Find("Block2_04");
+            if (tmp != null && diff == 3) tmp.SetActive(false);
+            tmp = GameObject.Find("Block3_03");
+            if (tmp != null && diff == 3) tmp.SetActive(false);
+            tmp = GameObject.Find("Block3_04");
+            if (tmp != null && diff == 3) tmp.SetActive(false);
+            tmp = GameObject.Find("Block1_05");
+            if (tmp != null && (diff == 3 || diff == 2)) tmp.SetActive(false);
             tmp = GameObject.Find("Block1_06");
             if (tmp != null && (diff == 3 || diff == 2)) tmp.SetActive(false);
             tmp = GameObject.Find("Block2_05");
-            if (tmp != null && diff == 3) tmp.SetActive(false);
+            if (tmp != null && (diff == 3 || diff == 2)) tmp.SetActive(false);
             tmp = GameObject.Find("Block2_06");
             if (tmp != null && (diff == 3 || diff == 2)) tmp.SetActive(false);
             tmp = GameObject.Find("Block3_05");
-            if (tmp != null && diff == 3) tmp.SetActive(false);
+            if (tmp != null && (diff == 3 || diff == 2)) tmp.SetActive(false);
             tmp = GameObject.Find("Block3_06");
             if (tmp != null && (diff == 3 || diff == 2)) tmp.SetActive(false);
             tmp = GameObject.Find("HPUI");
