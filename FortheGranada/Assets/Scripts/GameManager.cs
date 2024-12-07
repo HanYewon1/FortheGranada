@@ -333,7 +333,7 @@ public class GameManager : MonoBehaviour
             if (health_list != null) health_list[6].gameObject.SetActive(false);
             if (health_list != null) health_list[7].gameObject.SetActive(false);
             if (health_list != null) health_list[8].gameObject.SetActive(false);
-            if(health_lose_list != null)
+            if (health_lose_list != null)
             {
                 for (int i = maxHealth + 1; i < health_lose_list.Length; i++)
                 {
@@ -409,6 +409,15 @@ public class GameManager : MonoBehaviour
             tmp = GameObject.Find("HPUI");
             // 보스전용 체력UI
             health_list = tmp.GetComponentsInChildren<RectTransform>();
+            tmp = GameObject.Find("LOSEHPUI");
+            health_lose_list = tmp.GetComponentsInChildren<RectTransform>();
+            if (health_lose_list != null)
+            {
+                for (int i = maxHealth + 1; i < health_lose_list.Length; i++)
+                {
+                    health_lose_list[i].gameObject.SetActive(false);
+                }
+            }
             if (health_list != null && health_list.Length != 0) health_list[8].gameObject.SetActive(false);
             switch (diff)
             {
