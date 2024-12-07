@@ -13,8 +13,6 @@ public class weaponcontroller : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            StartCoroutine(GameManager.Instance.pc.ChangeColor());
-            GameManager.Instance.health--;
             Destroy(gameObject);
         }
         else if (collision.CompareTag("Obstacle"))
