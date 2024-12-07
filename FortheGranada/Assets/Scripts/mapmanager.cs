@@ -26,7 +26,7 @@ public class MapManager : MonoBehaviour
     public TextMeshProUGUI text_size;
     public int[] stage_size = { 0, 5, 6, 7, 7 };
     public int[] room_count = { 0, 10, 15, 20, 25 };
-    public int[] type_room_count = {0, 5, 7, 9, 11 };
+    public int[] type_room_count = { 0, 5, 7, 9, 11 };
     public int[] type_room = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
 
     bool isCreate = false;
@@ -35,7 +35,7 @@ public class MapManager : MonoBehaviour
     public void Start()
     {
         stage = GameManager.Instance.stage;
-        diff= GameManager.Instance.diff;
+        diff = GameManager.Instance.diff;
         queue_room = new Queue<GameObject>();
         CreateMap(stage);
     }
@@ -59,6 +59,14 @@ public class MapManager : MonoBehaviour
         Debug.Log("onclick");
     }
 
+    public void OnClickBackButton()
+    {
+        GameManager.Instance.is_ingame = false;
+        GameManager.Instance.is_boss = false;
+        GameManager.Instance.is_running = false;
+        SceneManager.LoadScene("MainMenuScene");
+    }
+
     public void Update()
     {
         if (Input.GetKeyDown(KeyCode.UpArrow))
@@ -80,6 +88,7 @@ public class MapManager : MonoBehaviour
         /*if (Input.GetKeyDown(KeyCode.Escape))
         {
             GameManager.Instance.is_ingame = false;
+            GameManager.Instance.is_boss = false;
             GameManager.Instance.is_running = false;
             SceneManager.LoadScene("MainMenuScene");
         }*/
@@ -87,14 +96,14 @@ public class MapManager : MonoBehaviour
     void CreateMap(int stage_num)
     {
         isCreate = true;
-        if(stage_num == 0)
+        if (stage_num == 0)
         {
             return;
         }
-        if(diff == 3)
+        if (diff == 3)
         {
             stage_num++;
-        }   
+        }
         var directions = new (int, int)[] { (-1, 0), (1, 0), (0, -1), (0, 1) };
         int size = stage_size[stage_num];
         int count = room_count[stage_num];
@@ -212,7 +221,7 @@ public class MapManager : MonoBehaviour
                 player_controller.minimap_name = minimap_name + "/Image ";
                 player_controller.is_door = false;
             }
-            if(room == 12)
+            if (room == 12)
             {
                 image.color = Color.blue;
             }

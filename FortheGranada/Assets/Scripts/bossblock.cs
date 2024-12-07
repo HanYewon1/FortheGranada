@@ -26,7 +26,7 @@ public class bossblock : MonoBehaviour
         {
             Vector2 pushDirection = (collision.transform.position - transform.position).normalized;
             GameManager.Instance.boscon.bossrb.linearVelocity = pushDirection * 0.5f;
-            StartCoroutine(BossDamage());
+            //if (GameManager.Instance.boscon.isDashing) StartCoroutine(BossDamage());
             GameManager.Instance.boscon.bossrb.linearVelocity = Vector2.zero;
         }
     }
@@ -41,6 +41,7 @@ public class bossblock : MonoBehaviour
                 GameManager.Instance.health++;
                 GameManager.Instance.maxHealth++;
                 GameManager.Instance.health_item++;
+                GameManager.Instance.health_lose_list[GameManager.Instance.maxHealth].gameObject.SetActive(true);
                 maxhp = false;
                 SR.color = Color.white;
             }
@@ -49,15 +50,17 @@ public class bossblock : MonoBehaviour
         }
     }
 
-    private IEnumerator BossDamage()
+    public IEnumerator BossDamage()
     {
+        Debug.Log("ITEMSELECT!");
         //GameManager.Instance.boss_health -= 5;
-        GameManager.Instance.boscon.TakeDamage(5f);
+        //if (GameManager.Instance.boscon.isDashing) GameManager.Instance.boscon.TakeDamage(5f);
         int hp = Random.Range(1, 101);
         if (!ishp && hp > 80)
         {
             ishp = true;
             ITEM.SetActive(true);
+            Debug.Log("HP!");
         }
         else if (!ishp && hp >= 76 && hp <= 80)
         {
@@ -65,7 +68,8 @@ public class bossblock : MonoBehaviour
             maxhp = true;
             ITEM.SetActive(true);
             SR.color = Color.red;
+            Debug.Log("MAXHP!");
         }
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1f);
     }
 }

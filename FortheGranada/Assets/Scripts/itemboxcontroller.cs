@@ -67,7 +67,7 @@ public class itemboxcontroller : MonoBehaviour
             Vector3 pushDirection = (collision.transform.position - transform.position).normalized;
 
             // 밀어내는 힘의 크기를 곱하여 새로운 위치 계산
-            Vector2 newPosition = otherrb.position + (Vector2)pushDirection * 2f;
+            Vector2 newPosition = otherrb.position + (Vector2)pushDirection * 1f;
 
             // Rigidbody2D의 위치 이동
             otherrb.MovePosition(newPosition);
