@@ -9,12 +9,14 @@ public class bosscontroller : MonoBehaviour
     private Animator animator;
     private DashPathIndicator DPI;
     private bool isDead = false;
+    private bool isMove = false;
     public bool isDashing = false;
     private bool isJumping = false;
     private bool isLanding = false;
     private bool isPhase2 = false;
     private bool isFire = false;
     private bool isInvincible = false;
+    public float moveSpeed = 5f;
     public float dashSpeed = 20f;
     public float dashDuration = 0.3f;
     public float jumpHeight = 1.5f; // Z축으로 올라가는 듯한 높이
@@ -22,6 +24,7 @@ public class bosscontroller : MonoBehaviour
     public float damageAmount = 5f; // 데미지량
     public float maxShadowScale = 1.5f; // 점프 시 그림자 크기 변화
     public float maxShadowOffset = 0.5f; // 그림자 위치 변화 (Y축)
+    private Vector3 moveDirection; // 이동 방향
     private Vector2 dashDirection; // 대쉬 방향
     private Vector3 originalScale; // 원래 크기 저장
     private Vector3 targetScale;   // 점프 시 크기
@@ -58,7 +61,7 @@ public class bosscontroller : MonoBehaviour
         bossrb = GetComponent<Rigidbody2D>();
         bossrb.linearVelocity = Vector3.zero;
         // IDLE 상태 전환
-        SetIdle(false);
+        SetIdle(true);
         // 변수들 초기화, 도전 난이도면 다르게
         if (GameManager.Instance.diff == 3)
         {
@@ -68,6 +71,7 @@ public class bosscontroller : MonoBehaviour
         {
             dashSpeed = 60f;
         }
+        moveSpeed = 0.5f;
         jumpDuration = 1f;
         dashDuration = 2f;
         jumpHeight = 1.5f;
@@ -103,14 +107,40 @@ public class bosscontroller : MonoBehaviour
     {
         DPI = GameObject.Find("LineRenderer").GetComponent<DashPathIndicator>();
         DPI.HideDashPath();
+        // IDLE 상태 전환
+        SetIdle(true);
+        SetMove(true);
     }
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space)) // 스페이스 바 누르면 체력 100% 감소
+        if (isMove)
+        {
+            moveDirection = (GameManager.Instance.player.transform.position - transform.position).normalized;
+            moveDirection.z = 0;
+            if (moveDirection != Vector3.zero)
+            {
+                if (Mathf.Abs(moveDirection.x) > Mathf.Abs(moveDirection.y))
+                {
+                    if (moveDirection.x > 0)
+                        animator.Play("BOSSMOVERIGHT");
+                    else
+                        animator.Play("BOSSMOVELEFT");
+                }
+                else
+                {
+                    if (moveDirection.y > 0)
+                        animator.Play("BOSSMOVEUP");
+                    else
+                        animator.Play("BOSSMOVEDOWN");
+                }
+                transform.position += moveDirection * moveSpeed * Time.deltaTime;
+            }
+        }
+        if (Input.GetKeyDown(KeyCode.Space)) // 스페이스 바 누르면 체력 50% 감소
         {
             TakeDamage(50f);
         }
-        // 3초마다 랜덤 행동
+        // 랜덤 행동 코루틴 중복 방지
         if (currentCoroutine == null)
         {
             currentCoroutine = StartCoroutine(RandomCoroutine());
@@ -152,9 +182,30 @@ public class bosscontroller : MonoBehaviour
         return false;
     }
 
+    public bool Isfire()
+    {
+        if (animator != null)
+        {
+            // 현재 애니메이션 상태 정보 가져오기
+            AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+
+            // "idle" 상태 이름과 비교 (layer 0 기준)
+            return stateInfo.IsName("BOSSFIRE");
+        }
+        return false;
+    }
+
+    public void SetMove(bool ismove)
+    {
+        if (isDead) return; // 사망 상태에서는 다른 애니메이션 재생 안 함
+        isMove = ismove;
+        animator.SetBool("ISMOVE", ismove);
+    }
+
     // 보스 피격 시 체력 감소
     public void TakeDamage(float damage)
     {
+        SetMove(false);
         if (!isInvincible)
         {
             GameManager.Instance.boss_health -= damage;
@@ -216,7 +267,7 @@ public class bosscontroller : MonoBehaviour
         animator.SetBool("ISLAND", false);
         isDashing = false;
         isJumping = false;
-
+        SetMove(false);
         animator.SetTrigger("FIRE");
     }
 
@@ -224,8 +275,9 @@ public class bosscontroller : MonoBehaviour
     {
         yield return new WaitForSeconds(8f);
         SetIdle(true);
-        // 8초 대기 후 아이들 상태면 랜덤 행동 실행
-        if (IsIdle() && !isDashing && !isJumping && !isLanding)
+        SetMove(false);
+        // 대기 후 아이들 상태면 랜덤 행동 실행
+        if (!isDashing && !isJumping && !isLanding && !isDead && Isfire() == false)
         {
             int rr = Random.Range(1, 5);
 
@@ -321,6 +373,7 @@ public class bosscontroller : MonoBehaviour
         isDashing = false;
         yield return new WaitForSeconds(0.1f); // 애니메이션 전환 대기
         SetIdle(true);
+        SetMove(true);
     }
 
     public void Jump()
@@ -360,7 +413,7 @@ public class bosscontroller : MonoBehaviour
         // 난이도에 따른 대기 시간
         if (GameManager.Instance.diff == 3)
         {
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(2.25f);
         }
         else
         {
@@ -397,6 +450,7 @@ public class bosscontroller : MonoBehaviour
         animator.SetBool("ISLAND", false);
         SetIdle(true);
         isInvincible = false;
+        SetMove(true);
     }
 
     public void UpdateShadow(float heightPercentage)
@@ -438,6 +492,7 @@ public class bosscontroller : MonoBehaviour
         if (isDashing)
         {
             Debug.Log("Collision detected during dash, stopping dash...");
+            animator.SetBool("ISDASH", false);
             isDashing = false;
         }
     }
@@ -457,28 +512,37 @@ public class bosscontroller : MonoBehaviour
 
     private IEnumerator SummonFire()
     {
+        animator.SetBool("ISDASH", false);
+        animator.SetBool("ISJUMP", false);
+        animator.SetBool("ISLAND", false);
+        SetMove(false);
         SetIdle(false);
+
         PlayFireAnimation();
         points = new GameObject[61];
+        Vector3 sumpo = Vector3.zero;
         if (GameManager.Instance.diff == 1)
         {
             for (int j = 1; j < 31; j++)
             {
-                points[j] = Instantiate(pointPrefab, summonPoints[j].position, Quaternion.identity);
+                sumpo = new Vector3(summonPoints[j].position.x, summonPoints[j].position.y + -0.15f, 0f);
+                points[j] = Instantiate(pointPrefab, sumpo, Quaternion.identity);
             }
         }
         else if (GameManager.Instance.diff == 2)
         {
             for (int j = 1; j < 31; j++)
             {
-                points[j] = Instantiate(pointPrefab, summonPoints[j].position, Quaternion.identity);
+                sumpo = new Vector3(summonPoints[j].position.x, summonPoints[j].position.y + -0.15f, 0f);
+                points[j] = Instantiate(pointPrefab, sumpo, Quaternion.identity);
             }
         }
         else if (GameManager.Instance.diff == 3)
         {
             for (int j = 1; j < 61; j++)
             {
-                points[j] = Instantiate(pointPrefab, summonPoints[j].position, Quaternion.identity);
+                sumpo = new Vector3(summonPoints[j].position.x, summonPoints[j].position.y + -0.15f, 0f);
+                points[j] = Instantiate(pointPrefab, sumpo, Quaternion.identity);
             }
         }
 
