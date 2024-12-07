@@ -10,6 +10,7 @@ public class bosscontroller : MonoBehaviour
     private bool isDead = false;
     public bool isDashing = false;
     private bool isJumping = false;
+    private bool isLanding = false;
     private bool isPhase2 = false;
     private bool isFire = false;
     private bool isInvincible = false;
@@ -29,6 +30,7 @@ public class bosscontroller : MonoBehaviour
     public GameObject shadowPrefab;
     public GameObject shadow;
     public GameObject bomb;
+    public GameObject bombPrefab;
     public Transform shadowTransform; // 그림자 오브젝트
     public Transform summonPoint;
     public Transform[] summonPoints;
@@ -52,8 +54,8 @@ public class bosscontroller : MonoBehaviour
         bossCollider = GetComponent<Collider2D>();
         bossrb = GetComponent<Rigidbody2D>();
         bossrb.linearVelocity = Vector3.zero;
-        // IDLE 상태로 전환
-        SetIdle(true);
+        // IDLE 상태 전환
+        SetIdle(false);
         // 변수들 초기화, 도전 난이도면 다르게
         if (GameManager.Instance.diff == 3)
         {
@@ -63,8 +65,8 @@ public class bosscontroller : MonoBehaviour
         {
             dashSpeed = 60f;
         }
-        jumpDuration = 2f;
-        dashDuration = 3f;
+        jumpDuration = 1f;
+        dashDuration = 2f;
         jumpHeight = 1.5f;
         GameManager.Instance.health_item = 0;
         switch (GameManager.Instance.diff)
@@ -188,13 +190,13 @@ public class bosscontroller : MonoBehaviour
     {
         if (isDead) return;
         animator.SetBool("ISJUMP", true);
-        animator.SetBool("ISLAND", false);
+        //animator.SetBool("ISLAND", false);
     }
 
     public void PlayLandingAnimation()
     {
         if (isDead) return;
-        animator.SetBool("ISJUMP", true);
+        //animator.SetBool("ISJUMP", true);
         animator.SetBool("ISLAND", true);
     }
 
@@ -213,8 +215,9 @@ public class bosscontroller : MonoBehaviour
     private IEnumerator RandomCoroutine()
     {
         yield return new WaitForSeconds(8f);
+        SetIdle(true);
         // 8초 대기 후 아이들 상태면 랜덤 행동 실행
-        if (IsIdle() && !isDashing && !isJumping)
+        if (IsIdle() && !isDashing && !isJumping && !isLanding)
         {
             int rr = Random.Range(1, 5);
 
@@ -249,7 +252,7 @@ public class bosscontroller : MonoBehaviour
 
     public void Dash()
     {
-        if (isDashing || isJumping)
+        if (isDashing || isJumping || isLanding)
         {
             Debug.Log("Dashing(Jumping) is already in progress, skipping...");
             return;
@@ -313,7 +316,7 @@ public class bosscontroller : MonoBehaviour
 
     public void Jump()
     {
-        if (isJumping || isDashing) return;
+        if (isJumping || isDashing || isLanding) return;
         SetIdle(false);
         isJumping = true;
         isInvincible = true;
@@ -323,15 +326,15 @@ public class bosscontroller : MonoBehaviour
     private IEnumerator JumpCoroutine()
     {
         float timer = 0f;
-
+        bossCollider.enabled = false;
         SummonShadow(); // 그림자 생성
         PlayJumpAnimation(); // 올라가는 효과
         //yield return new WaitForSeconds(0.25f);
         Vector3 originposition = transform.position;
-        while (timer < jumpDuration / 2)
+        while (timer < jumpDuration)
         {
             timer += Time.deltaTime;
-            originposition.y += 1.1f * Time.deltaTime;
+            originposition.y += jumpHeight * Time.deltaTime;
             transform.position = originposition;
 
             //float progress = timer / (jumpDuration / 2);
@@ -342,22 +345,28 @@ public class bosscontroller : MonoBehaviour
             yield return null;
         }
 
+        isLanding = true;
+        isJumping = false;
+        animator.SetBool("ISJUMP", false);
+        // 난이도에 따른 대기 시간
         if (GameManager.Instance.diff == 3)
-        {
-            yield return new WaitForSeconds(1f);
-        }
-        else
         {
             yield return new WaitForSeconds(1.5f);
         }
+        else
+        {
+            yield return new WaitForSeconds(2f);
+        }
 
+        transform.position = shadowTransform.position;
         PlayLandingAnimation(); // 내려오는 효과
         UpdateShadow(0);
-        timer = 0f;
+
+        /*timer = 0f;
         while (timer < jumpDuration / 2)
         {
             timer += Time.deltaTime;
-            originposition.y += -1.1f * Time.deltaTime;
+            //originposition.y += -jumpHeight * Time.deltaTime;
             transform.position = originposition;
 
             //float progress = timer / (jumpDuration / 2);
@@ -366,11 +375,16 @@ public class bosscontroller : MonoBehaviour
             // 그림자 효과 업데이트
             //UpdateShadow(1f - progress);
             yield return null;
-        }
-
+        }*/
+        // 점프 완료: 콜라이더 활성화
+        yield return new WaitForSeconds(0.5f); // 착지 애니메이션이 끝난 후
+        bossCollider.enabled = true;
+        SummonBomb();
         DestroyShadow();
-        isJumping = false;
-        animator.SetBool("ISJUMP", false);
+        DestroyBomb();
+
+        isLanding = false;
+
         animator.SetBool("ISLAND", false);
         SetIdle(true);
         isInvincible = false;
@@ -385,7 +399,7 @@ public class bosscontroller : MonoBehaviour
         // 그림자 위치 변경
         //float shadowOffset = Mathf.Lerp(maxShadowOffset, 0f, heightPercentage);
         //shadowTransform.localPosition = new Vector3(shadowTransform.localPosition.x, -shadowOffset, 0f);
-        StartCoroutine(WaitPointSeconds());
+        //StartCoroutine(WaitPointSeconds());
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -519,14 +533,26 @@ public class bosscontroller : MonoBehaviour
         //Debug.Log("SummonShadow method called");
         //Debug.Log(shadowPrefab == null ? "shadowPrefab is null" : "shadowPrefab is assigned");
 
-        shadow = Instantiate(shadowPrefab, transform.position, Quaternion.identity);
-        //shadow.transform.parent = null; // 부모 설정 해제
+        shadow = Instantiate(shadowPrefab, GameManager.Instance.player.transform.position, Quaternion.identity);
+        shadow.transform.parent = null; // 부모 설정 해제
+        shadowTransform = shadow.transform;
         //Debug.Log(shadow == null ? "Shadow instantiation failed" : "Shadow instantiated successfully");
+    }
+    public void SummonBomb()
+    {
+        bomb = Instantiate(bombPrefab, shadowTransform.position, Quaternion.identity);
+        bomb.transform.parent = null; // 부모 설정 해제
+        bomb.GetComponent<shadow>().isHot = true;
     }
 
     public void DestroyShadow()
     {
         Destroy(shadow, 0.3f);
+        //Debug.Log("DestroyShadow method called");
+    }
+    public void DestroyBomb()
+    {
+        Destroy(bomb, 0.3f);
         //Debug.Log("DestroyShadow method called");
     }
 
@@ -547,5 +573,10 @@ public class bosscontroller : MonoBehaviour
         GameManager.Instance.health--;
         yield return new WaitForSeconds(1f);
         damageCoroutine = null; // 코루틴이 끝난 후 null로 초기화
+    }
+
+    public void jumpdamage()
+    {
+        StartCoroutine(GameManager.Instance.pc.ChangeColor());
     }
 }
