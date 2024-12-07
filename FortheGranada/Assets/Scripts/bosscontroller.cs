@@ -7,6 +7,7 @@ public class bosscontroller : MonoBehaviour
     private Collider2D bossCollider;
     public Rigidbody2D bossrb;
     private Animator animator;
+    private DashPathIndicator DPI;
     private bool isDead = false;
     public bool isDashing = false;
     private bool isJumping = false;
@@ -40,6 +41,8 @@ public class bosscontroller : MonoBehaviour
 
     private void Awake()
     {
+        //DPI = GameObject.Find("LineRenderer").GetComponent<DashPathIndicator>();
+        //DPI.HideDashPath();
         // 체력 세팅
         GameManager.Instance.boss_max_health = 100f;
         GameManager.Instance.boss_health = GameManager.Instance.boss_max_health; // 보스 최대 체력으로 현재 체력 초기화
@@ -96,6 +99,11 @@ public class bosscontroller : MonoBehaviour
         summonPoints = summonPoint.GetComponentsInChildren<Transform>();
     }
 
+    private void Start()
+    {
+        DPI = GameObject.Find("LineRenderer").GetComponent<DashPathIndicator>();
+        DPI.HideDashPath();
+    }
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space)) // 스페이스 바 누르면 체력 100% 감소
@@ -291,7 +299,8 @@ public class bosscontroller : MonoBehaviour
     private IEnumerator DashCoroutine()
     {
         float timer = 0f;
-        Debug.DrawLine(transform.position, transform.position + (Vector3)dashDirection * 2, Color.red, 1f);
+        //Debug.DrawLine(transform.position, transform.position + (Vector3)dashDirection * 2, Color.red, 1f);
+        DPI.UpdatePath();
         while (timer < dashDuration)
         {
             if (dashDirection != Vector2.zero)
@@ -307,7 +316,7 @@ public class bosscontroller : MonoBehaviour
             yield return null;
             if (isDashing == false) break;
         }
-
+        DPI.HideDashPath();
         animator.SetBool("ISDASH", false);
         isDashing = false;
         yield return new WaitForSeconds(0.1f); // 애니메이션 전환 대기
@@ -351,11 +360,11 @@ public class bosscontroller : MonoBehaviour
         // 난이도에 따른 대기 시간
         if (GameManager.Instance.diff == 3)
         {
-            yield return new WaitForSeconds(1.5f);
+            yield return new WaitForSeconds(2f);
         }
         else
         {
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(3f);
         }
 
         transform.position = shadowTransform.position;
