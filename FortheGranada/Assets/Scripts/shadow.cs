@@ -8,7 +8,8 @@ public class shadow : MonoBehaviour
     {
         if (collision.CompareTag("Player") && isHot)
         {
-            GameManager.Instance.health--;
+            //GameManager.Instance.health--;
+            GameManager.Instance.pc.ChangeColor();
             Debug.Log("Hot!");
             isHot = false;
         }

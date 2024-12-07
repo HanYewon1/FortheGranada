@@ -95,7 +95,7 @@ public class playercontroller : MonoBehaviour
     //?��踝蕭?��豎嫡橘蕭?��踝蕭 ?��踝蕭
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Enemy") )
+        if (collision.gameObject.CompareTag("Enemy"))
         {
             StartCoroutine(ChangeColor());
         }
@@ -120,7 +120,7 @@ public class playercontroller : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        
+
         if (collision.tag == "Door")
         {
             is_door = true;
@@ -142,7 +142,7 @@ public class playercontroller : MonoBehaviour
             {
                 next_room_x = room_x + 1;
                 add_door_position = new Vector3(7.4f, 0, 0);
-            }   
+            }
             else if (collision.name == "door_left")
             {
                 next_room_x = room_x - 1;
@@ -165,6 +165,7 @@ public class playercontroller : MonoBehaviour
         if (is_damaged == false)
         {
             GameManager.Instance.health--;
+            if (GameManager.Instance.health <= 0) GameManager.Instance.health = 0;
             is_damaged = true;
             spriteRenderer.color = Color.red;
             yield return new WaitForSeconds(1f); //1?��褊蛛?��?��踝蕭 ?��踝蕭?��踝蕭
@@ -211,11 +212,11 @@ public class playercontroller : MonoBehaviour
             }
             minimap_image = GameObject.Find(minimap_next_room);
             image = minimap_image.GetComponent<Image>();
-            if(image.color == Color.blue)
+            if (image.color == Color.blue)
             {
                 is_finish = true;
             }
-           
+
             image.color = Color.red;
             room_x = next_room_x;
             room_y = next_room_y;

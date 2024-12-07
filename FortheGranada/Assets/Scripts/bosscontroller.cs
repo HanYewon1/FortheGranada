@@ -8,7 +8,7 @@ public class bosscontroller : MonoBehaviour
     public Rigidbody2D bossrb;
     private Animator animator;
     private bool isDead = false;
-    private bool isDashing = false;
+    public bool isDashing = false;
     private bool isJumping = false;
     private bool isPhase2 = false;
     private bool isFire = false;
@@ -390,26 +390,32 @@ public class bosscontroller : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (isDashing)
-        {
-            Debug.Log("Collision detected during dash, stopping dash...");
-            isDashing = false;
-        }
-
         if (collision.gameObject.CompareTag("Player"))
         {
             Debug.Log("Crashed!");
             StartCoroutine(GameManager.Instance.pc.ChangeColor());
-            if (damageCoroutine == null)
+            /*if (damageCoroutine == null)
             {
                 damageCoroutine = StartCoroutine(HIT());
-            }
+            }*/
         }
 
         // 충돌한 오브젝트가 "Block" 태그를 가지고 있는지 확인
         if (collision.gameObject.CompareTag("Block"))
         {
-            TakeDamage(damageAmount);
+            if (isDashing)
+            {
+                Vector2 direction = (transform.position - collision.transform.position).normalized;
+                bossrb.MovePosition(bossrb.position + direction * 0.5f);
+                TakeDamage(damageAmount);
+                StartCoroutine(collision.gameObject.GetComponent<bossblock>().BossDamage());
+            }
+        }
+
+        if (isDashing)
+        {
+            Debug.Log("Collision detected during dash, stopping dash...");
+            isDashing = false;
         }
     }
 
