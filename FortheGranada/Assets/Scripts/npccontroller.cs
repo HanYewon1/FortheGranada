@@ -97,6 +97,7 @@ public class npccontroller : MonoBehaviour
         isChasing = false;
         currentSpeed = moveSpeed;
         returnDefault = true; // 순찰 복귀 상태 활성화
+        
     }
 
 
