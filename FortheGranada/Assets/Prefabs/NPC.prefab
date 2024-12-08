@@ -242,7 +242,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3de3fa40c19e69a42af388a5c99b4d87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radius: 5
+  radius: 7
   angle: 90
   targetLayer:
     serializedVersion: 2
@@ -252,6 +252,7 @@ MonoBehaviour:
     m_Bits: 512
   viewMeshFilter: {fileID: 0}
   segments: 50
+  detectDuration: 0.5
 --- !u!114 &9193678066199445705
 MonoBehaviour:
   m_ObjectHideFlags: 0

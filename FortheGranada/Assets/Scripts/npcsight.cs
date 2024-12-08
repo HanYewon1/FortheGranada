@@ -14,6 +14,9 @@ public class npcsight : MonoBehaviour
 
     public Transform Target {  get; private set; }
     public bool DetectPlayer { get; private set; }
+
+    private float detectTime = 0f;
+    public float detectDuration = 0.5f; //감지에 걸리는 시간
     
 
     private Mesh viewMesh;
@@ -46,7 +49,7 @@ public class npcsight : MonoBehaviour
             Transform target = rangeCheck[0].transform;
             Vector3 directionToTarget = (target.position - transform.position).normalized;
 
-            // 시야각 내부에 있는지 확인
+            // 시야 범위 내부에 있는지 확인
             if (Vector3.Angle(new Vector3(npc_controller.movement.x, npc_controller.movement.y, 0), directionToTarget) < angle / 2)
             {
                 float distanceToTarget = Vector3.Distance(transform.position, target.position);
@@ -54,15 +57,22 @@ public class npcsight : MonoBehaviour
                 // 장애물에 의해 가려지지 않았는지 확인
                 if (!Physics2D.Raycast(transform.position, directionToTarget, distanceToTarget, obstructionLayer))
                 {
-                    DetectPlayer = true;
                     Target = target;
+                    detectTime += Time.deltaTime;//시야 범위 내에 플레이어가 있을 시 시간 누적
+
+                    if (detectTime >= detectDuration) { //1초 이상 시야 범위 내에 있으면 감지 판정
+                        DetectPlayer = true;
+                        
+                    }
                     return;
+
                 }
             }
         }
 
         DetectPlayer = false;
         Target = null;
+        detectTime = 0f;
     
 }
 
@@ -94,11 +104,6 @@ public class npcsight : MonoBehaviour
         viewMesh.triangles = triangles;
         viewMesh.RecalculateNormals();
 
-        // 플레이어 감지 시 시야 색상 변경
-        if (mesh_renderer != null)
-        {
-            mesh_renderer.material.color = DetectPlayer ? Color.yellow : Color.red;
-        }
     }
 
     //npc 방향 따라 시야 변경
