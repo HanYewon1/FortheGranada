@@ -1,8 +1,8 @@
+using System.Collections;
 using UnityEngine;
 
 public class npcsight : MonoBehaviour
 {
-    public float radius;
     [Range(1, 360)] public float angle = 90f;
     public LayerMask targetLayer;
     public LayerMask obstructionLayer;
@@ -15,9 +15,9 @@ public class npcsight : MonoBehaviour
     public Transform Target {  get; private set; }
     public bool DetectPlayer { get; private set; }
 
-    private float detectTime = 0f;
-    public float detectDuration = 0.5f; //감지에 걸리는 시간
-    
+    private float radius = 7f;
+    private bool isChecking = false;
+
 
     private Mesh viewMesh;
 
@@ -58,10 +58,9 @@ public class npcsight : MonoBehaviour
                 if (!Physics2D.Raycast(transform.position, directionToTarget, distanceToTarget, obstructionLayer))
                 {
                     Target = target;
-                    detectTime += Time.deltaTime;//시야 범위 내에 플레이어가 있을 시 시간 누적
-
-                    if (detectTime >= detectDuration) { //1초 이상 시야 범위 내에 있으면 감지 판정
-                        DetectPlayer = true;
+                    if (!isChecking)
+                    {
+                        StartCoroutine(CheckDetection());
                         
                     }
                     return;
@@ -72,9 +71,21 @@ public class npcsight : MonoBehaviour
 
         DetectPlayer = false;
         Target = null;
-        detectTime = 0f;
     
 }
+    private IEnumerator CheckDetection()
+    {
+        isChecking = true; // 중복 실행 방지
+        yield return new WaitForSeconds(1f); // 1초 대기
+
+        // 시야 범위 내에 여전히 플레이어가 있는지 확인
+        if (Target != null && DetectPlayer == false)
+        {
+            DetectPlayer = true; // 감지 성공
+            Debug.Log("Player detected after 1 second!");
+        }
+        isChecking = false; // 상태 초기화
+    }
 
     //시야 감지
     private void DrawFieldOfView()

@@ -11,6 +11,8 @@ public class npcchase : MonoBehaviour
     npcsight npc_sight;
     npccontroller npc_controller;
     npcattack npc_attack;
+    SpriteRenderer spriteRenderer;
+    Color originalColor;
 
     private Stack<Vector2> dfsStack = new Stack<Vector2>(); // DFS ?ㅽ깮
     private HashSet<Vector2> visited = new HashSet<Vector2>(); // 諛⑸Ц???몃뱶
@@ -18,11 +20,16 @@ public class npcchase : MonoBehaviour
     private bool isSearching = false; // DFS ?먯깋 ?곹깭
     private Vector2 currentTarget; // ?꾩옱 紐⑺몴 ?꾩튂
 
+    
+
     void Start()
     {
         npc_sight = GetComponent<npcsight>();
         npc_controller = GetComponent<npccontroller>();
         npc_attack = GetComponent<npcattack>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        originalColor = spriteRenderer.color;
+        
     }
 
     void Update()
@@ -30,7 +37,7 @@ public class npcchase : MonoBehaviour
         if (npc_sight.DetectPlayer && npc_sight.Target != null)//플레이어 인식하고 시야에 플레이어 있으면
         {
             float distanceToPlayer = Vector2.Distance(transform.position, npc_sight.Target.position);
-
+            spriteRenderer.color = Color.red;
             npc_controller.StartChasing();
             if (distanceToPlayer <= npc_attack.attackRange)
             {
@@ -49,17 +56,17 @@ public class npcchase : MonoBehaviour
             }
 
         }
-        else if (!npc_sight.DetectPlayer && npc_controller.isChasing)
+        else if (!npc_sight.DetectPlayer && npc_controller.isChasing) //추격 중 플레이어 놓치면
         {
+            spriteRenderer.color = originalColor; //원래 색깔로 돌아옴
             if (isSearching)
             {
-
                 npc_controller.movement = Vector2.zero; //멈춤
-
                 isSearching = false;
                 npc_controller.StopChasing(); // 추격 중단 후 순찰로 복귀
             }
             npc_controller.isChasing = false;
+            
 
         }
     }
