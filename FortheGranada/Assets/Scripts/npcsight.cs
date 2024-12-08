@@ -1,8 +1,8 @@
+using System.Collections;
 using UnityEngine;
 
 public class npcsight : MonoBehaviour
 {
-    public float radius;
     [Range(1, 360)] public float angle = 90f;
     public LayerMask targetLayer;
     public LayerMask obstructionLayer;
@@ -14,7 +14,10 @@ public class npcsight : MonoBehaviour
 
     public Transform Target {  get; private set; }
     public bool DetectPlayer { get; private set; }
-    
+
+    private float radius = 7f;
+    private bool isChecking = false;
+
 
     private Mesh viewMesh;
 
@@ -46,7 +49,7 @@ public class npcsight : MonoBehaviour
             Transform target = rangeCheck[0].transform;
             Vector3 directionToTarget = (target.position - transform.position).normalized;
 
-            // 시야각 내부에 있는지 확인
+            // 시야 범위 내부에 있는지 확인
             if (Vector3.Angle(new Vector3(npc_controller.movement.x, npc_controller.movement.y, 0), directionToTarget) < angle / 2)
             {
                 float distanceToTarget = Vector3.Distance(transform.position, target.position);
@@ -54,9 +57,14 @@ public class npcsight : MonoBehaviour
                 // 장애물에 의해 가려지지 않았는지 확인
                 if (!Physics2D.Raycast(transform.position, directionToTarget, distanceToTarget, obstructionLayer))
                 {
-                    DetectPlayer = true;
                     Target = target;
+                    if (!isChecking)
+                    {
+                        StartCoroutine(CheckDetection());
+                        
+                    }
                     return;
+
                 }
             }
         }
@@ -65,6 +73,19 @@ public class npcsight : MonoBehaviour
         Target = null;
     
 }
+    private IEnumerator CheckDetection()
+    {
+        isChecking = true; // 중복 실행 방지
+        yield return new WaitForSeconds(1f); // 1초 대기
+
+        // 시야 범위 내에 여전히 플레이어가 있는지 확인
+        if (Target != null && DetectPlayer == false)
+        {
+            DetectPlayer = true; // 감지 성공
+            Debug.Log("Player detected after 1 second!");
+        }
+        isChecking = false; // 상태 초기화
+    }
 
     //시야 감지
     private void DrawFieldOfView()
@@ -94,11 +115,6 @@ public class npcsight : MonoBehaviour
         viewMesh.triangles = triangles;
         viewMesh.RecalculateNormals();
 
-        // 플레이어 감지 시 시야 색상 변경
-        if (mesh_renderer != null)
-        {
-            mesh_renderer.material.color = DetectPlayer ? Color.yellow : Color.red;
-        }
     }
 
     //npc 방향 따라 시야 변경
