@@ -71,7 +71,7 @@ public class bosscontroller : MonoBehaviour
         {
             dashSpeed = 200f;
         }
-        moveSpeed = 1f;
+        moveSpeed = 2f;
         jumpDuration = 1f;
         dashDuration = 2f;
         jumpHeight = 1.5f;

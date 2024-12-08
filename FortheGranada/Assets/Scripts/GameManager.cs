@@ -21,12 +21,13 @@ public class GameManager : MonoBehaviour
 
     [Header("Player Settings")]
     public int health = 1;
-    public float speed = 0;
-    public float originspeed = 0;
-    public float speed_for_boss_stage = 0;
+    public float speed = 0f;
+    public float originspeed = 0f;
+    public float tmpspeed = 0f;
+    public float speed_for_boss_stage = 0f;
     public int maxHealth = 10;
     public int armor = 0;
-    public int stealthTime;
+    public float stealthTime = 0f;
     public int key;
     public int req_key;
     public int health_item = 0;
@@ -160,6 +161,8 @@ public class GameManager : MonoBehaviour
         apiUrl = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=" + apiKey;
 
         interactKey = KeyCode.F;
+
+        stealthTime = 0f;
     }
 
     private void OnEnable()
@@ -186,8 +189,8 @@ public class GameManager : MonoBehaviour
 
         // 각 변수들 초기화
         maxstage = 3;
-        //speed = 4;
-        originspeed = 4;
+        //stealthTime = 0f;
+        originspeed = 4f;
         speed_for_boss_stage = 4f;
 
         // Ingame 들어가면 초기화 작업 실행
@@ -411,6 +414,8 @@ public class GameManager : MonoBehaviour
             health_list = tmp.GetComponentsInChildren<RectTransform>();
             tmp = GameObject.Find("LOSEHPUI");
             health_lose_list = tmp.GetComponentsInChildren<RectTransform>();
+            armor = 0;
+            armor_item = 0;
             if (health_lose_list != null)
             {
                 for (int i = maxHealth + 1; i < health_lose_list.Length; i++)
@@ -418,7 +423,7 @@ public class GameManager : MonoBehaviour
                     health_lose_list[i].gameObject.SetActive(false);
                 }
             }
-            if (health_list != null && health_list.Length != 0) health_list[8].gameObject.SetActive(false);
+            if (health_list != null && health_list.Length != 0 && armor == 0) health_list[8].gameObject.SetActive(false);
             switch (diff)
             {
                 case 1:
@@ -1094,5 +1099,14 @@ public class GameManager : MonoBehaviour
         ui_list[9].gameObject.SetActive(true);
         boss_health = 1;
         Debug.Log("Ending!");
+    }
+
+    public IEnumerator ASCoroutine()
+    {
+        tmpspeed = speed;
+        speed *= 1.3f;
+        yield return new WaitForSeconds(3f);
+        speed = tmpspeed;
+        pc.ASCoroutine = null; // 코루틴이 끝난 후 null로 초기화
     }
 }

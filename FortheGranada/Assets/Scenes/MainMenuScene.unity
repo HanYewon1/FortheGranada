@@ -791,8 +791,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 0
   speed: 3
-  originspeed: 3
-  speed_for_boss_stage: 1.5
+  originspeed: 4
+  tmpspeed: 0
+  speed_for_boss_stage: 4
   maxHealth: 0
   armor: 0
   stealthTime: 0

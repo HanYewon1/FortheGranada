@@ -23,10 +23,9 @@ public class gamedata : MonoBehaviour
         PlayerPrefs.SetInt("Armor", GameManager.Instance.armor);
         PlayerPrefs.SetInt("MaxHealth", GameManager.Instance.maxHealth);
         PlayerPrefs.SetFloat("Speed", GameManager.Instance.speed);
-        PlayerPrefs.SetInt("StealthTime", GameManager.Instance.stealthTime);
+        PlayerPrefs.SetFloat("StealthTime", GameManager.Instance.stealthTime);
         PlayerPrefs.SetInt("HealthItem", GameManager.Instance.health_item);
         PlayerPrefs.SetInt("ArmorItem", GameManager.Instance.armor_item);
-        PlayerPrefs.SetInt("StealthTime", GameManager.Instance.stealthTime);
         PlayerPrefs.SetInt("StealthItem", GameManager.Instance.stealth_item);
         PlayerPrefs.SetInt("SpeedItem", GameManager.Instance.speed_item);
         PlayerPrefs.SetInt("HasteItem", GameManager.Instance.haste_item);
@@ -84,7 +83,7 @@ public class gamedata : MonoBehaviour
         GameManager.Instance.stealthTime = PlayerPrefs.GetInt("StealthTime");
         GameManager.Instance.health_item = PlayerPrefs.GetInt("HealthItem");
         GameManager.Instance.armor_item = PlayerPrefs.GetInt("ArmorItem");
-        GameManager.Instance.stealthTime = PlayerPrefs.GetInt("StealthTime");
+        GameManager.Instance.stealthTime = PlayerPrefs.GetFloat("StealthTime");
         GameManager.Instance.stealth_item = PlayerPrefs.GetInt("StealthItem");
         GameManager.Instance.speed_item = PlayerPrefs.GetInt("SpeedItem");
         GameManager.Instance.haste_item = PlayerPrefs.GetInt("HasteItem");
