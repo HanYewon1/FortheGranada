@@ -188,7 +188,7 @@ public class GameManager : MonoBehaviour
         maxstage = 3;
         //speed = 4;
         originspeed = 4;
-        speed_for_boss_stage = 1.5f;
+        speed_for_boss_stage = 4f;
 
         // Ingame 들어가면 초기화 작업 실행
         if (is_ingame == true)
