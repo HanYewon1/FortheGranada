@@ -40,7 +40,10 @@ public class npcchase : MonoBehaviour
             }
             else
             {
-                PerformDFS();
+                if (!isSearching)
+                {
+                    PerformDFS(); // DFS 탐색 시작
+                }
                 MoveTo(currentTarget); // DFS 탐색 결과로 이동
 
             }
@@ -83,7 +86,6 @@ public class npcchase : MonoBehaviour
         {
             if (iterations++ > maxIterations)
             {
-                Debug.LogWarning($"DFS exceeded iteration limit! Stack size: {dfsStack.Count}, Visited nodes: {visited.Count}");
                 isSearching = false;
                 return; // ?먯깋 媛뺤젣 醫낅즺
             }
@@ -93,7 +95,6 @@ public class npcchase : MonoBehaviour
             // 紐⑺몴 ?꾩튂???꾨떖??寃쎌슦
             if (Vector2.Distance(current, goal) < cellSize / 2)
             {
-                Debug.Log($"Target reached at {current}. Iterations: {iterations}");
                 currentTarget = goal; // 紐⑺몴 ?ㅼ젙
                 isSearching = false;
                 return;
@@ -110,7 +111,6 @@ public class npcchase : MonoBehaviour
             }
         }
 
-        Debug.LogWarning("Target not reachable. Exploration terminated.");
         isSearching = false;
     }
 
