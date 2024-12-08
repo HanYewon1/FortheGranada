@@ -67,8 +67,9 @@ public class itemmanager : MonoBehaviour
         {
             if (item.GetItemID == 4 && GameManager.Instance.speed_item < item.GetNumNesting)//�ӵ� ������
             {
-                GameManager.Instance.speed += GameManager.Instance.originspeed * 0.1f;
                 GameManager.Instance.speed_item++;
+                GameManager.Instance.speed = GameManager.Instance.originspeed * (1f + (0.1f * GameManager.Instance.speed_item));
+                GameManager.Instance.tmpspeed = GameManager.Instance.speed;
             }
             else if (item.GetItemID == 6 && GameManager.Instance.haste_item < item.GetNumNesting)//�ǰ� ������
             {
@@ -77,7 +78,7 @@ public class itemmanager : MonoBehaviour
             }
             else if (item.GetItemID == 7 && GameManager.Instance.stealth_item < item.GetNumNesting)//���� ������
             {
-                GameManager.Instance.stealthTime++;
+                GameManager.Instance.stealthTime += 1f;
                 GameManager.Instance.stealth_item++;
                 GameManager.Instance.item_list[6].gameObject.SetActive(true);
             }

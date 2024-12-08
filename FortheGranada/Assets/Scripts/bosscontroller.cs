@@ -65,13 +65,13 @@ public class bosscontroller : MonoBehaviour
         // 변수들 초기화, 도전 난이도면 다르게
         if (GameManager.Instance.diff == 3)
         {
-            dashSpeed = 80f;
+            dashSpeed = 300f;
         }
         else
         {
-            dashSpeed = 60f;
+            dashSpeed = 200f;
         }
-        moveSpeed = 0.5f;
+        moveSpeed = 2f;
         jumpDuration = 1f;
         dashDuration = 2f;
         jumpHeight = 1.5f;
@@ -413,11 +413,11 @@ public class bosscontroller : MonoBehaviour
         // 난이도에 따른 대기 시간
         if (GameManager.Instance.diff == 3)
         {
-            yield return new WaitForSeconds(2.25f);
+            yield return new WaitForSeconds(2.85f);
         }
         else
         {
-            yield return new WaitForSeconds(3f);
+            yield return new WaitForSeconds(3.5f);
         }
 
         transform.position = shadowTransform.position;
@@ -525,7 +525,7 @@ public class bosscontroller : MonoBehaviour
         {
             for (int j = 1; j < 31; j++)
             {
-                sumpo = new Vector3(summonPoints[j].position.x, summonPoints[j].position.y + -0.15f, 0f);
+                sumpo = new Vector3(summonPoints[j].position.x, summonPoints[j].position.y + -0.3f, 0f);
                 points[j] = Instantiate(pointPrefab, sumpo, Quaternion.identity);
             }
         }
@@ -533,7 +533,7 @@ public class bosscontroller : MonoBehaviour
         {
             for (int j = 1; j < 31; j++)
             {
-                sumpo = new Vector3(summonPoints[j].position.x, summonPoints[j].position.y + -0.15f, 0f);
+                sumpo = new Vector3(summonPoints[j].position.x, summonPoints[j].position.y + -0.3f, 0f);
                 points[j] = Instantiate(pointPrefab, sumpo, Quaternion.identity);
             }
         }
@@ -541,7 +541,7 @@ public class bosscontroller : MonoBehaviour
         {
             for (int j = 1; j < 61; j++)
             {
-                sumpo = new Vector3(summonPoints[j].position.x, summonPoints[j].position.y + -0.15f, 0f);
+                sumpo = new Vector3(summonPoints[j].position.x, summonPoints[j].position.y + -0.3f, 0f);
                 points[j] = Instantiate(pointPrefab, sumpo, Quaternion.identity);
             }
         }

@@ -13,6 +13,7 @@ public class playercontroller : MonoBehaviour
     public int next_room_x;
     public int next_room_y;
     public string minimap_name;
+    public Coroutine ASCoroutine;
 
     Rigidbody2D rigidbody2d;
     Animator animator;
@@ -164,8 +165,18 @@ public class playercontroller : MonoBehaviour
     {
         if (is_damaged == false)
         {
-            GameManager.Instance.health--;
-            if (GameManager.Instance.health <= 0) GameManager.Instance.health = 0;
+            if (GameManager.Instance.armor_item >= 1)
+            {
+                GameManager.Instance.armor--;
+                GameManager.Instance.armor_item--;
+                GameManager.Instance.health_list[8].gameObject.SetActive(false);
+            }
+            else
+            {
+                GameManager.Instance.health--;
+                if (GameManager.Instance.health <= 0) GameManager.Instance.health = 0;
+            }
+            if (GameManager.Instance.is_attacked_speed) { if (ASCoroutine == null) ASCoroutine = StartCoroutine(GameManager.Instance.ASCoroutine()); }
             is_damaged = true;
             spriteRenderer.color = Color.red;
             yield return new WaitForSeconds(1f); //1?��褊蛛?��?��踝蕭 ?��踝蕭?��踝蕭
