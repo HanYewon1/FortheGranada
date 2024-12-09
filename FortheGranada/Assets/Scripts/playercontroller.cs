@@ -61,11 +61,9 @@ public class playercontroller : MonoBehaviour
     {
         player_x = Input.GetAxisRaw("Horizontal"); //鮈�? ??��踝蕭??��踝蕭
         player_y = Input.GetAxisRaw("Vertical"); //??��踝蕭??��踝蕭 ??��踝蕭??��踝蕭
-
-        //??��踝蕭?���?? 貒?�� �?渣
+        bool player_y_down = Input.GetButtonDown("Vertical");
         bool player_x_down = Input.GetButtonDown("Horizontal");
         bool player_x_up = Input.GetButtonUp("Horizontal");
-        bool player_y_down = Input.GetButtonDown("Vertical");
         bool player_y_up = Input.GetButtonUp("Vertical");
 
         //??��踝蕭??��踝蕭鮈�? ??��踝蕭??��踝蕭??��踝蕭 ??��踝蕭??��踝蕭 魽國?��
@@ -74,9 +72,21 @@ public class playercontroller : MonoBehaviour
             is_horizon_move = true; //鮈�? ??��踝蕭??��踝蕭
         }
         else if (player_y_down)
+        {
             is_horizon_move = false; //??��踝蕭??��踝蕭 ??��踝蕭??��踝蕭
+        }
         else if (player_x_up || player_y_up)
             is_horizon_move = player_x != 0;
+
+        //나중에 입력받는 방향을 우선시함
+        if(is_horizon_move)
+        {
+            player_y = 0;
+        }
+        else
+        {
+            player_x = 0;
+        }
 
         //??��踝蕭??��踝蕭諰�???��踝蕭
         if (animator.GetInteger("player_move_x") != player_x) //鮈�?
