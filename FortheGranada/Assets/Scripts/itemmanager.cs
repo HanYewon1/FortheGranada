@@ -1,5 +1,7 @@
 using UnityEngine;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using System.Collections.Generic;
 
 public class itemmanager : MonoBehaviour
@@ -12,23 +14,45 @@ public class itemmanager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
-        Item = AssetDatabase.LoadAssetAtPath<Item>("Assets/Item/Health.asset");
+        /*
+        #if UNITY_EDITOR
+                Item = AssetDatabase.LoadAssetAtPath<Item>("Assets/Item/Health.asset");
+                itemlist.Add(Item);
+                Item = AssetDatabase.LoadAssetAtPath<Item>("Assets/Item/Heal.asset");
+                itemlist.Add(Item);
+                Item = AssetDatabase.LoadAssetAtPath<Item>("Assets/Item/Armor.asset");
+                itemlist.Add(Item);
+                Item = AssetDatabase.LoadAssetAtPath<Item>("Assets/Item/Speed.asset");
+                itemlist.Add(Item);
+                Item = AssetDatabase.LoadAssetAtPath<Item>("Assets/Item/Ressurection.asset");
+                itemlist.Add(Item);
+                Item = AssetDatabase.LoadAssetAtPath<Item>("Assets/Item/Under_damaged.asset");
+                itemlist.Add(Item);
+                Item = AssetDatabase.LoadAssetAtPath<Item>("Assets/Item/Detect.asset");
+                itemlist.Add(Item);
+                Item = AssetDatabase.LoadAssetAtPath<Item>("Assets/Item/Preview.asset");
+                itemlist.Add(Item);
+                Item = AssetDatabase.LoadAssetAtPath<Item>("Assets/Item/Key.asset");
+                itemlist.Add(Item);
+        #endif
+        */
+        Item = Resources.Load<Item>("Health");
         itemlist.Add(Item);
-        Item = AssetDatabase.LoadAssetAtPath<Item>("Assets/Item/Heal.asset");
+        Item = Resources.Load<Item>("Heal");
         itemlist.Add(Item);
-        Item = AssetDatabase.LoadAssetAtPath<Item>("Assets/Item/Armor.asset");
+        Item = Resources.Load<Item>("Armor");
         itemlist.Add(Item);
-        Item = AssetDatabase.LoadAssetAtPath<Item>("Assets/Item/Speed.asset");
+        Item = Resources.Load<Item>("Speed");
         itemlist.Add(Item);
-        Item = AssetDatabase.LoadAssetAtPath<Item>("Assets/Item/Ressurection.asset");
+        Item = Resources.Load<Item>("Ressurection");
         itemlist.Add(Item);
-        Item = AssetDatabase.LoadAssetAtPath<Item>("Assets/Item/Under_damaged.asset");
+        Item = Resources.Load<Item>("Under_damaged");
         itemlist.Add(Item);
-        Item = AssetDatabase.LoadAssetAtPath<Item>("Assets/Item/Detect.asset");
+        Item = Resources.Load<Item>("Detect");
         itemlist.Add(Item);
-        Item = AssetDatabase.LoadAssetAtPath<Item>("Assets/Item/Preview.asset");
+        Item = Resources.Load<Item>("Preview");
         itemlist.Add(Item);
-        Item = AssetDatabase.LoadAssetAtPath<Item>("Assets/Item/Key.asset");
+        Item = Resources.Load<Item>("Key");
         itemlist.Add(Item);
     }
 

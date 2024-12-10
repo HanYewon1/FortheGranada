@@ -65,15 +65,15 @@ public class bosscontroller : MonoBehaviour
         // 변수들 초기화, 도전 난이도면 다르게
         if (GameManager.Instance.diff == 3)
         {
-            dashSpeed = 300f;
+            dashSpeed = 24f;
         }
         else
         {
-            dashSpeed = 200f;
+            dashSpeed = 18f;
         }
         moveSpeed = 2f;
         jumpDuration = 1f;
-        dashDuration = 2f;
+        dashDuration = 1.5f;
         jumpHeight = 1.5f;
         GameManager.Instance.health_item = 0;
         switch (GameManager.Instance.diff)
@@ -279,12 +279,13 @@ public class bosscontroller : MonoBehaviour
         // 대기 후 아이들 상태면 랜덤 행동 실행
         if (!isDashing && !isJumping && !isLanding && !isDead && Isfire() == false)
         {
-            int rr = Random.Range(1, 5);
+            int rr = Random.Range(1, 6);
 
             switch (rr)
             {
                 case 1:
                 case 2:
+                case 5:
                     Debug.Log("Executing Dash()");
                     Dash();
                     break;
@@ -321,7 +322,7 @@ public class bosscontroller : MonoBehaviour
         SetIdle(false);
         isDashing = true;
         PlayDashAnimation();
-
+        DPI.UpdatePath();
         Vector2 direction = (GameManager.Instance.player.position - transform.position).normalized;
 
         if (Mathf.Abs(direction.y) > Mathf.Abs(direction.x))
@@ -350,14 +351,16 @@ public class bosscontroller : MonoBehaviour
 
     private IEnumerator DashCoroutine()
     {
+        yield return new WaitForSeconds(0.5f);
         float timer = 0f;
         //Debug.DrawLine(transform.position, transform.position + (Vector3)dashDirection * 2, Color.red, 1f);
-        DPI.UpdatePath();
+
         while (timer < dashDuration)
         {
             if (dashDirection != Vector2.zero)
             {
-                bossrb.MovePosition(bossrb.position + dashDirection * dashSpeed * Time.deltaTime);
+                //bossrb.MovePosition(bossrb.position + dashDirection * dashSpeed * Time.deltaTime);
+                bossrb.linearVelocity = dashDirection * dashSpeed;
             }
             else
             {
@@ -413,11 +416,11 @@ public class bosscontroller : MonoBehaviour
         // 난이도에 따른 대기 시간
         if (GameManager.Instance.diff == 3)
         {
-            yield return new WaitForSeconds(2.85f);
+            yield return new WaitForSeconds(2.95f);
         }
         else
         {
-            yield return new WaitForSeconds(3.5f);
+            yield return new WaitForSeconds(3.2f);
         }
 
         transform.position = shadowTransform.position;
@@ -470,11 +473,32 @@ public class bosscontroller : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
             Debug.Log("Crashed!");
+            Vector2 direction = (transform.position - collision.transform.position).normalized;
+            //bossrb.MovePosition(bossrb.position + direction * 5f);
+            if (isDashing) bossrb.linearVelocity = direction * -50f;
             StartCoroutine(GameManager.Instance.pc.ChangeColor());
             /*if (damageCoroutine == null)
             {
                 damageCoroutine = StartCoroutine(HIT());
             }*/
+        }
+
+        if (collision.gameObject.CompareTag("border"))
+        {
+            if (isDashing)
+            {
+                Debug.Log("Crashed!");
+                Vector2 direction = (transform.position - collision.transform.position).normalized;
+                //bossrb.MovePosition(bossrb.position + direction * 10f);
+                bossrb.linearVelocity = direction * 0f;
+                /*if (damageCoroutine == null)
+                {
+                    damageCoroutine = StartCoroutine(HIT());
+                }*/
+                Debug.Log("Collision detected during dash, stopping dash...");
+                animator.SetBool("ISDASH", false);
+                isDashing = false;
+            }
         }
 
         // 충돌한 오브젝트가 "Block" 태그를 가지고 있는지 확인
@@ -483,17 +507,15 @@ public class bosscontroller : MonoBehaviour
             if (isDashing)
             {
                 Vector2 direction = (transform.position - collision.transform.position).normalized;
-                bossrb.MovePosition(bossrb.position + direction * 0.5f);
-                TakeDamage(damageAmount);
+                //bossrb.MovePosition(bossrb.position + direction * 10f);
+                bossrb.linearVelocity = direction * -50f;
+                if (GameManager.Instance.diff == 3) TakeDamage(damageAmount);
+                else TakeDamage(damageAmount * 2);
                 StartCoroutine(collision.gameObject.GetComponent<bossblock>().BossDamage());
+                Debug.Log("Collision detected during dash, stopping dash...");
+                animator.SetBool("ISDASH", false);
+                isDashing = false;
             }
-        }
-
-        if (isDashing)
-        {
-            Debug.Log("Collision detected during dash, stopping dash...");
-            animator.SetBool("ISDASH", false);
-            isDashing = false;
         }
     }
 

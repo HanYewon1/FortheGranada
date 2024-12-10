@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.Mathematics;
 using Unity.VisualScripting;
+#if UNITY_EDITOR
 using UnityEditor.U2D.Aseprite;
+#endif
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
