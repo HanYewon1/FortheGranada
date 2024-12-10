@@ -42,7 +42,8 @@ public class gamedata : MonoBehaviour
     {
         int stage = PlayerPrefs.GetInt("Stage");
         string stage_scene = "";
-
+        GameManager.Instance.key = 0;
+        GameManager.Instance.key_item = 0;
         if (stage <= 3)
         {
             stage_scene = "Stage_" + stage;
