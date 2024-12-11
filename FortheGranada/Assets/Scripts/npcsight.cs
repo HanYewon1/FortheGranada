@@ -15,8 +15,7 @@ public class npcsight : MonoBehaviour
     public Transform Target {  get; private set; }
     public bool DetectPlayer { get; private set; }
 
-    private float radius = 7f;
-    private bool isChecking = false;
+    private float radius = 5f;
 
 
     private Mesh viewMesh;
@@ -57,12 +56,16 @@ public class npcsight : MonoBehaviour
                 // Àå¾Ö¹°¿¡ ÀÇÇØ °¡·ÁÁöÁö ¾Ê¾Ò´ÂÁö È®ÀÎ
                 if (!Physics2D.Raycast(transform.position, directionToTarget, distanceToTarget, obstructionLayer))
                 {
+                    DetectPlayer = true;
                     Target = target;
+<<<<<<< Updated upstream
                     if (!isChecking)
                     {
                         StartCoroutine(CheckDetection());
                         
                     }
+=======
+>>>>>>> Stashed changes
                     return;
 
                 }
@@ -71,6 +74,7 @@ public class npcsight : MonoBehaviour
 
         DetectPlayer = false;
         Target = null;
+<<<<<<< Updated upstream
     
 }
     private IEnumerator CheckDetection()
@@ -88,6 +92,12 @@ public class npcsight : MonoBehaviour
     }
 
     //½Ã¾ß °¨Áö
+=======
+
+    }
+   
+    //ï¿½Ã¾ï¿½ ï¿½ï¿½ï¿½ï¿½
+>>>>>>> Stashed changes
     private void DrawFieldOfView()
     {
         Vector3 forwardDirection = new Vector3(npc_controller.movement.x, npc_controller.movement.y, 0);
