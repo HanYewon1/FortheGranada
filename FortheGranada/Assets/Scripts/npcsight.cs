@@ -12,7 +12,7 @@ public class npcsight : MonoBehaviour
     npccontroller npc_controller;
     MeshRenderer mesh_renderer;
 
-    public Transform Target {  get; private set; }
+    public Transform Target { get; private set; }
     public bool DetectPlayer { get; private set; }
 
     private float radius = 5f;
@@ -25,7 +25,7 @@ public class npcsight : MonoBehaviour
         npc_controller = GetComponent<npccontroller>();
         if (viewMeshFilter == null)
             viewMeshFilter = GetComponentInChildren<MeshFilter>();
-            
+
         mesh_renderer = viewMeshFilter.GetComponent<MeshRenderer>();
 
         viewMesh = new Mesh();
@@ -48,24 +48,16 @@ public class npcsight : MonoBehaviour
             Transform target = rangeCheck[0].transform;
             Vector3 directionToTarget = (target.position - transform.position).normalized;
 
-            // ½Ã¾ß ¹üÀ§ ³»ºÎ¿¡ ÀÖ´ÂÁö È®ÀÎ
+            // ï¿½Ã¾ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Î¿ï¿½ ï¿½Ö´ï¿½ï¿½ï¿½ È®ï¿½ï¿½
             if (Vector3.Angle(new Vector3(npc_controller.movement.x, npc_controller.movement.y, 0), directionToTarget) < angle / 2)
             {
                 float distanceToTarget = Vector3.Distance(transform.position, target.position);
 
-                // Àå¾Ö¹°¿¡ ÀÇÇØ °¡·ÁÁöÁö ¾Ê¾Ò´ÂÁö È®ÀÎ
+                // ï¿½ï¿½Ö¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¾Ò´ï¿½ï¿½ï¿½ È®ï¿½ï¿½
                 if (!Physics2D.Raycast(transform.position, directionToTarget, distanceToTarget, obstructionLayer))
                 {
                     DetectPlayer = true;
                     Target = target;
-<<<<<<< Updated upstream
-                    if (!isChecking)
-                    {
-                        StartCoroutine(CheckDetection());
-                        
-                    }
-=======
->>>>>>> Stashed changes
                     return;
 
                 }
@@ -74,37 +66,15 @@ public class npcsight : MonoBehaviour
 
         DetectPlayer = false;
         Target = null;
-<<<<<<< Updated upstream
-    
-}
-    private IEnumerator CheckDetection()
-    {
-        isChecking = true; // Áßº¹ ½ÇÇà ¹æÁö
-        yield return new WaitForSeconds(1f); // 1ÃÊ ´ë±â
 
-        // ½Ã¾ß ¹üÀ§ ³»¿¡ ¿©ÀüÈ÷ ÇÃ·¹ÀÌ¾î°¡ ÀÖ´ÂÁö È®ÀÎ
-        if (Target != null && DetectPlayer == false)
-        {
-            DetectPlayer = true; // °¨Áö ¼º°ø
-            Debug.Log("Player detected after 1 second!");
-        }
-        isChecking = false; // »óÅÂ ÃÊ±âÈ­
-    }
-
-    //½Ã¾ß °¨Áö
-=======
-
-    }
-   
-    //ï¿½Ã¾ï¿½ ï¿½ï¿½ï¿½ï¿½
->>>>>>> Stashed changes
+      }
     private void DrawFieldOfView()
     {
         Vector3 forwardDirection = new Vector3(npc_controller.movement.x, npc_controller.movement.y, 0);
         Vector3[] vertices = new Vector3[segments + 2];
         int[] triangles = new int[segments * 3];
 
-        vertices[0] = Vector3.zero; // Áß½ÉÁ¡
+        vertices[0] = Vector3.zero; // ï¿½ß½ï¿½ï¿½ï¿½
 
         for (int i = 0; i <= segments; i++)
         {
@@ -127,7 +97,7 @@ public class npcsight : MonoBehaviour
 
     }
 
-    //npc ¹æÇâ µû¶ó ½Ã¾ß º¯°æ
+    //npc ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ã¾ï¿½ ï¿½ï¿½ï¿½ï¿½
     private Vector2 RotateVector(Vector3 direction, float offsetAngle)
     {
         float angleRadius = offsetAngle * Mathf.Deg2Rad;

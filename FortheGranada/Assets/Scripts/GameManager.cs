@@ -21,12 +21,13 @@ public class GameManager : MonoBehaviour
 
     [Header("Player Settings")]
     public int health = 1;
-    public float speed = 0;
-    public float originspeed = 0;
-    public float speed_for_boss_stage = 0;
+    public float speed = 0f;
+    public float originspeed = 0f;
+    public float tmpspeed = 0f;
+    public float speed_for_boss_stage = 0f;
     public int maxHealth = 10;
     public int armor = 0;
-    public int stealthTime;
+    public float stealthTime = 0f;
     public int key;
     public int req_key;
     public int health_item = 0;
@@ -109,6 +110,7 @@ public class GameManager : MonoBehaviour
     public Transform player;
     public inneritem[] innerItems;
     public RectTransform[] health_list;
+    public RectTransform[] health_lose_list;
     public RectTransform[] item_list;
     public RectTransform[] ui_list;
     public int[] rannum3;
@@ -159,6 +161,8 @@ public class GameManager : MonoBehaviour
         apiUrl = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=" + apiKey;
 
         interactKey = KeyCode.F;
+
+        stealthTime = 0f;
     }
 
     private void OnEnable()
@@ -185,9 +189,9 @@ public class GameManager : MonoBehaviour
 
         // 각 변수들 초기화
         maxstage = 3;
-        //speed = 4;
-        originspeed = 4;
-        speed_for_boss_stage = 1.5f;
+        //stealthTime = 0f;
+        originspeed = 4f;
+        speed_for_boss_stage = 4f;
 
         // Ingame 들어가면 초기화 작업 실행
         if (is_ingame == true)
@@ -313,6 +317,8 @@ public class GameManager : MonoBehaviour
             // 체력과 아이템 UI 자식들 가져오기
             tmp = GameObject.Find("HPUI");
             health_list = tmp.GetComponentsInChildren<RectTransform>();
+            tmp = GameObject.Find("LOSEHPUI");
+            health_lose_list = tmp.GetComponentsInChildren<RectTransform>();
             tmp = GameObject.Find("ITEMUI");
             item_list = tmp.GetComponentsInChildren<RectTransform>();
 
@@ -330,6 +336,13 @@ public class GameManager : MonoBehaviour
             if (health_list != null) health_list[6].gameObject.SetActive(false);
             if (health_list != null) health_list[7].gameObject.SetActive(false);
             if (health_list != null) health_list[8].gameObject.SetActive(false);
+            if (health_lose_list != null)
+            {
+                for (int i = maxHealth + 1; i < health_lose_list.Length; i++)
+                {
+                    health_lose_list[i].gameObject.SetActive(false);
+                }
+            }
             if (item_list != null) item_list[4].gameObject.SetActive(false);
             if (item_list != null) item_list[5].gameObject.SetActive(false);
             if (item_list != null) item_list[6].gameObject.SetActive(false);
@@ -371,23 +384,46 @@ public class GameManager : MonoBehaviour
             if (ui_list != null) ui_list[6].gameObject.SetActive(false);
             if (ui_list != null) ui_list[7].gameObject.SetActive(false);
             if (ui_list != null) ui_list[9].gameObject.SetActive(false);
-            // 블럭 수가 난이도가 이지면 18개, 노말이면 15개, 도전이면 12개
-            tmp = GameObject.Find("Block1_05");
+            // 블럭 수가 난이도가 이지면 18개, 노말이면 12개, 도전이면 6개
+            tmp = GameObject.Find("Block1_03");
             if (tmp != null && diff == 3) tmp.SetActive(false);
+            tmp = GameObject.Find("Block1_04");
+            if (tmp != null && diff == 3) tmp.SetActive(false);
+            tmp = GameObject.Find("Block2_03");
+            if (tmp != null && diff == 3) tmp.SetActive(false);
+            tmp = GameObject.Find("Block2_04");
+            if (tmp != null && diff == 3) tmp.SetActive(false);
+            tmp = GameObject.Find("Block3_03");
+            if (tmp != null && diff == 3) tmp.SetActive(false);
+            tmp = GameObject.Find("Block3_04");
+            if (tmp != null && diff == 3) tmp.SetActive(false);
+            tmp = GameObject.Find("Block1_05");
+            if (tmp != null && (diff == 3 || diff == 2)) tmp.SetActive(false);
             tmp = GameObject.Find("Block1_06");
             if (tmp != null && (diff == 3 || diff == 2)) tmp.SetActive(false);
             tmp = GameObject.Find("Block2_05");
-            if (tmp != null && diff == 3) tmp.SetActive(false);
+            if (tmp != null && (diff == 3 || diff == 2)) tmp.SetActive(false);
             tmp = GameObject.Find("Block2_06");
             if (tmp != null && (diff == 3 || diff == 2)) tmp.SetActive(false);
             tmp = GameObject.Find("Block3_05");
-            if (tmp != null && diff == 3) tmp.SetActive(false);
+            if (tmp != null && (diff == 3 || diff == 2)) tmp.SetActive(false);
             tmp = GameObject.Find("Block3_06");
             if (tmp != null && (diff == 3 || diff == 2)) tmp.SetActive(false);
             tmp = GameObject.Find("HPUI");
             // 보스전용 체력UI
             health_list = tmp.GetComponentsInChildren<RectTransform>();
-            if (health_list != null && health_list.Length != 0) health_list[8].gameObject.SetActive(false);
+            tmp = GameObject.Find("LOSEHPUI");
+            health_lose_list = tmp.GetComponentsInChildren<RectTransform>();
+            armor = 0;
+            armor_item = 0;
+            if (health_lose_list != null)
+            {
+                for (int i = maxHealth + 1; i < health_lose_list.Length; i++)
+                {
+                    health_lose_list[i].gameObject.SetActive(false);
+                }
+            }
+            if (health_list != null && health_list.Length != 0 && armor == 0) health_list[8].gameObject.SetActive(false);
             switch (diff)
             {
                 case 1:
@@ -1063,5 +1099,14 @@ public class GameManager : MonoBehaviour
         ui_list[9].gameObject.SetActive(true);
         boss_health = 1;
         Debug.Log("Ending!");
+    }
+
+    public IEnumerator ASCoroutine()
+    {
+        tmpspeed = speed;
+        speed *= 1.3f;
+        yield return new WaitForSeconds(3f);
+        speed = tmpspeed;
+        pc.ASCoroutine = null; // 코루틴이 끝난 후 null로 초기화
     }
 }

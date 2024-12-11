@@ -24,10 +24,10 @@ public class fire : MonoBehaviour
             Debug.Log("FIRE!");
             StartCoroutine(GameManager.Instance.pc.ChangeColor());
             // 데미지 입히는 코루틴 중복 방지
-            if (currentCoroutine == null)
+            /*if (currentCoroutine == null)
             {
                 currentCoroutine = StartCoroutine(HIT());
-            }
+            }*/
         }
     }
 

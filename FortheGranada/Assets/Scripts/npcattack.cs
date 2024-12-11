@@ -1,4 +1,6 @@
+#if UNITY_EDITOR
 using UnityEditor.Experimental.GraphView;
+#endif
 using UnityEngine;
 
 public class npcattack : MonoBehaviour
@@ -47,7 +49,7 @@ public class npcattack : MonoBehaviour
         weapon.transform.rotation = Quaternion.Euler(0, 0, angle);
 
         Rigidbody2D rb = weapon.GetComponent<Rigidbody2D>();
-        if(rb != null)
+        if (rb != null)
         {
             rb.AddForce(playerDirection * weaponSpeed, ForceMode2D.Impulse);
         }

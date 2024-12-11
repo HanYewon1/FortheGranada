@@ -76,6 +76,7 @@ MonoBehaviour:
   next_room_x: 0
   next_room_y: 0
   minimap_name: 
+  is_door: 0
 --- !u!50 &4638608191567833636
 Rigidbody2D:
   serializedVersion: 5
@@ -192,6 +193,6 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: -0.1}
-  m_Size: {x: 0.7, y: 0.7}
+  m_Offset: {x: 0, y: -0.13}
+  m_Size: {x: 0.4, y: 0.65}
   m_Direction: 0

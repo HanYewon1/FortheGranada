@@ -13,6 +13,7 @@ public class playercontroller : MonoBehaviour
     public int next_room_x;
     public int next_room_y;
     public string minimap_name;
+    public Coroutine ASCoroutine;
 
     Rigidbody2D rigidbody2d;
     Animator animator;
@@ -27,6 +28,7 @@ public class playercontroller : MonoBehaviour
     public bool is_door;
     bool is_horizon_move; //4방향 결정
     bool is_finish;
+    bool is_damaged = false;
 
     private void Awake()
     {
@@ -59,11 +61,9 @@ public class playercontroller : MonoBehaviour
     {
         player_x = Input.GetAxisRaw("Horizontal"); //鮈�? ??��踝蕭??��踝蕭
         player_y = Input.GetAxisRaw("Vertical"); //??��踝蕭??��踝蕭 ??��踝蕭??��踝蕭
-
-        //??��踝蕭?���?? 貒?�� �?渣
+        bool player_y_down = Input.GetButtonDown("Vertical");
         bool player_x_down = Input.GetButtonDown("Horizontal");
         bool player_x_up = Input.GetButtonUp("Horizontal");
-        bool player_y_down = Input.GetButtonDown("Vertical");
         bool player_y_up = Input.GetButtonUp("Vertical");
 
         //??��踝蕭??��踝蕭鮈�? ??��踝蕭??��踝蕭??��踝蕭 ??��踝蕭??��踝蕭 魽國?��
@@ -72,9 +72,21 @@ public class playercontroller : MonoBehaviour
             is_horizon_move = true; //鮈�? ??��踝蕭??��踝蕭
         }
         else if (player_y_down)
+        {
             is_horizon_move = false; //??��踝蕭??��踝蕭 ??��踝蕭??��踝蕭
+        }
         else if (player_x_up || player_y_up)
             is_horizon_move = player_x != 0;
+
+        //나중에 입력받는 방향을 우선시함
+        if(is_horizon_move)
+        {
+            player_y = 0;
+        }
+        else
+        {
+            player_x = 0;
+        }
 
         //??��踝蕭??��踝蕭諰�???��踝蕭
         if (animator.GetInteger("player_move_x") != player_x) //鮈�?
@@ -95,7 +107,9 @@ public class playercontroller : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Enemy"))
+        {
             StartCoroutine(ChangeColor());
+        }
 
         if (collision.gameObject.CompareTag("Chest"))
         {
@@ -108,10 +122,15 @@ public class playercontroller : MonoBehaviour
         }
     }
 
-    private void OnTriggerStay2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
+
         if (collision.gameObject.CompareTag("Weapon"))
             StartCoroutine(ChangeColor());
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
 
         if (collision.tag == "Door")
         {
@@ -123,22 +142,22 @@ public class playercontroller : MonoBehaviour
             if (collision.name == "door_up")
             {
                 next_room_y = room_y - 1;
-                add_door_position = new Vector3(0, 7.2f, 0);
+                add_door_position = new Vector3(0, 7.4f, 0);
             }
             else if (collision.name == "door_down")
             {
                 next_room_y = room_y + 1;
-                add_door_position = new Vector3(0, -7.2f, 0);
+                add_door_position = new Vector3(0, -7.4f, 0);
             }
             else if (collision.name == "door_right")
             {
                 next_room_x = room_x + 1;
-                add_door_position = new Vector3(7.2f, 0, 0);
-            }   
+                add_door_position = new Vector3(7.4f, 0, 0);
+            }
             else if (collision.name == "door_left")
             {
                 next_room_x = room_x - 1;
-                add_door_position = new Vector3(-7.2f, 0, 0);
+                add_door_position = new Vector3(-7.4f, 0, 0);
             }
 
         }
@@ -154,9 +173,26 @@ public class playercontroller : MonoBehaviour
     }
     public IEnumerator ChangeColor()
     {
-        spriteRenderer.color = Color.red; //?��踝蕭?��踝蕭?��踝蕭?��踝蕭?��踝蕭 ?��踝蕭?��踝蕭
-        yield return new WaitForSeconds(1f); //1?��褊蛛?��?��踝蕭 ?��踝蕭?��踝蕭
-        spriteRenderer.color = originalColor; //?��踝蕭?��踝蕭 ?��踝蕭?��踝蕭?��踝蕭 ?��踝蕭?��複選?��
+        if (is_damaged == false)
+        {
+            if (GameManager.Instance.armor_item >= 1)
+            {
+                GameManager.Instance.armor--;
+                GameManager.Instance.armor_item--;
+                GameManager.Instance.health_list[8].gameObject.SetActive(false);
+            }
+            else
+            {
+                GameManager.Instance.health--;
+                if (GameManager.Instance.health <= 0) GameManager.Instance.health = 0;
+            }
+            if (GameManager.Instance.is_attacked_speed) { if (ASCoroutine == null) ASCoroutine = StartCoroutine(GameManager.Instance.ASCoroutine()); }
+            is_damaged = true;
+            spriteRenderer.color = Color.red;
+            yield return new WaitForSeconds(1f); //1?��褊蛛?��?��踝蕭 ?��踝蕭?��踝蕭
+            spriteRenderer.color = originalColor; //?��踝蕭?��踝蕭 ?��踝蕭?��踝蕭?��踝蕭 ?��踝蕭?��複選?��
+            is_damaged = false;
+        }
     }
 
     //?�踝??��豎對??��踝蕭 ?�踝??���?
@@ -197,11 +233,11 @@ public class playercontroller : MonoBehaviour
             }
             minimap_image = GameObject.Find(minimap_next_room);
             image = minimap_image.GetComponent<Image>();
-            if(image.color == Color.blue)
+            if (image.color == Color.blue)
             {
                 is_finish = true;
             }
-           
+
             image.color = Color.red;
             room_x = next_room_x;
             room_y = next_room_y;

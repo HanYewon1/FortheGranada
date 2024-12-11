@@ -19,6 +19,7 @@ public class npccontroller : MonoBehaviour
 
     void Start()
     {
+        moveSpeed = 4f;
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         currentSpeed = moveSpeed;
@@ -97,7 +98,7 @@ public class npccontroller : MonoBehaviour
         isChasing = false;
         currentSpeed = moveSpeed;
         returnDefault = true; // 순찰 복귀 상태 활성화
-        
+
     }
 
 
@@ -142,5 +143,5 @@ public class npccontroller : MonoBehaviour
         animator.SetInteger("npc_y", Mathf.RoundToInt(movement.y));
     }
 
-    
+
 }

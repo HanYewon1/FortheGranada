@@ -1,5 +1,7 @@
 using UnityEngine;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using System.Collections.Generic;
 
 public class itemmanager : MonoBehaviour
@@ -12,23 +14,45 @@ public class itemmanager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
-        Item = AssetDatabase.LoadAssetAtPath<Item>("Assets/Item/Health.asset");
+        /*
+        #if UNITY_EDITOR
+                Item = AssetDatabase.LoadAssetAtPath<Item>("Assets/Item/Health.asset");
+                itemlist.Add(Item);
+                Item = AssetDatabase.LoadAssetAtPath<Item>("Assets/Item/Heal.asset");
+                itemlist.Add(Item);
+                Item = AssetDatabase.LoadAssetAtPath<Item>("Assets/Item/Armor.asset");
+                itemlist.Add(Item);
+                Item = AssetDatabase.LoadAssetAtPath<Item>("Assets/Item/Speed.asset");
+                itemlist.Add(Item);
+                Item = AssetDatabase.LoadAssetAtPath<Item>("Assets/Item/Ressurection.asset");
+                itemlist.Add(Item);
+                Item = AssetDatabase.LoadAssetAtPath<Item>("Assets/Item/Under_damaged.asset");
+                itemlist.Add(Item);
+                Item = AssetDatabase.LoadAssetAtPath<Item>("Assets/Item/Detect.asset");
+                itemlist.Add(Item);
+                Item = AssetDatabase.LoadAssetAtPath<Item>("Assets/Item/Preview.asset");
+                itemlist.Add(Item);
+                Item = AssetDatabase.LoadAssetAtPath<Item>("Assets/Item/Key.asset");
+                itemlist.Add(Item);
+        #endif
+        */
+        Item = Resources.Load<Item>("Health");
         itemlist.Add(Item);
-        Item = AssetDatabase.LoadAssetAtPath<Item>("Assets/Item/Heal.asset");
+        Item = Resources.Load<Item>("Heal");
         itemlist.Add(Item);
-        Item = AssetDatabase.LoadAssetAtPath<Item>("Assets/Item/Armor.asset");
+        Item = Resources.Load<Item>("Armor");
         itemlist.Add(Item);
-        Item = AssetDatabase.LoadAssetAtPath<Item>("Assets/Item/Speed.asset");
+        Item = Resources.Load<Item>("Speed");
         itemlist.Add(Item);
-        Item = AssetDatabase.LoadAssetAtPath<Item>("Assets/Item/Ressurection.asset");
+        Item = Resources.Load<Item>("Ressurection");
         itemlist.Add(Item);
-        Item = AssetDatabase.LoadAssetAtPath<Item>("Assets/Item/Under_damaged.asset");
+        Item = Resources.Load<Item>("Under_damaged");
         itemlist.Add(Item);
-        Item = AssetDatabase.LoadAssetAtPath<Item>("Assets/Item/Detect.asset");
+        Item = Resources.Load<Item>("Detect");
         itemlist.Add(Item);
-        Item = AssetDatabase.LoadAssetAtPath<Item>("Assets/Item/Preview.asset");
+        Item = Resources.Load<Item>("Preview");
         itemlist.Add(Item);
-        Item = AssetDatabase.LoadAssetAtPath<Item>("Assets/Item/Key.asset");
+        Item = Resources.Load<Item>("Key");
         itemlist.Add(Item);
     }
 
@@ -48,6 +72,7 @@ public class itemmanager : MonoBehaviour
                 {
                     GameManager.Instance.maxHealth++;
                     GameManager.Instance.health++;
+                    GameManager.Instance.health_lose_list[GameManager.Instance.maxHealth].gameObject.SetActive(true);
                 }
                 else if (GameManager.Instance.maxHealth > GameManager.Instance.health)//�ִ� ���� �ʰ��� ȸ�� �����۰� ���� ȿ��
                 {
@@ -66,8 +91,9 @@ public class itemmanager : MonoBehaviour
         {
             if (item.GetItemID == 4 && GameManager.Instance.speed_item < item.GetNumNesting)//�ӵ� ������
             {
-                GameManager.Instance.speed += GameManager.Instance.originspeed * 0.1f;
                 GameManager.Instance.speed_item++;
+                GameManager.Instance.speed = GameManager.Instance.originspeed * (1f + (0.1f * GameManager.Instance.speed_item));
+                GameManager.Instance.tmpspeed = GameManager.Instance.speed;
             }
             else if (item.GetItemID == 6 && GameManager.Instance.haste_item < item.GetNumNesting)//�ǰ� ������
             {
@@ -76,7 +102,7 @@ public class itemmanager : MonoBehaviour
             }
             else if (item.GetItemID == 7 && GameManager.Instance.stealth_item < item.GetNumNesting)//���� ������
             {
-                GameManager.Instance.stealthTime++;
+                GameManager.Instance.stealthTime += 1f;
                 GameManager.Instance.stealth_item++;
                 GameManager.Instance.item_list[6].gameObject.SetActive(true);
             }
