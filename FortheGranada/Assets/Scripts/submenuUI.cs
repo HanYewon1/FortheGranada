@@ -38,6 +38,7 @@ public class submenuUI : MonoBehaviour
         GameManager.Instance.is_running = false;
         GameManager.Instance.is_boss = false;
         Time.timeScale = 1;
+        audiomanager.Instance.menusfx.Play();
         SceneManager.LoadScene("MainMenuScene");
     }
 
@@ -48,14 +49,25 @@ public class submenuUI : MonoBehaviour
 
     public void OnClickInfoButton()
     {
+        audiomanager.Instance.menusfx.Play();
         if (GameManager.Instance.ui_list[6] != null)
         {
             GameManager.Instance.ui_list[6].gameObject.SetActive(true);
         }
     }
 
+    public void OnClickSettingButton()
+    {
+        audiomanager.Instance.menusfx.Play();
+        if (GameManager.Instance.ui_list[10] != null)
+        {
+            GameManager.Instance.ui_list[10].gameObject.SetActive(true);
+        }
+    }
+
     public void OnClickCloseButton()
     {
+        audiomanager.Instance.menusfx.Play();
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
 #else

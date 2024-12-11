@@ -13,28 +13,30 @@ public class mainmenuUI : MonoBehaviour
 
     private void OnEnable()
     {
-        // ?”¬?´ ë¡œë“œ?  ?•Œ ?˜¸ì¶?
+        // ?ï¿½ï¿½?ï¿½ï¿½ ë¡œë“œ?ï¿½ï¿½ ?ï¿½ï¿½ ?ï¿½ï¿½ï¿½?
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
     private void OnDisable()
     {
-        // ?”¬ ë¡œë“œ ?´ë²¤íŠ¸ ?•´? œ
+        // ?ï¿½ï¿½ ë¡œë“œ ?ï¿½ï¿½ë²¤íŠ¸ ?ï¿½ï¿½?ï¿½ï¿½
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        //this.gameObject.SetActive(true);
+        audiomanager.Instance.mainmenubgm.Play();
+        audiomanager.Instance.mainmenubgm.loop = true;
     }
 
     public void OnClickQuitButton()
     {
+        audiomanager.Instance.menusfx.Play();
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
 #else
         Application.Quit();
 #endif
     }
-    
+
 }

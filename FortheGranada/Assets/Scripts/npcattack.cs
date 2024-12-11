@@ -42,7 +42,7 @@ public class npcattack : MonoBehaviour
             target = GameObject.FindGameObjectWithTag("Player").transform;
 
         GameObject weapon = Instantiate(weaponPrefab, transform.position, Quaternion.identity);
-
+        audiomanager.Instance.npcattack.Play();
         Vector2 playerDirection = (target.position - transform.position).normalized;
         float angle = Mathf.Atan2(playerDirection.y, playerDirection.x) * Mathf.Rad2Deg;
 

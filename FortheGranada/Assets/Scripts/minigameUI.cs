@@ -130,6 +130,7 @@ public class minigameUI : MonoBehaviour
             GameManager.Instance.is_mgset = false;
         }
 
+        audiomanager.Instance.menusfx.Play();
         GameManager.Instance.im.getItem(GameManager.Instance.currentbox.ii.item);
         GameManager.Instance.pu.item = GameManager.Instance.currentbox.ii.item;
         Time.timeScale = 1;
@@ -160,6 +161,8 @@ public class minigameUI : MonoBehaviour
         {
             GameManager.Instance.is_mgset = false;
         }
+
+        audiomanager.Instance.menusfx.Play();
         Time.timeScale = 1;
         GameManager.Instance.is_running = true;
         GameManager.Instance.is_catch = false;

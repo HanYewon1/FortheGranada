@@ -13,6 +13,7 @@ public class playersettings : MonoBehaviour
 
     public void Close()
     {
+        audiomanager.Instance.menusfx.Play();
         StartCoroutine(CloseAfterDelay());
     }
 
@@ -20,7 +21,7 @@ public class playersettings : MonoBehaviour
     {
         animator.SetTrigger("Close");
         yield return new WaitForSeconds(0.5f);
-        gameObject.SetActive(false);
         animator.ResetTrigger("Close");
+        gameObject.SetActive(false);
     }
 }
