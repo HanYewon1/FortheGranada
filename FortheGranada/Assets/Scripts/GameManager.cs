@@ -288,7 +288,7 @@ public class GameManager : MonoBehaviour
             if (player != null) pc = player.GetComponent<playercontroller>();
 
             // ui_list에 필요한 UI들 미리 가져오기
-            ui_list = new RectTransform[10];
+            ui_list = new RectTransform[11];
             tmp = GameObject.Find("InGameUI");
             if (tmp != null) ui_list[0] = tmp.GetComponent<RectTransform>();
             tmp = GameObject.Find("MiniGameUI");
@@ -313,6 +313,9 @@ public class GameManager : MonoBehaviour
             if (ui_list[8] != null) pu = ui_list[8].GetComponent<popupUI>();
             if (pu != null) pu.GetText();
             if (ui_list[8] != null) ui_list[8].gameObject.SetActive(false);
+            tmp = GameObject.Find("SettingsUI");
+            if (tmp != null) ui_list[10] = tmp.GetComponent<RectTransform>();
+            if (ui_list[10] != null) ui_list[10].gameObject.SetActive(false);
 
             // 체력과 아이템 UI 자식들 가져오기
             tmp = GameObject.Find("HPUI");
@@ -370,7 +373,7 @@ public class GameManager : MonoBehaviour
             if (tmp != null) healthSlider = tmp.GetComponent<Slider>();
             tmp = GameObject.Find("BOSS");
             if (tmp != null) boscon = tmp.GetComponent<bosscontroller>();
-            ui_list = new RectTransform[10];
+            ui_list = new RectTransform[11];
             tmp = GameObject.Find("PauseMenuUI");
             if (tmp != null) ui_list[2] = tmp.GetComponent<RectTransform>();
             tmp = GameObject.Find("ChatUI");
@@ -379,11 +382,16 @@ public class GameManager : MonoBehaviour
             if (tmp != null) ui_list[7] = tmp.GetComponent<RectTransform>();
             tmp = GameObject.Find("EndingUI");
             if (tmp != null) ui_list[9] = tmp.GetComponent<RectTransform>();
+            tmp = GameObject.Find("SettingsUI");
+            if (tmp != null) ui_list[10] = tmp.GetComponent<RectTransform>();
+
             // UI 찾은 후 비활성화
-            if (ui_list != null) ui_list[2].gameObject.SetActive(false);
-            if (ui_list != null) ui_list[6].gameObject.SetActive(false);
-            if (ui_list != null) ui_list[7].gameObject.SetActive(false);
-            if (ui_list != null) ui_list[9].gameObject.SetActive(false);
+            if (ui_list[10] != null) ui_list[10].gameObject.SetActive(false);
+            if (ui_list[2] != null) ui_list[2].gameObject.SetActive(false);
+            if (ui_list[6] != null) ui_list[6].gameObject.SetActive(false);
+            if (ui_list[7] != null) ui_list[7].gameObject.SetActive(false);
+            if (ui_list[9] != null) ui_list[9].gameObject.SetActive(false);
+
             // 블럭 수가 난이도가 이지면 18개, 노말이면 12개, 도전이면 6개
             tmp = GameObject.Find("Block1_03");
             if (tmp != null && diff == 3) tmp.SetActive(false);
@@ -514,7 +522,7 @@ public class GameManager : MonoBehaviour
                     {
                         Time.timeScale = 1;
                     }
-
+                    audiomanager.Instance.menusfx.Play();
                     ui_list[2].gameObject.SetActive(!ui_list[2].gameObject.activeSelf);
                 }
             }
@@ -569,13 +577,14 @@ public class GameManager : MonoBehaviour
                         Debug.LogError("Out of Diff!");
                         break;
                 }
+                audiomanager.Instance.menusfx.Play();
             }
 
             if (is_closebox == true && is_delay == false && is_mgset == true && is_catch == true && !currentbox.isOpen && currentbox.ii.is_set)
             {
-                if (Input.GetKeyDown(KeyCode.F))
+                if (Input.GetKeyDown(interactKey))
                 {
-                    //is_running = false;
+                    audiomanager.Instance.menusfx.Play();
                     ui_list[1].gameObject.SetActive(true);
                 }
             }
@@ -607,7 +616,7 @@ public class GameManager : MonoBehaviour
                     {
                         Time.timeScale = 1;
                     }
-
+                    audiomanager.Instance.menusfx.Play();
                     ui_list[2].gameObject.SetActive(!ui_list[2].gameObject.activeSelf);
                 }
             }
@@ -615,7 +624,7 @@ public class GameManager : MonoBehaviour
             if (boss_health <= 0) StartCoroutine(EndingCoroutine());
         }
 
-        if (Input.GetKeyDown(KeyCode.T))
+        /*if (Input.GetKeyDown(KeyCode.T))
         {
             if (!is_ingame)
             {
@@ -633,7 +642,7 @@ public class GameManager : MonoBehaviour
             Time.timeScale = 1;
             speed = originspeed;
             SceneManager.LoadScene("Test");
-        }
+        }*/
 
         if (Input.GetKeyDown(KeyCode.B) && Input.GetKeyDown(KeyCode.Alpha1))
         {
@@ -653,6 +662,7 @@ public class GameManager : MonoBehaviour
             Time.timeScale = 1;
             is_running = true;
             speed = speed_for_boss_stage;
+            audiomanager.Instance.mainmenubgm.Stop();
             SceneManager.LoadScene("Stage_Boss");
         }
         if (Input.GetKeyDown(KeyCode.B) && Input.GetKeyDown(KeyCode.Alpha2))
@@ -673,6 +683,7 @@ public class GameManager : MonoBehaviour
             Time.timeScale = 1;
             is_running = true;
             speed = speed_for_boss_stage;
+            audiomanager.Instance.mainmenubgm.Stop();
             SceneManager.LoadScene("Stage_Boss");
         }
         if (Input.GetKeyDown(KeyCode.B) && Input.GetKeyDown(KeyCode.Alpha3))
@@ -693,10 +704,11 @@ public class GameManager : MonoBehaviour
             Time.timeScale = 1;
             is_running = true;
             speed = speed_for_boss_stage;
+            audiomanager.Instance.mainmenubgm.Stop();
             SceneManager.LoadScene("Stage_Boss");
         }
 
-        if (Input.GetKeyDown(KeyCode.U))
+        /*if (Input.GetKeyDown(KeyCode.U))
         {
             if (!is_ingame)
             {
@@ -714,7 +726,7 @@ public class GameManager : MonoBehaviour
             Time.timeScale = 1;
             speed = originspeed;
             SceneManager.LoadScene("PlayScene");
-        }
+        }*/
     }
 
     private IEnumerator LLMAPIRequest(string prompt, int maxTokens)

@@ -41,7 +41,7 @@ public class playercontroller : MonoBehaviour
     {
         PlayerMove();
 
-        if (Input.GetKeyDown(KeyCode.F))
+        if (Input.GetKeyDown(GameManager.Instance.interactKey))
 
         {
             Debug.Log(1);
@@ -79,7 +79,7 @@ public class playercontroller : MonoBehaviour
             is_horizon_move = player_x != 0;
 
         //나중에 입력받는 방향을 우선시함
-        if(is_horizon_move)
+        if (is_horizon_move)
         {
             player_y = 0;
         }
@@ -242,6 +242,7 @@ public class playercontroller : MonoBehaviour
             room_x = next_room_x;
             room_y = next_room_y;
 
+            audiomanager.Instance.menusfx.Play();
             this.transform.position = this.transform.position + add_door_position;
             GameManager.Instance.sc.UpdateBorder();
         }

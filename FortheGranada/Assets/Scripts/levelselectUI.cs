@@ -35,6 +35,8 @@ public class diffselectUI : MonoBehaviour
         {
             GameManager.Instance.is_boss = false;
         }
+        audiomanager.Instance.menusfx.Play();
+        audiomanager.Instance.mainmenubgm.Stop();
         GameManager.Instance.is_running = true;
         GameManager.Instance.diff = 1;
         GameManager.Instance.stage = 1;
@@ -57,6 +59,8 @@ public class diffselectUI : MonoBehaviour
         {
             GameManager.Instance.is_boss = false;
         }
+        audiomanager.Instance.menusfx.Play();
+        audiomanager.Instance.mainmenubgm.Stop();
         GameManager.Instance.is_running = true;
         GameManager.Instance.diff = 2;
         GameManager.Instance.stage = 1;
@@ -78,6 +82,8 @@ public class diffselectUI : MonoBehaviour
         {
             GameManager.Instance.is_boss = false;
         }
+        audiomanager.Instance.menusfx.Play();
+        audiomanager.Instance.mainmenubgm.Stop();
         GameManager.Instance.is_running = true;
         GameManager.Instance.diff = 3;
         GameManager.Instance.stage = 1;

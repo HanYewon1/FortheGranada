@@ -539,7 +539,7 @@ public class bosscontroller : MonoBehaviour
         animator.SetBool("ISLAND", false);
         SetMove(false);
         SetIdle(false);
-
+        audiomanager.Instance.bossfire.Play();
         PlayFireAnimation();
         points = new GameObject[61];
         Vector3 sumpo = Vector3.zero;
