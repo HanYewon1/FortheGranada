@@ -15,8 +15,7 @@ public class npcsight : MonoBehaviour
     public Transform Target { get; private set; }
     public bool DetectPlayer { get; private set; }
 
-    private float radius = 7f;
-    private bool isChecking = false;
+    private float radius = 5f;
 
 
     private Mesh viewMesh;
@@ -57,11 +56,8 @@ public class npcsight : MonoBehaviour
                 // ��ֹ��� ���� �������� �ʾҴ��� Ȯ��
                 if (!Physics2D.Raycast(transform.position, directionToTarget, distanceToTarget, obstructionLayer))
                 {
+                    DetectPlayer = true;
                     Target = target;
-                    if (!isChecking)
-                    {
-                        StartCoroutine(CheckDetection());
-                    }
                     return;
 
                 }
@@ -71,22 +67,7 @@ public class npcsight : MonoBehaviour
         DetectPlayer = false;
         Target = null;
 
-    }
-    private IEnumerator CheckDetection()
-    {
-        isChecking = true; // �ߺ� ���� ����
-        yield return new WaitForSeconds(GameManager.Instance.stealthTime); // 스텔스타임에 따라 인식 지연
-
-        // �þ� ���� ���� ������ �÷��̾ �ִ��� Ȯ��
-        if (Target != null && DetectPlayer == false)
-        {
-            DetectPlayer = true; // ���� ����
-            Debug.Log("Player detected after 1 second!");
-        }
-        isChecking = false; // ���� �ʱ�ȭ
-    }
-
-    //�þ� ����
+      }
     private void DrawFieldOfView()
     {
         Vector3 forwardDirection = new Vector3(npc_controller.movement.x, npc_controller.movement.y, 0);
