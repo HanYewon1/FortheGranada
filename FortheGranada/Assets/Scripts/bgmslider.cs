@@ -16,21 +16,20 @@ public class bgmslider : MonoBehaviour
         child = FindChildRecursive(parent, "Check");
         if (child != null) check = child.GetComponent<Image>();
         bgmsld = GetComponent<Slider>();
-    }
-
-    private void OnEnabled()
-    {
-        if (bgmsld != null) bgmsld.value = audiomanager.Instance.bgmvolume;
+        bgmsld.value = audiomanager.Instance.bgmvolume;
+        ChangeVolume(bgmsld.value);
     }
 
     // Update is called once per frame
     void Update()
     {
-        ChangeVolume(bgmsld.value);
+        if (!audiomanager.Instance.isMute[1]) ChangeVolume(bgmsld.value);
+        else { ChangeVolume(0.001f); bgmsld.value = 0.001f; }
     }
 
     public void Mute()
     {
+        bgmsld.value = 0.001f;
         audiomanager.Instance.SetAudioMute(EAudioMixerType.BGM);
         check.gameObject.SetActive(!check.gameObject.activeSelf);
     }
@@ -38,6 +37,7 @@ public class bgmslider : MonoBehaviour
     public void ChangeVolume(float volume)
     {
         audiomanager.Instance.SetAudioVolume(EAudioMixerType.BGM, volume);
+        audiomanager.Instance.bgmvolume = volume;
     }
 
     Transform FindChildRecursive(Transform parent, string childName)

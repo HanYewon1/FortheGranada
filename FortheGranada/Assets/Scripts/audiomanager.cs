@@ -28,8 +28,8 @@ public class audiomanager : MonoBehaviour
     public static audiomanager Instance;
     [SerializeField] private AudioMixer audioMixer;
 
-    private bool[] isMute = new bool[3];
-    private float[] audioVolumes = new float[3];
+    public bool[] isMute = new bool[3];
+    [SerializeField] private float[] audioVolumes = new float[3];
     private void Awake()
     {
         if (Instance == null)
@@ -41,6 +41,9 @@ public class audiomanager : MonoBehaviour
             Destroy(gameObject);
         }
         DontDestroyOnLoad(gameObject);
+        mstvolume = 1f;
+        bgmvolume = 1f;
+        sfxvolume = 1f;
     }
 
     public void SetAudioVolume(EAudioMixerType audioMixerType, float volume)

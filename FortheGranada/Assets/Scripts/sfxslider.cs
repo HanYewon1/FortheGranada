@@ -16,21 +16,20 @@ public class sfxslider : MonoBehaviour
         child = FindChildRecursive(parent, "Check");
         if (child != null) check = child.GetComponent<Image>();
         sfxsld = GetComponent<Slider>();
-    }
-
-    private void OnEnabled()
-    {
-        if (sfxsld != null) sfxsld.value = audiomanager.Instance.sfxvolume;
+        sfxsld.value = audiomanager.Instance.sfxvolume;
+        ChangeVolume(sfxsld.value);
     }
 
     // Update is called once per frame
     void Update()
     {
-        ChangeVolume(sfxsld.value);
+        if (!audiomanager.Instance.isMute[2]) ChangeVolume(sfxsld.value);
+        else { ChangeVolume(0.001f); sfxsld.value = 0.001f; }
     }
 
     public void Mute()
     {
+        sfxsld.value = 0.001f;
         audiomanager.Instance.SetAudioMute(EAudioMixerType.SFX);
         check.gameObject.SetActive(!check.gameObject.activeSelf);
     }
@@ -38,6 +37,7 @@ public class sfxslider : MonoBehaviour
     public void ChangeVolume(float volume)
     {
         audiomanager.Instance.SetAudioVolume(EAudioMixerType.SFX, volume);
+        audiomanager.Instance.sfxvolume = volume;
     }
 
     Transform FindChildRecursive(Transform parent, string childName)

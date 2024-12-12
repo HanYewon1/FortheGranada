@@ -198,6 +198,7 @@ public class GameManager : MonoBehaviour
         // MainMenu Scene
         if (!is_running)
         {
+            audiomanager.Instance.bossdash.Stop();
             ui_list = new RectTransform[11];
             tmp = GameObject.Find("SettingsUI");
             if (tmp != null) ui_list[10] = tmp.GetComponent<RectTransform>();
@@ -216,6 +217,7 @@ public class GameManager : MonoBehaviour
         // Ingame 들어가면 초기화 작업 실행
         if (is_ingame == true)
         {
+            audiomanager.Instance.bossdash.Stop();
             // API 관련 변수들 초기화
             maxtokens = 6;
             promptmessage = "3개의 이미지 공통점을 너무 포괄적이지 않은 단어로 단 1개만 출력해! 뒤에 입니다 붙이지 마! 판타지, 픽셀아트 금지!";
@@ -348,6 +350,14 @@ public class GameManager : MonoBehaviour
             //스피드 카운트 렌더러
             if (item_list != null) speedcount = item_list[3].GetComponent<Image>();
 
+            // 아이템 UI들 업데이트
+            updateshoe();
+            if (armor_item >= 1 && health_list != null) health_list[8].gameObject.SetActive(true);
+            if (is_ressurection && item_list != null) item_list[4].gameObject.SetActive(true);
+            if (is_attacked_speed && item_list != null) item_list[5].gameObject.SetActive(true);
+            if (is_stealth && item_list != null) item_list[6].gameObject.SetActive(true);
+            if (is_preview && item_list != null) item_list[7].gameObject.SetActive(true);
+
             // Find로 찾았으니 UI List들 다시 비활성화
             if (ui_list != null) ui_list[1].gameObject.SetActive(false);
             if (ui_list != null) ui_list[2].gameObject.SetActive(false);
@@ -386,6 +396,7 @@ public class GameManager : MonoBehaviour
         // 보스전이면
         if (is_boss)
         {
+            audiomanager.Instance.bossdash.Stop();
             tmp = GameObject.Find("Player");
             if (tmp != null) player = tmp.GetComponent<Transform>();
             if (player != null) pc = player.GetComponent<playercontroller>();
@@ -1147,7 +1158,7 @@ public class GameManager : MonoBehaviour
     public IEnumerator STCoroutine()
     {
         tmpspeed = speed;
-        speed *= 1.2f;
+        speed *= is_attacked_speed ? 1.3f : 1.2f;
         yield return new WaitForSeconds(1f);
         speed = tmpspeed;
         pc.STCoroutine = null; // 코루틴이 끝난 후 null로 초기화

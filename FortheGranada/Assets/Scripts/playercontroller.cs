@@ -51,7 +51,7 @@ public class playercontroller : MonoBehaviour
 
         if (GameManager.Instance.is_stealth && GameManager.Instance.is_detected)
         {
-            if (STCoroutine == null) STCoroutine = StartCoroutine(GameManager.Instance.STCoroutine());
+            if (STCoroutine == null && ASCoroutine == null) STCoroutine = StartCoroutine(GameManager.Instance.STCoroutine());
         }
     }
 
@@ -192,7 +192,7 @@ public class playercontroller : MonoBehaviour
                 GameManager.Instance.health--;
                 if (GameManager.Instance.health <= 0) GameManager.Instance.health = 0;
             }
-            if (GameManager.Instance.is_attacked_speed) { if (ASCoroutine == null) ASCoroutine = StartCoroutine(GameManager.Instance.ASCoroutine()); }
+            if (GameManager.Instance.is_attacked_speed) { if (ASCoroutine == null && STCoroutine == null) ASCoroutine = StartCoroutine(GameManager.Instance.ASCoroutine()); }
             is_damaged = true;
             spriteRenderer.color = Color.red;
             yield return new WaitForSeconds(1f); //1?��褊蛛?��?��踝蕭 ?��踝蕭?��踝蕭
