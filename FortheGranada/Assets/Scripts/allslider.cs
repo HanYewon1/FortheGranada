@@ -10,27 +10,26 @@ public class allslider : MonoBehaviour
     public Slider allsld;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    void Awake()
     {
         parent = transform;
         child = FindChildRecursive(parent, "Check");
         if (child != null) check = child.GetComponent<Image>();
         allsld = GetComponent<Slider>();
-    }
-
-    private void OnEnabled()
-    {
-        if (allsld != null) allsld.value = audiomanager.Instance.mstvolume;
+        allsld.value = audiomanager.Instance.mstvolume;
+        ChangeVolume(allsld.value);
     }
 
     // Update is called once per frame
     void Update()
     {
-        ChangeVolume(allsld.value);
+        if (!audiomanager.Instance.isMute[0]) ChangeVolume(allsld.value);
+        else { ChangeVolume(0.001f); allsld.value = 0.001f; }
     }
 
     public void Mute()
     {
+        allsld.value = 0.001f;
         audiomanager.Instance.SetAudioMute(EAudioMixerType.Master);
         check.gameObject.SetActive(!check.gameObject.activeSelf);
     }
@@ -38,6 +37,7 @@ public class allslider : MonoBehaviour
     public void ChangeVolume(float volume)
     {
         audiomanager.Instance.SetAudioVolume(EAudioMixerType.Master, volume);
+        audiomanager.Instance.mstvolume = volume;
     }
 
     Transform FindChildRecursive(Transform parent, string childName)

@@ -90,12 +90,17 @@ public class gamedata : MonoBehaviour
         GameManager.Instance.health_item = PlayerPrefs.GetInt("HealthItem");
         GameManager.Instance.armor_item = PlayerPrefs.GetInt("ArmorItem");
         GameManager.Instance.stealthTime = PlayerPrefs.GetFloat("StealthTime");
-        GameManager.Instance.stealth_item = PlayerPrefs.GetInt("StealthItem");
         GameManager.Instance.speed_item = PlayerPrefs.GetInt("SpeedItem");
+
         GameManager.Instance.haste_item = PlayerPrefs.GetInt("HasteItem");
         if (GameManager.Instance.haste_item == 1)
         {
             GameManager.Instance.is_attacked_speed = true;
+        }
+        GameManager.Instance.stealth_item = PlayerPrefs.GetInt("StealthItem");
+        if (GameManager.Instance.stealth_item == 1)
+        {
+            GameManager.Instance.is_stealth = true;
         }
         GameManager.Instance.preview_item = PlayerPrefs.GetInt("PreviewItem");
         if (GameManager.Instance.preview_item == 1)

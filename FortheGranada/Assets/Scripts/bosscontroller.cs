@@ -117,7 +117,7 @@ public class bosscontroller : MonoBehaviour
     }
     private void Update()
     {
-        if (isMove)
+        if (isMove && !isDashing && !isDead && !isJumping && !isLanding)
         {
             moveDirection = (GameManager.Instance.player.transform.position - transform.position).normalized;
             moveDirection.z = 0;
@@ -555,11 +555,11 @@ public class bosscontroller : MonoBehaviour
 
     private IEnumerator SummonFire()
     {
+        SetMove(false);
+        SetIdle(false);
         animator.SetBool("ISDASH", false);
         animator.SetBool("ISJUMP", false);
         animator.SetBool("ISLAND", false);
-        SetMove(false);
-        SetIdle(false);
         PlayFireAnimation();
         points = new GameObject[61];
         Vector3 sumpo = Vector3.zero;
@@ -675,6 +675,7 @@ public class bosscontroller : MonoBehaviour
     private void BossDie()
     {
         audiomanager.Instance.bossstagebgm.Stop();
+        audiomanager.Instance.bossdash.Stop();
         audiomanager.Instance.bossdead.Play();
         if (isDead) return; // 이미 사망 상태인 경우 중복 실행 방지
         SetIdle(false);
