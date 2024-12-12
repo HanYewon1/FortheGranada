@@ -80,7 +80,7 @@ public class npccontroller : MonoBehaviour
 
     public void StartChasing()
     {
-        Debug.Log("NPC started chasing.");
+        //Debug.Log("NPC started chasing.");
         isChasing = true;
         currentSpeed = chaseSpeed;
         returnDefault = false;
