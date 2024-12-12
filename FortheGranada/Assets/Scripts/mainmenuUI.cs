@@ -29,6 +29,12 @@ public class mainmenuUI : MonoBehaviour
         audiomanager.Instance.mainmenubgm.loop = true;
     }
 
+    public void OnClickLevelSelectButton()
+    {
+        audiomanager.Instance.menusfx.Play();
+        if (GameManager.Instance.ui_list[1] != null) GameManager.Instance.ui_list[1].gameObject.SetActive(true);
+    }
+
     public void OnClickQuitButton()
     {
         audiomanager.Instance.menusfx.Play();

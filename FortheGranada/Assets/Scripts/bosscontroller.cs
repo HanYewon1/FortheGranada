@@ -110,6 +110,10 @@ public class bosscontroller : MonoBehaviour
         // IDLE 상태 전환
         SetIdle(true);
         SetMove(true);
+        audiomanager.Instance.mainmenubgm.Stop();
+        audiomanager.Instance.ingamebgm.Stop();
+        audiomanager.Instance.bossstagebgm.Play();
+        audiomanager.Instance.bossstagebgm.loop = true;
     }
     private void Update()
     {
@@ -205,6 +209,7 @@ public class bosscontroller : MonoBehaviour
     // 보스 피격 시 체력 감소
     public void TakeDamage(float damage)
     {
+        audiomanager.Instance.bossdamaged.Play();
         SetMove(false);
         if (!isInvincible)
         {
@@ -351,6 +356,8 @@ public class bosscontroller : MonoBehaviour
 
     private IEnumerator DashCoroutine()
     {
+        audiomanager.Instance.bossdash.Play();
+        audiomanager.Instance.bossdash.loop = true;
         yield return new WaitForSeconds(0.5f);
         float timer = 0f;
         //Debug.DrawLine(transform.position, transform.position + (Vector3)dashDirection * 2, Color.red, 1f);
@@ -364,17 +371,23 @@ public class bosscontroller : MonoBehaviour
             }
             else
             {
+                audiomanager.Instance.bossdash.Stop();
                 Debug.LogWarning("Dash direction is zero! Check player and boss positions.");
                 yield break; // 대쉬를 중단합니다.
             }
             timer += Time.deltaTime;
             yield return null;
-            if (isDashing == false) break;
+            if (isDashing == false)
+            {
+                audiomanager.Instance.bossdash.Stop();
+                break;
+            }
         }
         DPI.HideDashPath();
         animator.SetBool("ISDASH", false);
         isDashing = false;
         yield return new WaitForSeconds(0.1f); // 애니메이션 전환 대기
+        audiomanager.Instance.bossdash.Stop();
         SetIdle(true);
         SetMove(true);
     }
@@ -392,6 +405,7 @@ public class bosscontroller : MonoBehaviour
     {
         float timer = 0f;
         bossCollider.enabled = false;
+        audiomanager.Instance.bossjump.Play();
         SummonShadow(); // 그림자 생성
         PlayJumpAnimation(); // 올라가는 효과
         //yield return new WaitForSeconds(0.25f);
@@ -424,6 +438,7 @@ public class bosscontroller : MonoBehaviour
         }
 
         transform.position = shadowTransform.position;
+        audiomanager.Instance.bosslanding.Play();
         PlayLandingAnimation(); // 내려오는 효과
         UpdateShadow(0);
 
@@ -653,6 +668,8 @@ public class bosscontroller : MonoBehaviour
 
     private void BossDie()
     {
+        audiomanager.Instance.bossstagebgm.Stop();
+        audiomanager.Instance.bossdead.Play();
         if (isDead) return; // 이미 사망 상태인 경우 중복 실행 방지
         SetIdle(false);
         Debug.Log("Boss has been defeated!");

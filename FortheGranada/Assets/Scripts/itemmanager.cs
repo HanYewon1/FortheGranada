@@ -64,6 +64,7 @@ public class itemmanager : MonoBehaviour
 
     public void getItem(Item item)
     {
+        audiomanager.Instance.getitem.Play();
         if (item.GetItemType == ItemType.Expendables)
         {
             if (item.GetItemID == 1)//ü�� ������

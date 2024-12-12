@@ -175,6 +175,7 @@ public class playercontroller : MonoBehaviour
     {
         if (is_damaged == false)
         {
+            audiomanager.Instance.playerdamaged.Play();
             if (GameManager.Instance.armor_item >= 1)
             {
                 GameManager.Instance.armor--;

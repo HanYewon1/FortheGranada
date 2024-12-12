@@ -19,6 +19,8 @@ public class playersettings : MonoBehaviour
 
     private IEnumerator CloseAfterDelay()
     {
+        // Update Mode를 Unscaled Time으로 변경
+        animator.updateMode = AnimatorUpdateMode.UnscaledTime;
         animator.SetTrigger("Close");
         yield return new WaitForSeconds(0.5f);
         animator.ResetTrigger("Close");
