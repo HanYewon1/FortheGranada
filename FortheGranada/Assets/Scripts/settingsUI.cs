@@ -12,18 +12,18 @@ public class settingsUI : MonoBehaviour
 
     private void OnEnable()
     {
-        // ?”¬?´ ë¡œë“œ?  ?•Œ ?˜¸ì¶?
+        // ?ï¿½ï¿½?ï¿½ï¿½ ë¡œë“œ?ï¿½ï¿½ ?ï¿½ï¿½ ?ï¿½ï¿½ï¿½?
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
     private void OnDisable()
     {
-        // ?”¬ ë¡œë“œ ?´ë²¤íŠ¸ ?•´? œ
+        // ?ï¿½ï¿½ ë¡œë“œ ?ï¿½ï¿½ë²¤íŠ¸ ?ï¿½ï¿½?ï¿½ï¿½
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        GameManager.Instance.is_ingame = false;
+        //GameManager.Instance.is_ingame = false;
     }
 }

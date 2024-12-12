@@ -14,6 +14,7 @@ public class diffselectUI : MonoBehaviour
 
     public void Close()
     {
+        audiomanager.Instance.menusfx.Play();
         StartCoroutine(CloseAfterDelay());
     }
 
