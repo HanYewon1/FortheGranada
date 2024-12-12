@@ -76,6 +76,8 @@ public class GameManager : MonoBehaviour
     [Header("Flags")]
     public bool is_ressurection;
     public bool is_attacked_speed;
+    public bool is_stealth;
+    public bool is_detected;
     public bool is_preview;
     public bool is_running;
     public bool is_closebox = false;
@@ -527,7 +529,7 @@ public class GameManager : MonoBehaviour
                     }
                     else
                     {
-                        Time.timeScale = 1;
+                        if (!ui_list[1].gameObject.activeSelf) Time.timeScale = 1;
                     }
                     audiomanager.Instance.menusfx.Play();
                     ui_list[2].gameObject.SetActive(!ui_list[2].gameObject.activeSelf);
@@ -874,30 +876,30 @@ public class GameManager : MonoBehaviour
             itemnum = 1;
             //Debug.Log("체력 회복");
         }
-        else if (rannum1 >= 51 && rannum1 <= 69)
+        else if (rannum1 >= 51 && rannum1 <= 75)
         {
             itemnum = 2;
             //Debug.Log("쉴드 획득");
         }
-        else if (rannum1 >= 70 && rannum1 <= 79)
+        else if (rannum1 >= 76 && rannum1 <= 82)
         {
             itemnum = 3;
             //Debug.Log("이속 증가");
         }
-        else if (rannum1 >= 80 && rannum1 <= 84)
+        else if (rannum1 >= 83 && rannum1 <= 87)
         {
             itemnum = 0;
             //Debug.Log("최대 체력 증가");
         }
-        else if (rannum1 >= 85 && rannum1 <= 89)
+        else if (rannum1 >= 88 && rannum1 <= 92)
         {
             itemnum = 5;
             //Debug.Log("피격 시 이속 증가");
         }
-        else if (rannum1 >= 90 && rannum1 <= 94)
+        else if (rannum1 >= 93 && rannum1 <= 94)
         {
             itemnum = 6;
-            //Debug.Log("감지 시간 지연");
+            //Debug.Log("감지 시 이속 증가");
         }
         else if (rannum1 >= 95 && rannum1 <= 99)
         {
@@ -1024,9 +1026,15 @@ public class GameManager : MonoBehaviour
         }
         else if (is_running)
         {
+            //StartCoroutine(WaitPointSecond());
+            updatehealth();
+            audiomanager.Instance.ingamebgm.Stop();
+            audiomanager.Instance.bossstagebgm.Stop();
+            audiomanager.Instance.bossdash.Stop();
             audiomanager.Instance.gameover.Play();
             if (pc != null) pc.Dead();
             is_running = false;
+            is_ingame = false;
             Debug.Log("캐릭터 사망!");
             if (ui_list != null && ui_list.Length != 0) ui_list[7].gameObject.SetActive(true);
             //Time.timeScale = 0;
@@ -1047,6 +1055,11 @@ public class GameManager : MonoBehaviour
     {
         yield return new WaitForSeconds(1f);
         if (sc != null) sc.UpdateBorder();
+    }
+
+    public IEnumerator WaitPointSecond()
+    {
+        yield return new WaitForSeconds(0.5f);
     }
 
     public IEnumerator WaitThreeSecond()
@@ -1129,5 +1142,14 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(3f);
         speed = tmpspeed;
         pc.ASCoroutine = null; // 코루틴이 끝난 후 null로 초기화
+    }
+
+    public IEnumerator STCoroutine()
+    {
+        tmpspeed = speed;
+        speed *= 1.2f;
+        yield return new WaitForSeconds(1f);
+        speed = tmpspeed;
+        pc.STCoroutine = null; // 코루틴이 끝난 후 null로 초기화
     }
 }

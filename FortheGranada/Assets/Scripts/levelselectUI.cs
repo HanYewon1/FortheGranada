@@ -117,5 +117,9 @@ public class diffselectUI : MonoBehaviour
         GameManager.Instance.speed_item = 0;
         GameManager.Instance.haste_item = 0;
         GameManager.Instance.key_item = 0;
+        GameManager.Instance.is_ressurection = false;
+        GameManager.Instance.is_stealth = false;
+        GameManager.Instance.is_preview = false;
+        GameManager.Instance.is_attacked_speed = false;
     }
 }

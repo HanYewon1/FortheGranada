@@ -490,7 +490,11 @@ public class bosscontroller : MonoBehaviour
             Debug.Log("Crashed!");
             Vector2 direction = (transform.position - collision.transform.position).normalized;
             //bossrb.MovePosition(bossrb.position + direction * 5f);
-            if (isDashing) bossrb.linearVelocity = direction * -50f;
+            if (isDashing)
+            {
+                bossrb.linearVelocity = direction * 0f;
+                bossrb.linearVelocity = direction * -50f;
+            }
             StartCoroutine(GameManager.Instance.pc.ChangeColor());
             /*if (damageCoroutine == null)
             {
@@ -502,6 +506,7 @@ public class bosscontroller : MonoBehaviour
         {
             if (isDashing)
             {
+                audiomanager.Instance.bossdamaged.Play();
                 Debug.Log("Crashed!");
                 Vector2 direction = (transform.position - collision.transform.position).normalized;
                 //bossrb.MovePosition(bossrb.position + direction * 10f);
@@ -523,6 +528,7 @@ public class bosscontroller : MonoBehaviour
             {
                 Vector2 direction = (transform.position - collision.transform.position).normalized;
                 //bossrb.MovePosition(bossrb.position + direction * 10f);
+                bossrb.linearVelocity = direction * 0f;
                 bossrb.linearVelocity = direction * -50f;
                 if (GameManager.Instance.diff == 3) TakeDamage(damageAmount);
                 else TakeDamage(damageAmount * 2);
@@ -554,7 +560,6 @@ public class bosscontroller : MonoBehaviour
         animator.SetBool("ISLAND", false);
         SetMove(false);
         SetIdle(false);
-        audiomanager.Instance.bossfire.Play();
         PlayFireAnimation();
         points = new GameObject[61];
         Vector3 sumpo = Vector3.zero;
@@ -629,6 +634,7 @@ public class bosscontroller : MonoBehaviour
             }
         }
         SetIdle(true);
+        audiomanager.Instance.bossfire.Play();
     }
 
     private IEnumerator WaitPointSeconds()

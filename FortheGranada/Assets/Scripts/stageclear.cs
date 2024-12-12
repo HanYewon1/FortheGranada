@@ -41,6 +41,7 @@ public class stageclear : MonoBehaviour
         {
             if (GameManager.Instance.key == GameManager.Instance.req_key && Input.GetKeyDown(GameManager.Instance.interactKey))
             {
+                audiomanager.Instance.menusfx.Play();
                 blg.Alpha0();
                 if (GameManager.Instance.stage == GameManager.Instance.maxstage)
                 {

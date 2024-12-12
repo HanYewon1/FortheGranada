@@ -21,6 +21,7 @@ public class info : MonoBehaviour
         {
             if (Input.GetKeyDown(GameManager.Instance.interactKey))
             {
+                audiomanager.Instance.menusfx.Play();
                 GameManager.Instance.ui_list[6].gameObject.SetActive(true);
                 Time.timeScale = 0;
                 Debug.Log("Interactable");

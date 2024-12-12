@@ -103,7 +103,8 @@ public class itemmanager : MonoBehaviour
             }
             else if (item.GetItemID == 7 && GameManager.Instance.stealth_item < item.GetNumNesting)//���� ������
             {
-                GameManager.Instance.stealthTime += 1f;
+                //GameManager.Instance.stealthTime += 1f;
+                GameManager.Instance.is_stealth = true;
                 GameManager.Instance.stealth_item++;
                 GameManager.Instance.item_list[6].gameObject.SetActive(true);
             }
