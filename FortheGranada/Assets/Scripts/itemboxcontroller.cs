@@ -63,6 +63,8 @@ public class itemboxcontroller : MonoBehaviour
             //otherrb.AddForce(V2, ForceMode2D.Impulse);
             //otherrb.linearVelocity = new Vector3(pushDirection.x + pushForce, pushDirection.y + pushForce, 0);
 
+            audiomanager.Instance.bossdash.Play();
+
             // 밀치는 방향 계산
             Vector3 pushDirection = (collision.transform.position - transform.position).normalized;
 

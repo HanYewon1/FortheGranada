@@ -14,6 +14,7 @@ public class playercontroller : MonoBehaviour
     public int next_room_y;
     public string minimap_name;
     public Coroutine ASCoroutine;
+    public Coroutine STCoroutine;
 
     Rigidbody2D rigidbody2d;
     Animator animator;
@@ -48,6 +49,10 @@ public class playercontroller : MonoBehaviour
             useDoor();
         }
 
+        if (GameManager.Instance.is_stealth && GameManager.Instance.is_detected)
+        {
+            if (STCoroutine == null) STCoroutine = StartCoroutine(GameManager.Instance.STCoroutine());
+        }
     }
 
     private void FixedUpdate()

@@ -15,7 +15,7 @@ public class timer : MonoBehaviour
     public void Awake()
     {
         timerText = this.transform.GetComponentInChildren<TMP_Text>();
-        totalTime = 1200f;
+        totalTime = 900f;
         timeLeft = totalTime; // �ʱ�ȭ
     }
 
