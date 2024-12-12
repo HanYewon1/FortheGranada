@@ -193,6 +193,24 @@ public class GameManager : MonoBehaviour
         originspeed = 4f;
         speed_for_boss_stage = 4f;
 
+        // MainMenu Scene
+        if (!is_running)
+        {
+            ui_list = new RectTransform[11];
+            tmp = GameObject.Find("SettingsUI");
+            if (tmp != null) ui_list[10] = tmp.GetComponent<RectTransform>();
+            if (ui_list[10] != null) ui_list[10].gameObject.SetActive(false);
+            tmp = GameObject.Find("LevelUI");
+            if (tmp != null) ui_list[1] = tmp.GetComponent<RectTransform>();
+            if (ui_list[1] != null) ui_list[1].gameObject.SetActive(false);
+            /*tmp = GameObject.Find("ChatUI");
+            if (tmp != null)
+            {
+                ui_list[6] = tmp.GetComponent<RectTransform>();
+                ui_list[6].gameObject.SetActive(false);
+            }*/
+        }
+
         // Ingame 들어가면 초기화 작업 실행
         if (is_ingame == true)
         {
@@ -448,17 +466,6 @@ public class GameManager : MonoBehaviour
                     break;
                 default:
                     break;
-            }
-        }
-
-        if (!is_running)
-        {
-            ui_list = new RectTransform[10];
-            tmp = GameObject.Find("ChatUI");
-            if (tmp != null)
-            {
-                ui_list[6] = tmp.GetComponent<RectTransform>();
-                ui_list[6].gameObject.SetActive(false);
             }
         }
     }
@@ -1009,6 +1016,7 @@ public class GameManager : MonoBehaviour
     {
         if (is_ressurection)
         {
+            audiomanager.Instance.reserrection.Play();
             health = 1;
             ressurection_item--;
             is_ressurection = false;
@@ -1016,6 +1024,7 @@ public class GameManager : MonoBehaviour
         }
         else if (is_running)
         {
+            audiomanager.Instance.gameover.Play();
             if (pc != null) pc.Dead();
             is_running = false;
             Debug.Log("캐릭터 사망!");

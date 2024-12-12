@@ -40,6 +40,10 @@ public class gamedata : MonoBehaviour
 
     public void GameLoad()
     {
+        audiomanager.Instance.menusfx.Play();
+        audiomanager.Instance.mainmenubgm.Stop();
+        audiomanager.Instance.ingamebgm.Play();
+        audiomanager.Instance.ingamebgm.loop = true;
         int stage = PlayerPrefs.GetInt("Stage");
         string stage_scene = "";
         GameManager.Instance.key = 0;

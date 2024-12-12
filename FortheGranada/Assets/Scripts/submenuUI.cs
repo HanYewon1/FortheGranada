@@ -39,6 +39,10 @@ public class submenuUI : MonoBehaviour
         GameManager.Instance.is_boss = false;
         Time.timeScale = 1;
         audiomanager.Instance.menusfx.Play();
+        audiomanager.Instance.ingamebgm.Stop();
+        audiomanager.Instance.bossstagebgm.Stop();
+        audiomanager.Instance.mainmenubgm.Play();
+        audiomanager.Instance.mainmenubgm.loop = true;
         SceneManager.LoadScene("MainMenuScene");
     }
 

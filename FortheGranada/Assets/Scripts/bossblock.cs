@@ -35,9 +35,14 @@ public class bossblock : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            if (GameManager.Instance.maxHealth > GameManager.Instance.health && !maxhp) { GameManager.Instance.health++; }
+            if (GameManager.Instance.maxHealth > GameManager.Instance.health && !maxhp)
+            {
+                GameManager.Instance.health++;
+                audiomanager.Instance.getitem.Play();
+            }
             else if (maxhp && GameManager.Instance.health_item < 2)
             {
+                audiomanager.Instance.getitem.Play();
                 GameManager.Instance.health++;
                 GameManager.Instance.maxHealth++;
                 GameManager.Instance.health_item++;

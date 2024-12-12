@@ -12,9 +12,18 @@ public class audiomanager : MonoBehaviour
     public AudioSource mainmenubgm;
     public AudioSource ingamebgm;
     public AudioSource bossstagebgm;
+    public AudioSource playerdamaged;
     public AudioSource npcattack;
+    public AudioSource gameover;
+    public AudioSource getitem;
     public AudioSource menusfx;
+    public AudioSource reserrection;
     public AudioSource bossfire;
+    public AudioSource bossdash;
+    public AudioSource bossjump;
+    public AudioSource bosslanding;
+    public AudioSource bossdead;
+    public AudioSource bossdamaged;
 
     public static audiomanager Instance;
     [SerializeField] private AudioMixer audioMixer;
