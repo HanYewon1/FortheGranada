@@ -12,6 +12,7 @@ public class playercontroller : MonoBehaviour
     public int room_y;
     public int next_room_x;
     public int next_room_y;
+    public float pushed_force;
     public string minimap_name;
     public Coroutine ASCoroutine;
     public Coroutine STCoroutine;
@@ -30,6 +31,10 @@ public class playercontroller : MonoBehaviour
     bool is_horizon_move; //4방향 결정
     bool is_finish;
     bool is_damaged = false;
+
+    private Vector2 externalVelocity = Vector2.zero; // 충돌로 인한 추가 속도 저장
+    private float decayRate = 5f; // 충돌 효과 감소 속도
+
 
     private void Awake()
     {
@@ -59,7 +64,10 @@ public class playercontroller : MonoBehaviour
     {
 
         Vector2 move_vec = is_horizon_move ? new Vector2(player_x, 0) : new Vector2(0, player_y);
-        rigidbody2d.linearVelocity = move_vec * GameManager.Instance.speed;
+        rigidbody2d.linearVelocity = (move_vec * GameManager.Instance.speed) + externalVelocity;
+
+        // 외부 속도를 서서히 줄임
+        externalVelocity = Vector2.Lerp(externalVelocity, Vector2.zero, Time.fixedDeltaTime * decayRate);
     }
 
     private void PlayerMove()
@@ -119,10 +127,25 @@ public class playercontroller : MonoBehaviour
         if (collision.gameObject.CompareTag("Chest"))
         {
             Transform target = collision.gameObject.GetComponent<Transform>();
+        
             if (target != null)
             {
                 GameManager.Instance.currentbox = target.gameObject.GetComponent<itemboxcontroller>();
                 Debug.Log("Near Box");
+            }
+        }
+    }
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Chest"))
+        {
+            itemboxcontroller itembox = collision.gameObject.GetComponent<itemboxcontroller>();
+            if (itembox.isUse == false)
+            {
+                Vector2 pushDirection = collision.contacts[0].point - (Vector2)transform.position;
+                pushDirection = -pushDirection.normalized;
+
+                externalVelocity += pushDirection * pushed_force;
             }
         }
     }
