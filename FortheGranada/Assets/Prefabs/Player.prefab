@@ -75,6 +75,7 @@ MonoBehaviour:
   room_y: 0
   next_room_x: 0
   next_room_y: 0
+  pushed_force: 10
   minimap_name: 
   is_door: 0
 --- !u!50 &4638608191567833636
