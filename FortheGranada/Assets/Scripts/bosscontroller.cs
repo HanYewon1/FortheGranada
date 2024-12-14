@@ -106,6 +106,17 @@ public class bosscontroller : MonoBehaviour
 
     private void Start()
     {
+        StartCoroutine(InitializeBossBattleWithDelay());
+    }
+
+    private IEnumerator InitializeBossBattleWithDelay()
+    {
+        yield return null; // 한 프레임 대기
+        InitializeBossBattle();
+    }
+
+    private void InitializeBossBattle()
+    {
         DPI = GameObject.Find("LineRenderer").GetComponent<DashPathIndicator>();
         DPI.HideDashPath();
         // IDLE 상태 전환
@@ -116,6 +127,7 @@ public class bosscontroller : MonoBehaviour
         audiomanager.Instance.bossstagebgm.Play();
         audiomanager.Instance.bossstagebgm.loop = true;
     }
+
     private void Update()
     {
         if (isMove && !isDashing && !isDead && !isJumping && !isLanding)

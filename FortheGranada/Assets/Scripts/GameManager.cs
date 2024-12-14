@@ -41,6 +41,8 @@ public class GameManager : MonoBehaviour
     public KeyCode interactKey = KeyCode.F;
 
     [Header("Game Settings")]
+    public Dictionary<string, KeyCode> keyBindings;
+    public Dictionary<string, Text> keyDisplayTexts;
     [SerializeField] private float _boss_health;
     public float boss_health
     {
@@ -165,6 +167,9 @@ public class GameManager : MonoBehaviour
         interactKey = KeyCode.F;
 
         stealthTime = 0f;
+
+        if (keyBindings == null) keyBindings = new Dictionary<string, KeyCode>();
+        if (keyDisplayTexts == null) keyDisplayTexts = new Dictionary<string, Text>();
     }
 
     private void OnEnable()
