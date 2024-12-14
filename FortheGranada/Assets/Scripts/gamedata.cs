@@ -120,6 +120,7 @@ public class gamedata : MonoBehaviour
 
         GameManager.Instance.updatehealth();
         GameManager.Instance.SetItemIcon();
+        GameManager.Instance.updateitemui();
 
         Debug.Log("load");
     }

@@ -360,11 +360,7 @@ public class GameManager : MonoBehaviour
 
             // 아이템 UI들 업데이트
             updateshoe();
-            if (armor_item >= 1 && health_list != null) health_list[8].gameObject.SetActive(true);
-            if (is_ressurection && item_list != null) item_list[4].gameObject.SetActive(true);
-            if (is_attacked_speed && item_list != null) item_list[5].gameObject.SetActive(true);
-            if (is_stealth && item_list != null) item_list[6].gameObject.SetActive(true);
-            if (is_preview && item_list != null) item_list[7].gameObject.SetActive(true);
+            updateitemui();
 
             // Find로 찾았으니 UI List들 다시 비활성화
             if (ui_list != null) ui_list[1].gameObject.SetActive(false);
@@ -1152,6 +1148,15 @@ public class GameManager : MonoBehaviour
             if (stealth_item >= 1) item_list[6].gameObject.SetActive(true);
             if (preview_item >= 1) item_list[7].gameObject.SetActive(true);
         }
+    }
+
+    public void updateitemui()
+    {
+        if (armor_item >= 1 && health_list != null) health_list[8].gameObject.SetActive(true);
+        if (is_ressurection && item_list != null) item_list[4].gameObject.SetActive(true);
+        if (is_attacked_speed && item_list != null) item_list[5].gameObject.SetActive(true);
+        if (is_stealth && item_list != null) item_list[6].gameObject.SetActive(true);
+        if (is_preview && item_list != null) item_list[7].gameObject.SetActive(true);
     }
 
     public IEnumerator EndingCoroutine()
