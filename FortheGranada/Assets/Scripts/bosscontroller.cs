@@ -26,6 +26,7 @@ public class bosscontroller : MonoBehaviour
     public float maxShadowOffset = 0.5f; // 그림자 위치 변화 (Y축)
     private Vector3 moveDirection; // 이동 방향
     private Vector2 dashDirection; // 대쉬 방향
+    private Vector2 backDirection; // 밀려나는 방향
     private Vector3 originalScale; // 원래 크기 저장
     private Vector3 targetScale;   // 점프 시 크기
     public GameObject firePrefab;
@@ -487,13 +488,16 @@ public class bosscontroller : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            Debug.Log("Crashed!");
-            Vector2 direction = (transform.position - collision.transform.position).normalized;
+            Debug.Log("Player Crashed!");
+            backDirection = (transform.position - collision.transform.position).normalized;
             //bossrb.MovePosition(bossrb.position + direction * 5f);
             if (isDashing)
             {
-                bossrb.linearVelocity = direction * 0f;
-                bossrb.linearVelocity = direction * -50f;
+                isDashing = false;
+                animator.SetBool("ISDASH", false);
+                SetMove(false);
+                bossrb.linearVelocity = backDirection * 5f;
+                StartCoroutine(WaitPointsSecond());
             }
             StartCoroutine(GameManager.Instance.pc.ChangeColor());
             /*if (damageCoroutine == null)
@@ -507,7 +511,8 @@ public class bosscontroller : MonoBehaviour
             if (isDashing)
             {
                 audiomanager.Instance.bossdamaged.Play();
-                Debug.Log("Crashed!");
+                Debug.Log("Border Crashed!");
+                SetMove(false);
                 Vector2 direction = (transform.position - collision.transform.position).normalized;
                 //bossrb.MovePosition(bossrb.position + direction * 10f);
                 bossrb.linearVelocity = direction * 0f;
@@ -526,16 +531,18 @@ public class bosscontroller : MonoBehaviour
         {
             if (isDashing)
             {
-                Vector2 direction = (transform.position - collision.transform.position).normalized;
+                Debug.Log("Block Crashed!");
+                SetMove(false);
+                backDirection = (transform.position - collision.transform.position).normalized;
                 //bossrb.MovePosition(bossrb.position + direction * 10f);
-                bossrb.linearVelocity = direction * 0f;
-                bossrb.linearVelocity = direction * -50f;
                 if (GameManager.Instance.diff == 3) TakeDamage(damageAmount);
                 else TakeDamage(damageAmount * 2);
                 StartCoroutine(collision.gameObject.GetComponent<bossblock>().BossDamage());
                 Debug.Log("Collision detected during dash, stopping dash...");
                 animator.SetBool("ISDASH", false);
                 isDashing = false;
+                bossrb.linearVelocity = backDirection * 5f;
+                StartCoroutine(WaitPointsSecond());
             }
         }
     }
@@ -692,6 +699,12 @@ public class bosscontroller : MonoBehaviour
         GameManager.Instance.health--;
         yield return new WaitForSeconds(1f);
         damageCoroutine = null; // 코루틴이 끝난 후 null로 초기화
+    }
+
+    public IEnumerator WaitPointsSecond()
+    {
+        yield return new WaitForSeconds(0.5f);
+        bossrb.linearVelocity = backDirection * 0f;
     }
 
     public void jumpdamage()

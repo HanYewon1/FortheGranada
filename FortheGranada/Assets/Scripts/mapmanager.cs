@@ -71,20 +71,23 @@ public class MapManager : MonoBehaviour
 
     public void Update()
     {
-        if (Input.GetKeyDown(KeyCode.UpArrow))
+        if (!GameManager.Instance.is_running)
         {
-            if (stage < 3)
+            if (Input.GetKeyDown(KeyCode.UpArrow))
             {
-                stage++;
-                text_size.text = "Size: " + stage_size[stage] + "X" + stage_size[stage];
+                if (stage < 3)
+                {
+                    stage++;
+                    text_size.text = "Size: " + stage_size[stage] + "X" + stage_size[stage];
+                }
             }
-        }
-        if (Input.GetKeyDown(KeyCode.DownArrow))
-        {
-            if (stage > 0)
+            if (Input.GetKeyDown(KeyCode.DownArrow))
             {
-                stage--;
-                text_size.text = "Size: " + stage_size[stage] + "X" + stage_size[stage];
+                if (stage > 0)
+                {
+                    stage--;
+                    text_size.text = "Size: " + stage_size[stage] + "X" + stage_size[stage];
+                }
             }
         }
         /*if (Input.GetKeyDown(KeyCode.Escape))

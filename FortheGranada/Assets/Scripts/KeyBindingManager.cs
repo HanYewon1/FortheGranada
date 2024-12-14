@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class KeyBindingManager : MonoBehaviour
 {
@@ -11,19 +12,41 @@ public class KeyBindingManager : MonoBehaviour
     private string currentBindingKey = null;
 
     // UI 텍스트를 갱신하기 위한 딕셔너리 (옵션)
-    public Dictionary<string, Text> keyDisplayTexts;
+    public Dictionary<string, Text> keyDisplayTexts = new Dictionary<string, Text>();
+
+    // 키 바인딩 텍스트
+    public Text intkeytext;
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        // 텍스트 초기화
+        //intkeytext = GameObject.Find("intkeytext").GetComponent<Text>();
+        //if (!keyDisplayTexts.ContainsKey("ITR")) keyDisplayTexts.Add("ITR", intkeytext);
+        //keyDisplayTexts["ITR"] = intkeytext;
+        // 기존에 저장된 설정이 있다면 불러오기
+        //LoadKeyBindings();
+        // UI 갱신
+        //UpdateKeyDisplayTexts();
+    }
+
+    private void Awake()
+    {
+        // 초기 키 바인딩 설정 (기본값)
+        if (!keyBindings.ContainsKey("ITR")) keyBindings["ITR"] = KeyCode.F;
+
+        // 텍스트 초기화
+        intkeytext = GameObject.Find("intkeytext").GetComponent<Text>();
+        if (!keyDisplayTexts.ContainsKey("ITR")) keyDisplayTexts.Add("ITR", intkeytext);
+
+        //keyBindings["Jump"] = KeyCode.Space;
+        //keyBindings["MoveLeft"] = KeyCode.A;
+        //keyBindings["MoveRight"] = KeyCode.D;      
+    }
 
     private void Start()
     {
-        // 초기 키 바인딩 설정 (기본값)
-        keyBindings["ITR"] = KeyCode.F;
-        //keyBindings["Jump"] = KeyCode.Space;
-        //keyBindings["MoveLeft"] = KeyCode.A;
-        //keyBindings["MoveRight"] = KeyCode.D;
-
         // 기존에 저장된 설정이 있다면 불러오기
         LoadKeyBindings();
-
         // UI 갱신
         UpdateKeyDisplayTexts();
     }
@@ -79,6 +102,7 @@ public class KeyBindingManager : MonoBehaviour
         foreach (var binding in keyBindings)
         {
             PlayerPrefs.SetString(binding.Key, binding.Value.ToString());
+            if (binding.Key == "ITR") GameManager.Instance.interactKey = binding.Value;
         }
         PlayerPrefs.Save();
     }
@@ -92,6 +116,7 @@ public class KeyBindingManager : MonoBehaviour
                 if (System.Enum.TryParse(PlayerPrefs.GetString(binding.Key), out KeyCode savedKey))
                 {
                     keyBindings[binding.Key] = savedKey;
+                    if (binding.Key == "ITR") GameManager.Instance.interactKey = binding.Value;
                 }
             }
         }
