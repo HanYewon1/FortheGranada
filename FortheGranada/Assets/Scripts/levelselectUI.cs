@@ -12,6 +12,15 @@ public class diffselectUI : MonoBehaviour
         animator = GetComponent<Animator>();
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            GameManager.Instance.ui_list[0].GetComponent<mainmenuUI>().FBS();
+            gameObject.SetActive(false);
+        }
+    }
+
     public void Close()
     {
         audiomanager.Instance.menusfx.Play();

@@ -1,13 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
 public class submenuUI : MonoBehaviour
 {
+    public EventSystem eventSystem;
+    public Button firstbutton;
     void Awake()
     {
-        this.enabled = true;
+        //this.enabled = true;
+        if (GameManager.Instance.is_running) firstbutton = GameObject.Find("RetButton").GetComponent<Button>();
+        eventSystem = EventSystem.current;
     }
 
     public void Resume()
@@ -19,6 +25,8 @@ public class submenuUI : MonoBehaviour
     {
         // ?��?�� 로드?�� ?�� ?���?
         SceneManager.sceneLoaded += OnSceneLoaded;
+
+        FBS();
     }
 
     private void OnDisable()
@@ -77,6 +85,12 @@ public class submenuUI : MonoBehaviour
 #else
         Application.Quit();
 #endif
+    }
+
+    public void FBS()
+    {
+        // 버튼을 첫 번째 선택된 오브젝트로 설정
+        if (firstbutton != null) eventSystem.SetSelectedGameObject(firstbutton.gameObject);
     }
 
 }

@@ -206,6 +206,9 @@ public class GameManager : MonoBehaviour
             tmp = GameObject.Find("LevelUI");
             if (tmp != null) ui_list[1] = tmp.GetComponent<RectTransform>();
             if (ui_list[1] != null) ui_list[1].gameObject.SetActive(false);
+            tmp = GameObject.Find("MainMenuUI");
+            if (tmp != null) ui_list[0] = tmp.GetComponent<RectTransform>();
+            //if (ui_list[0] != null) ui_list[1].gameObject.SetActive(false);
             /*tmp = GameObject.Find("ChatUI");
             if (tmp != null)
             {
@@ -663,6 +666,14 @@ public class GameManager : MonoBehaviour
             speed = originspeed;
             SceneManager.LoadScene("Test");
         }*/
+
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            is_running = false;
+            is_ingame = false;
+            is_boss = false;
+            SceneManager.LoadScene("SampleScene");
+        }
 
         if (Input.GetKeyDown(KeyCode.B) && Input.GetKeyDown(KeyCode.Alpha1))
         {

@@ -2989,6 +2989,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 694664f752f274d408e3295dd620e4df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  intkeytext: {fileID: 0}
 --- !u!114 &256691029
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3039,7 +3040,7 @@ GameObject:
   - component: {fileID: 257124326}
   - component: {fileID: 257124325}
   m_Layer: 5
-  m_Name: Text (Legacy)
+  m_Name: intkeytext
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4817,6 +4818,7 @@ MonoBehaviour:
   txt_list: []
   btn_list: []
   LLM: 0
+  eventSystem: {fileID: 0}
 --- !u!1 &446994845
 GameObject:
   m_ObjectHideFlags: 0
@@ -8318,7 +8320,7 @@ MonoBehaviour:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_SelectedColor: {r: 1, g: 0.49803922, b: 0.49803922, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -9918,6 +9920,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38ea335fe60d7f64086b46532ef61f56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  eventSystem: {fileID: 0}
+  firstbutton: {fileID: 0}
 --- !u!95 &1137809605
 Animator:
   serializedVersion: 7
@@ -10684,6 +10688,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ef2bada279171e40a5ecaf652a3d355, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  eventSystem: {fileID: 0}
+  firstbutton: {fileID: 0}
 --- !u!1 &1268937519
 GameObject:
   m_ObjectHideFlags: 0
@@ -14735,7 +14741,7 @@ MonoBehaviour:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_SelectedColor: {r: 1, g: 0.49803922, b: 0.49803922, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -15956,7 +15962,7 @@ MonoBehaviour:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_SelectedColor: {r: 1, g: 0.49803922, b: 0.49803922, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -18654,7 +18660,7 @@ GameObject:
   - component: {fileID: 2098194495}
   - component: {fileID: 2098194494}
   m_Layer: 5
-  m_Name: Button (Legacy)
+  m_Name: intkeyt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -18723,7 +18729,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2098194495}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 256691028}
+        m_TargetAssemblyTypeName: KeyBindingManager, Assembly-CSharp
+        m_MethodName: StartRebinding
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: ITR
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &2098194495
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19189,8 +19207,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
-    m_WrapAround: 0
+    m_Mode: 1
+    m_WrapAround: 1
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
@@ -19200,7 +19218,7 @@ MonoBehaviour:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_SelectedColor: {r: 1, g: 0.49803922, b: 0.49803922, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1

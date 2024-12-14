@@ -24,6 +24,6 @@ public class playersettings : MonoBehaviour
         animator.SetTrigger("Close");
         yield return new WaitForSeconds(0.5f);
         animator.ResetTrigger("Close");
-        gameObject.SetActive(false);
+        GameManager.Instance.ui_list[10].gameObject.SetActive(false);
     }
 }
