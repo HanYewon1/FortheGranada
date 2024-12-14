@@ -36,6 +36,7 @@ public class KeyBindingManager : MonoBehaviour
 
         // 텍스트 초기화
         intkeytext = GameObject.Find("intkeytext").GetComponent<Text>();
+        //if (intkeytext.text == "X") intkeytext.text = "F";
         if (!keyDisplayTexts.ContainsKey("ITR")) keyDisplayTexts.Add("ITR", intkeytext);
 
         //keyBindings["Jump"] = KeyCode.Space;
