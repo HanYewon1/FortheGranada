@@ -38,15 +38,6 @@ public class npcchase : MonoBehaviour
             float distanceToPlayer = Vector2.Distance(transform.position, npc_sight.Target.position);
 
             npc_controller.StartChasing();
-            
-            if (distanceToPlayer <= npc_attack.attackRange -  epsilon)
-            {
-                // 공격 범위 안에서는 추격 중단
-                npc_controller.movement = Vector2.zero; //멈춤
-                Debug.Log("NPC: 공격 범위 내, 추격 중단");
-            }
-            else
-            {
                 if (!isSearching && Time.time - lastSearchTime >= 0.1f && (currentPlayerPosition != lastPlayerPosition || path.Count == 0))
                 {
                     PerformDFS(); // DFS 탐색 시작
@@ -54,7 +45,7 @@ public class npcchase : MonoBehaviour
                     lastSearchTime = Time.time;
                 }
                 MoveTo(); // DFS 탐색 결과로 이동
-            }
+            
         }
         else if (!npc_sight.DetectPlayer && npc_controller.isChasing) //추격 중 플레이어 놓치면
         {
@@ -168,8 +159,8 @@ public class npcchase : MonoBehaviour
         }
         distanceToTarget = Vector2.Distance(transform.position, currentTarget);
 
-        if (distanceToTarget > npc_attack.attackRange)
-        {
+        //if (distanceToTarget > npc_attack.attackRange)
+        //{
             // 紐⑺몴 ?꾩튂濡??대룞
             transform.position = Vector2.MoveTowards(
                 transform.position,
@@ -180,13 +171,13 @@ public class npcchase : MonoBehaviour
             // ?대룞 諛⑺뼢 怨꾩궛
             npc_controller.movement = (currentTarget - (Vector2)transform.position).normalized;
 
-        }
-        else if (distanceToTarget <= npc_attack.attackRange)
+        //}
+        /*else if (distanceToTarget <= npc_attack.attackRange)
         {
             npc_controller.movement = Vector2.zero;
             Debug.Log($"distanceToTarget: {distanceToTarget}, attackRange: {npc_attack.attackRange}");
             Debug.Log("NPC: 공격 범위 내 도달, 멈춤");
-        }
+        }*/
 
     }
 

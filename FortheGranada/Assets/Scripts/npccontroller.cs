@@ -5,12 +5,14 @@ public class npccontroller : MonoBehaviour
     Rigidbody2D rb;
     Animator animator;
 
-    public float moveSpeed;
-    public float chaseSpeed;
-    public float currentSpeed;
     public bool isChasing = false;
     public GameObject[] points; // 순찰 포인트
     public Vector2 movement = Vector2.zero;
+    public float currentSpeed;
+
+    public float moveSpeed = 3f;
+    public float chaseSpeed = 4f;
+    
 
     private int nextPoint = 0;
     private float distToPoint;
