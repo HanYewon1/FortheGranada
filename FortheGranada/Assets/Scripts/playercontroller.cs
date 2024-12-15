@@ -274,7 +274,7 @@ public class playercontroller : MonoBehaviour
             audiomanager.Instance.menusfx.Play();
             this.transform.position = this.transform.position + add_door_position;
             GameManager.Instance.sc.UpdateBorder();
-            is_damaged = false;
+            is_damaged = true;
             Invoke("changeIsDamaged", 0.5f);
         }
 
@@ -282,7 +282,7 @@ public class playercontroller : MonoBehaviour
 
     void changeIsDamaged()
     {
-        is_damaged = true;
+        is_damaged = false;
         Debug.Log("무적 시간이 풀렸습니다.");
     }
 
