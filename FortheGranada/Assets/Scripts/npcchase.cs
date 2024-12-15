@@ -38,8 +38,8 @@ public class npcchase : MonoBehaviour
             float distanceToPlayer = Vector2.Distance(transform.position, npc_sight.Target.position);
 
             npc_controller.StartChasing();
-            
-            if (distanceToPlayer <= npc_attack.attackRange -  epsilon)
+
+            if (distanceToPlayer <= npc_attack.attackRange - epsilon)
             {
                 // 공격 범위 안에서는 추격 중단
                 npc_controller.movement = Vector2.zero; //멈춤
@@ -85,7 +85,7 @@ public class npcchase : MonoBehaviour
         {
             Debug.LogWarning($"DFS 중단 - 목표가 탐색 반경을 벗어남: {goal}");
             Debug.Log($"Goal: {goal}, Start: {start}, Distance: {Vector2.Distance(goal, start)}, Radius: {npc_sight.radius}");
-
+            GameManager.Instance.is_detected = false;
 
             return;
         }
@@ -130,12 +130,13 @@ public class npcchase : MonoBehaviour
         }
 
         isSearching = false;
+        GameManager.Instance.is_detected = false;
     }
 
     void BuildPath(Vector2 current)
     {
         path.Clear();
-        
+
         while (current != AlignToGrid(transform.position))
         {
             path.Push(current);
