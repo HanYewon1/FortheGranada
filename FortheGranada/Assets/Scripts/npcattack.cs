@@ -17,6 +17,11 @@ public class npcattack : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        if (GameManager.Instance.diff == 1)
+        {
+            weaponSpeed = 6f;
+            Cooltime = 2f;
+        }
         npc_sight = GetComponent<npcsight>();
         if (weaponPrefab == null)
         {

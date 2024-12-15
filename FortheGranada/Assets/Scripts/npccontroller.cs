@@ -21,7 +21,7 @@ public class npccontroller : MonoBehaviour
     void Start()
     {
         moveSpeed = GameManager.Instance.originspeed * 0.75f;
-        chaseSpeed = GameManager.Instance.originspeed * 1f;
+        chaseSpeed = GameManager.Instance.diff == 1 ? GameManager.Instance.originspeed * 0.85f : GameManager.Instance.originspeed * 1f;
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         currentSpeed = moveSpeed;
