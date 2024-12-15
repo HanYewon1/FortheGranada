@@ -13,7 +13,7 @@ public class npcchase : MonoBehaviour
     private Vector2 lastPlayerPosition; // 이전 플레이어 위치
     private bool isSearching = false; // 탐색 중인지 여부
     private float lastSearchTime = 0f; // 마지막 탐색 시간
-    private float epsilon = 0.1f; // 허용 오차 거리 
+    private float epsilon = 0.2f; // 허용 오차 거리 
 
     npcsight npc_sight;
     npccontroller npc_controller;
