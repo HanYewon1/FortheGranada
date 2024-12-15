@@ -13,6 +13,7 @@ public class npcattack : MonoBehaviour
     private npcsight npc_sight;
     private Transform target;
     private float lastAttackTime;
+    private float epsilon = 0.2f; // 허용 오차 거리
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -62,6 +63,6 @@ public class npcattack : MonoBehaviour
             target = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
 
         float distanceToTarget = Vector2.Distance(transform.position, target.position);
-        return distanceToTarget <= attackRange;
+        return distanceToTarget <= attackRange + epsilon;
     }
 }

@@ -225,7 +225,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 4
-  chaseSpeed: 8
+  chaseSpeed: 6
   currentSpeed: 4
   isChasing: 0
   points: []
