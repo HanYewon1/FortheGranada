@@ -232,6 +232,7 @@ public class GameManager : MonoBehaviour
             is_rannum = true;
             is_rannum2 = true;
             is_mgset = false;
+            StartCoroutine(ResetCoroutine());
 
             // 난이도 선택에 따라 게임 설정들 변경
             switch (diff)
@@ -1174,6 +1175,12 @@ public class GameManager : MonoBehaviour
         ui_list[9].gameObject.SetActive(true);
         boss_health = 1;
         Debug.Log("Ending!");
+    }
+
+    public IEnumerator ResetCoroutine()
+    {
+        yield return new WaitForSeconds(0.1f);
+        is_detected = false;
     }
 
     public IEnumerator ASCoroutine()
