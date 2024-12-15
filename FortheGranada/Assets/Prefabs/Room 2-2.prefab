@@ -1126,7 +1126,7 @@ GameObject:
   - component: {fileID: 7168584553007746600}
   - component: {fileID: 860769628097088998}
   - component: {fileID: 244486996031167926}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: HiddenBox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5670,7 +5670,7 @@ GameObject:
   - component: {fileID: 8972367690412224870}
   - component: {fileID: 1264996038329814684}
   - component: {fileID: 8371120005748676042}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: HiddenExt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19850,7 +19850,7 @@ GameObject:
   - component: {fileID: 3674555809735326542}
   - component: {fileID: 1998109884624119214}
   - component: {fileID: 1527134900146432881}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: HiddenEnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
