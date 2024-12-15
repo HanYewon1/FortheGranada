@@ -15,7 +15,7 @@ public class timer : MonoBehaviour
     public void Awake()
     {
         timerText = this.transform.GetComponentInChildren<TMP_Text>();
-        totalTime = 1200f;
+        totalTime = 900f;
         timeLeft = totalTime; // �ʱ�ȭ
     }
 
@@ -44,13 +44,7 @@ public class timer : MonoBehaviour
 
             if (timeLeft <= 0)
             {
-                timeLeft = 0;
-                GameManager.Instance.is_running = false;
-                Debug.Log("�ð� �ʰ�!");
-                GameManager.Instance.ui_list[7].gameObject.SetActive(true);
-                //Time.timeScale = 0;
-                GameManager.Instance.speed = 0;
-                StartCoroutine(GameManager.Instance.WaitThreeSecond());
+                TimeOut();
             }
         }
     }
@@ -87,5 +81,19 @@ public class timer : MonoBehaviour
         }
 
         timerText.text = timestring;
+    }
+
+    private void TimeOut()
+    {
+        audiomanager.Instance.ingamebgm.Stop();
+        audiomanager.Instance.gameover.Play();
+        timeLeft = 0;
+        GameManager.Instance.is_running = false;
+        GameManager.Instance.is_ingame = false;
+        Debug.Log("Time Out!");
+        GameManager.Instance.ui_list[7].gameObject.SetActive(true);
+        //Time.timeScale = 0;
+        GameManager.Instance.speed = 0;
+        StartCoroutine(GameManager.Instance.WaitThreeSecond());
     }
 }

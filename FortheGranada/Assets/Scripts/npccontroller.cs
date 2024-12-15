@@ -19,7 +19,8 @@ public class npccontroller : MonoBehaviour
 
     void Start()
     {
-        moveSpeed = 4f;
+        moveSpeed = GameManager.Instance.originspeed * 0.75f;
+        chaseSpeed = GameManager.Instance.originspeed * 1.5f;
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         currentSpeed = moveSpeed;
@@ -80,7 +81,7 @@ public class npccontroller : MonoBehaviour
 
     public void StartChasing()
     {
-        Debug.Log("NPC started chasing.");
+        //Debug.Log("NPC started chasing.");
         isChasing = true;
         currentSpeed = chaseSpeed;
         returnDefault = false;

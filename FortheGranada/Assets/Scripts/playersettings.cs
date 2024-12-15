@@ -13,14 +13,17 @@ public class playersettings : MonoBehaviour
 
     public void Close()
     {
+        audiomanager.Instance.menusfx.Play();
         StartCoroutine(CloseAfterDelay());
     }
 
     private IEnumerator CloseAfterDelay()
     {
+        // Update Mode를 Unscaled Time으로 변경
+        animator.updateMode = AnimatorUpdateMode.UnscaledTime;
         animator.SetTrigger("Close");
         yield return new WaitForSeconds(0.5f);
-        gameObject.SetActive(false);
         animator.ResetTrigger("Close");
+        GameManager.Instance.ui_list[10].gameObject.SetActive(false);
     }
 }

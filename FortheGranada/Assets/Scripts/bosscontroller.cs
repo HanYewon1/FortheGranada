@@ -26,6 +26,7 @@ public class bosscontroller : MonoBehaviour
     public float maxShadowOffset = 0.5f; // 그림자 위치 변화 (Y축)
     private Vector3 moveDirection; // 이동 방향
     private Vector2 dashDirection; // 대쉬 방향
+    private Vector2 backDirection; // 밀려나는 방향
     private Vector3 originalScale; // 원래 크기 저장
     private Vector3 targetScale;   // 점프 시 크기
     public GameObject firePrefab;
@@ -105,15 +106,31 @@ public class bosscontroller : MonoBehaviour
 
     private void Start()
     {
+        StartCoroutine(InitializeBossBattleWithDelay());
+    }
+
+    private IEnumerator InitializeBossBattleWithDelay()
+    {
+        yield return null; // 한 프레임 대기
+        InitializeBossBattle();
+    }
+
+    private void InitializeBossBattle()
+    {
         DPI = GameObject.Find("LineRenderer").GetComponent<DashPathIndicator>();
         DPI.HideDashPath();
         // IDLE 상태 전환
         SetIdle(true);
         SetMove(true);
+        audiomanager.Instance.mainmenubgm.Stop();
+        audiomanager.Instance.ingamebgm.Stop();
+        audiomanager.Instance.bossstagebgm.Play();
+        audiomanager.Instance.bossstagebgm.loop = true;
     }
+
     private void Update()
     {
-        if (isMove)
+        if (isMove && !isDashing && !isDead && !isJumping && !isLanding)
         {
             moveDirection = (GameManager.Instance.player.transform.position - transform.position).normalized;
             moveDirection.z = 0;
@@ -205,6 +222,7 @@ public class bosscontroller : MonoBehaviour
     // 보스 피격 시 체력 감소
     public void TakeDamage(float damage)
     {
+        audiomanager.Instance.bossdamaged.Play();
         SetMove(false);
         if (!isInvincible)
         {
@@ -351,6 +369,8 @@ public class bosscontroller : MonoBehaviour
 
     private IEnumerator DashCoroutine()
     {
+        audiomanager.Instance.bossdash.Play();
+        audiomanager.Instance.bossdash.loop = true;
         yield return new WaitForSeconds(0.5f);
         float timer = 0f;
         //Debug.DrawLine(transform.position, transform.position + (Vector3)dashDirection * 2, Color.red, 1f);
@@ -364,17 +384,23 @@ public class bosscontroller : MonoBehaviour
             }
             else
             {
+                audiomanager.Instance.bossdash.Stop();
                 Debug.LogWarning("Dash direction is zero! Check player and boss positions.");
                 yield break; // 대쉬를 중단합니다.
             }
             timer += Time.deltaTime;
             yield return null;
-            if (isDashing == false) break;
+            if (isDashing == false)
+            {
+                audiomanager.Instance.bossdash.Stop();
+                break;
+            }
         }
         DPI.HideDashPath();
         animator.SetBool("ISDASH", false);
         isDashing = false;
         yield return new WaitForSeconds(0.1f); // 애니메이션 전환 대기
+        audiomanager.Instance.bossdash.Stop();
         SetIdle(true);
         SetMove(true);
     }
@@ -392,6 +418,7 @@ public class bosscontroller : MonoBehaviour
     {
         float timer = 0f;
         bossCollider.enabled = false;
+        audiomanager.Instance.bossjump.Play();
         SummonShadow(); // 그림자 생성
         PlayJumpAnimation(); // 올라가는 효과
         //yield return new WaitForSeconds(0.25f);
@@ -424,6 +451,7 @@ public class bosscontroller : MonoBehaviour
         }
 
         transform.position = shadowTransform.position;
+        audiomanager.Instance.bosslanding.Play();
         PlayLandingAnimation(); // 내려오는 효과
         UpdateShadow(0);
 
@@ -472,10 +500,17 @@ public class bosscontroller : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            Debug.Log("Crashed!");
-            Vector2 direction = (transform.position - collision.transform.position).normalized;
+            Debug.Log("Player Crashed!");
+            backDirection = (transform.position - collision.transform.position).normalized;
             //bossrb.MovePosition(bossrb.position + direction * 5f);
-            if (isDashing) bossrb.linearVelocity = direction * -50f;
+            if (isDashing)
+            {
+                isDashing = false;
+                animator.SetBool("ISDASH", false);
+                SetMove(false);
+                bossrb.linearVelocity = backDirection * 5f;
+                StartCoroutine(WaitPointsSecond());
+            }
             StartCoroutine(GameManager.Instance.pc.ChangeColor());
             /*if (damageCoroutine == null)
             {
@@ -487,7 +522,9 @@ public class bosscontroller : MonoBehaviour
         {
             if (isDashing)
             {
-                Debug.Log("Crashed!");
+                audiomanager.Instance.bossdamaged.Play();
+                Debug.Log("Border Crashed!");
+                SetMove(false);
                 Vector2 direction = (transform.position - collision.transform.position).normalized;
                 //bossrb.MovePosition(bossrb.position + direction * 10f);
                 bossrb.linearVelocity = direction * 0f;
@@ -506,15 +543,18 @@ public class bosscontroller : MonoBehaviour
         {
             if (isDashing)
             {
-                Vector2 direction = (transform.position - collision.transform.position).normalized;
+                Debug.Log("Block Crashed!");
+                SetMove(false);
+                backDirection = (transform.position - collision.transform.position).normalized;
                 //bossrb.MovePosition(bossrb.position + direction * 10f);
-                bossrb.linearVelocity = direction * -50f;
                 if (GameManager.Instance.diff == 3) TakeDamage(damageAmount);
                 else TakeDamage(damageAmount * 2);
                 StartCoroutine(collision.gameObject.GetComponent<bossblock>().BossDamage());
                 Debug.Log("Collision detected during dash, stopping dash...");
                 animator.SetBool("ISDASH", false);
                 isDashing = false;
+                bossrb.linearVelocity = backDirection * 5f;
+                StartCoroutine(WaitPointsSecond());
             }
         }
     }
@@ -534,12 +574,11 @@ public class bosscontroller : MonoBehaviour
 
     private IEnumerator SummonFire()
     {
+        SetMove(false);
+        SetIdle(false);
         animator.SetBool("ISDASH", false);
         animator.SetBool("ISJUMP", false);
         animator.SetBool("ISLAND", false);
-        SetMove(false);
-        SetIdle(false);
-
         PlayFireAnimation();
         points = new GameObject[61];
         Vector3 sumpo = Vector3.zero;
@@ -614,6 +653,7 @@ public class bosscontroller : MonoBehaviour
             }
         }
         SetIdle(true);
+        audiomanager.Instance.bossfire.Play();
     }
 
     private IEnumerator WaitPointSeconds()
@@ -653,6 +693,9 @@ public class bosscontroller : MonoBehaviour
 
     private void BossDie()
     {
+        audiomanager.Instance.bossstagebgm.Stop();
+        audiomanager.Instance.bossdash.Stop();
+        audiomanager.Instance.bossdead.Play();
         if (isDead) return; // 이미 사망 상태인 경우 중복 실행 방지
         SetIdle(false);
         Debug.Log("Boss has been defeated!");
@@ -668,6 +711,12 @@ public class bosscontroller : MonoBehaviour
         GameManager.Instance.health--;
         yield return new WaitForSeconds(1f);
         damageCoroutine = null; // 코루틴이 끝난 후 null로 초기화
+    }
+
+    public IEnumerator WaitPointsSecond()
+    {
+        yield return new WaitForSeconds(0.5f);
+        bossrb.linearVelocity = backDirection * 0f;
     }
 
     public void jumpdamage()

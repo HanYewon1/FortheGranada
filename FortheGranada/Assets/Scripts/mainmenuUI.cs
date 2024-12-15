@@ -1,40 +1,64 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
 public class mainmenuUI : MonoBehaviour
 {
+    public EventSystem eventSystem;
+    public Button firstbutton;
 
     void Awake()
     {
-        this.enabled = true;
+        //this.enabled = true;
+        firstbutton = GameObject.Find("NewButton").GetComponent<Button>();
+        eventSystem = EventSystem.current;
+        FBS();
     }
 
     private void OnEnable()
     {
-        // ?”¬?´ ë¡œë“œ?  ?•Œ ?˜¸ì¶?
+        // ?ï¿½ï¿½?ï¿½ï¿½ ë¡œë“œ?ï¿½ï¿½ ?ï¿½ï¿½ ?ï¿½ï¿½ï¿½?
         SceneManager.sceneLoaded += OnSceneLoaded;
+
+        FBS();
     }
 
     private void OnDisable()
     {
-        // ?”¬ ë¡œë“œ ?´ë²¤íŠ¸ ?•´? œ
+        // ?ï¿½ï¿½ ë¡œë“œ ?ï¿½ï¿½ë²¤íŠ¸ ?ï¿½ï¿½?ï¿½ï¿½
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        //this.gameObject.SetActive(true);
+        FBS();
+        audiomanager.Instance.mainmenubgm.Play();
+        audiomanager.Instance.mainmenubgm.loop = true;
+    }
+
+    public void OnClickLevelSelectButton()
+    {
+        audiomanager.Instance.menusfx.Play();
+        if (GameManager.Instance.ui_list[1] != null) GameManager.Instance.ui_list[1].gameObject.SetActive(true);
     }
 
     public void OnClickQuitButton()
     {
+        audiomanager.Instance.menusfx.Play();
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
 #else
         Application.Quit();
 #endif
     }
-    
+
+    public void FBS()
+    {
+        // ë²„íŠ¼ì„ ì²« ë²ˆì§¸ ì„ íƒëœ ì˜¤ë¸Œì íŠ¸ë¡œ ì„¤ì •
+        eventSystem.SetSelectedGameObject(firstbutton.gameObject);
+    }
+
 }

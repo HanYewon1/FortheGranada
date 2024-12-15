@@ -12,8 +12,18 @@ public class diffselectUI : MonoBehaviour
         animator = GetComponent<Animator>();
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            GameManager.Instance.ui_list[0].GetComponent<mainmenuUI>().FBS();
+            gameObject.SetActive(false);
+        }
+    }
+
     public void Close()
     {
+        audiomanager.Instance.menusfx.Play();
         StartCoroutine(CloseAfterDelay());
     }
 
@@ -35,6 +45,10 @@ public class diffselectUI : MonoBehaviour
         {
             GameManager.Instance.is_boss = false;
         }
+        audiomanager.Instance.menusfx.Play();
+        audiomanager.Instance.mainmenubgm.Stop();
+        audiomanager.Instance.ingamebgm.Play();
+        audiomanager.Instance.ingamebgm.loop = true;
         GameManager.Instance.is_running = true;
         GameManager.Instance.diff = 1;
         GameManager.Instance.stage = 1;
@@ -57,6 +71,10 @@ public class diffselectUI : MonoBehaviour
         {
             GameManager.Instance.is_boss = false;
         }
+        audiomanager.Instance.menusfx.Play();
+        audiomanager.Instance.mainmenubgm.Stop();
+        audiomanager.Instance.ingamebgm.Play();
+        audiomanager.Instance.ingamebgm.loop = true;
         GameManager.Instance.is_running = true;
         GameManager.Instance.diff = 2;
         GameManager.Instance.stage = 1;
@@ -78,6 +96,10 @@ public class diffselectUI : MonoBehaviour
         {
             GameManager.Instance.is_boss = false;
         }
+        audiomanager.Instance.menusfx.Play();
+        audiomanager.Instance.mainmenubgm.Stop();
+        audiomanager.Instance.ingamebgm.Play();
+        audiomanager.Instance.ingamebgm.loop = true;
         GameManager.Instance.is_running = true;
         GameManager.Instance.diff = 3;
         GameManager.Instance.stage = 1;
@@ -104,5 +126,9 @@ public class diffselectUI : MonoBehaviour
         GameManager.Instance.speed_item = 0;
         GameManager.Instance.haste_item = 0;
         GameManager.Instance.key_item = 0;
+        GameManager.Instance.is_ressurection = false;
+        GameManager.Instance.is_stealth = false;
+        GameManager.Instance.is_preview = false;
+        GameManager.Instance.is_attacked_speed = false;
     }
 }

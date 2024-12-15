@@ -33,7 +33,7 @@ public class popupUI : MonoBehaviour
                 itemname = "회피";
                 break;
             case 7:
-                itemname = "감지 시간 증가";
+                itemname = "감지 시 이속 증가";
                 break;
             case 8:
                 itemname = "상자 투시";

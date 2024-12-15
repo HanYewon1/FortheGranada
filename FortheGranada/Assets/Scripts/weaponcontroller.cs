@@ -11,11 +11,7 @@ public class weaponcontroller : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player"))
-        {
-            Destroy(gameObject);
-        }
-        else if (collision.CompareTag("Obstacle"))
+        if (collision.CompareTag("Player") || collision.CompareTag("border") || collision.CompareTag("Obstacle"))
         {
             Destroy(gameObject);
         }

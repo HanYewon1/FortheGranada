@@ -12,8 +12,10 @@ public class playercontroller : MonoBehaviour
     public int room_y;
     public int next_room_x;
     public int next_room_y;
+    public float pushed_force;
     public string minimap_name;
     public Coroutine ASCoroutine;
+    public Coroutine STCoroutine;
 
     Rigidbody2D rigidbody2d;
     Animator animator;
@@ -30,6 +32,10 @@ public class playercontroller : MonoBehaviour
     bool is_finish;
     bool is_damaged = false;
 
+    private Vector2 externalVelocity = Vector2.zero; // 충돌로 인한 추가 속도 저장
+    private float decayRate = 5f; // 충돌 효과 감소 속도
+
+
     private void Awake()
     {
         animator = GetComponent<Animator>();
@@ -41,20 +47,27 @@ public class playercontroller : MonoBehaviour
     {
         PlayerMove();
 
-        if (Input.GetKeyDown(KeyCode.F))
+        if (Input.GetKeyDown(GameManager.Instance.interactKey))
 
         {
             Debug.Log(1);
             useDoor();
         }
 
+        if (GameManager.Instance.is_stealth && GameManager.Instance.is_detected)
+        {
+            if (STCoroutine == null && ASCoroutine == null) STCoroutine = StartCoroutine(GameManager.Instance.STCoroutine());
+        }
     }
 
     private void FixedUpdate()
     {
 
         Vector2 move_vec = is_horizon_move ? new Vector2(player_x, 0) : new Vector2(0, player_y);
-        rigidbody2d.linearVelocity = move_vec * GameManager.Instance.speed;
+        rigidbody2d.linearVelocity = (move_vec * GameManager.Instance.speed) + externalVelocity;
+
+        // 외부 속도를 서서히 줄임
+        externalVelocity = Vector2.Lerp(externalVelocity, Vector2.zero, Time.fixedDeltaTime * decayRate);
     }
 
     private void PlayerMove()
@@ -79,7 +92,7 @@ public class playercontroller : MonoBehaviour
             is_horizon_move = player_x != 0;
 
         //나중에 입력받는 방향을 우선시함
-        if(is_horizon_move)
+        if (is_horizon_move)
         {
             player_y = 0;
         }
@@ -114,10 +127,25 @@ public class playercontroller : MonoBehaviour
         if (collision.gameObject.CompareTag("Chest"))
         {
             Transform target = collision.gameObject.GetComponent<Transform>();
+        
             if (target != null)
             {
                 GameManager.Instance.currentbox = target.gameObject.GetComponent<itemboxcontroller>();
                 Debug.Log("Near Box");
+            }
+        }
+    }
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Chest"))
+        {
+            itemboxcontroller itembox = collision.gameObject.GetComponent<itemboxcontroller>();
+            if (itembox.isUse == false)
+            {
+                Vector2 pushDirection = collision.contacts[0].point - (Vector2)transform.position;
+                pushDirection = -pushDirection.normalized;
+
+                externalVelocity += pushDirection * pushed_force;
             }
         }
     }
@@ -175,6 +203,7 @@ public class playercontroller : MonoBehaviour
     {
         if (is_damaged == false)
         {
+            audiomanager.Instance.playerdamaged.Play();
             if (GameManager.Instance.armor_item >= 1)
             {
                 GameManager.Instance.armor--;
@@ -186,7 +215,7 @@ public class playercontroller : MonoBehaviour
                 GameManager.Instance.health--;
                 if (GameManager.Instance.health <= 0) GameManager.Instance.health = 0;
             }
-            if (GameManager.Instance.is_attacked_speed) { if (ASCoroutine == null) ASCoroutine = StartCoroutine(GameManager.Instance.ASCoroutine()); }
+            if (GameManager.Instance.is_attacked_speed) { if (ASCoroutine == null && STCoroutine == null) ASCoroutine = StartCoroutine(GameManager.Instance.ASCoroutine()); }
             is_damaged = true;
             spriteRenderer.color = Color.red;
             yield return new WaitForSeconds(1f); //1?��褊蛛?��?��踝蕭 ?��踝蕭?��踝蕭
@@ -242,6 +271,7 @@ public class playercontroller : MonoBehaviour
             room_x = next_room_x;
             room_y = next_room_y;
 
+            audiomanager.Instance.menusfx.Play();
             this.transform.position = this.transform.position + add_door_position;
             GameManager.Instance.sc.UpdateBorder();
         }

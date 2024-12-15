@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
 public class minigameUI : MonoBehaviour
@@ -10,10 +11,12 @@ public class minigameUI : MonoBehaviour
     public Text[] txt_list;
     public Button[] btn_list;
     public int LLM;
+    public EventSystem eventSystem;
 
     void Awake()
     {
         this.enabled = true;
+        eventSystem = EventSystem.current;
         img_list = GetComponentsInChildren<Image>();
         txt_list = GetComponentsInChildren<Text>();
         btn_list = GetComponentsInChildren<Button>();
@@ -84,6 +87,7 @@ public class minigameUI : MonoBehaviour
         // ?��?�� 로드?�� ?�� ?���?
         //SceneManager.sceneLoaded += OnSceneLoaded;
         //UpdateMinigame();
+        eventSystem.SetSelectedGameObject(btn_list[1].gameObject);
         Time.timeScale = 0;
     }
 
@@ -130,6 +134,7 @@ public class minigameUI : MonoBehaviour
             GameManager.Instance.is_mgset = false;
         }
 
+        audiomanager.Instance.menusfx.Play();
         GameManager.Instance.im.getItem(GameManager.Instance.currentbox.ii.item);
         GameManager.Instance.pu.item = GameManager.Instance.currentbox.ii.item;
         Time.timeScale = 1;
@@ -160,6 +165,8 @@ public class minigameUI : MonoBehaviour
         {
             GameManager.Instance.is_mgset = false;
         }
+
+        audiomanager.Instance.menusfx.Play();
         Time.timeScale = 1;
         GameManager.Instance.is_running = true;
         GameManager.Instance.is_catch = false;

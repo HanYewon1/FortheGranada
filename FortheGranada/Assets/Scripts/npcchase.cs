@@ -18,40 +18,22 @@ public class npcchase : MonoBehaviour
     npccontroller npc_controller;
     npcattack npc_attack;
 
-<<<<<<< Updated upstream
-    private Stack<Vector2> dfsStack = new Stack<Vector2>(); // DFS ?ㅽ깮
-    private HashSet<Vector2> visited = new HashSet<Vector2>(); // 諛⑸Ц???몃뱶
-
-    private bool isSearching = false; // DFS ?먯깋 ?곹깭
-    private Vector2 currentTarget; // ?꾩옱 紐⑺몴 ?꾩튂
-
-    
-=======
-
->>>>>>> Stashed changes
 
     void Start()
     {
         npc_sight = GetComponent<npcsight>();
         npc_controller = GetComponent<npccontroller>();
         npc_attack = GetComponent<npcattack>();
-<<<<<<< Updated upstream
-        
-=======
-       
 
->>>>>>> Stashed changes
     }
 
     void Update()
     {
         if (npc_sight.DetectPlayer && npc_sight.Target != null)//플레이어 인식하고 시야에 플레이어 있으면
         {
-<<<<<<< Updated upstream
-=======
+
             GameManager.Instance.is_detected = true;
             Vector2 currentPlayerPosition = AlignToGrid(npc_sight.Target.position);
->>>>>>> Stashed changes
             float distanceToPlayer = Vector2.Distance(transform.position, npc_sight.Target.position);
 
 
@@ -65,13 +47,6 @@ public class npcchase : MonoBehaviour
 
             npc_controller.StartChasing();
 
-<<<<<<< Updated upstream
-            Vector2 directionToPlayer = (npc_sight.Target.position - transform.position).normalized;
-            
-=======
-            // directionToPlayer = (npc_sight.Target.position - transform.position).normalized;
-
->>>>>>> Stashed changes
             if (distanceToPlayer <= npc_attack.attackRange)
             {
                 // 공격 범위 안에서는 추격 중단
@@ -89,7 +64,7 @@ public class npcchase : MonoBehaviour
 
 
             }
-            
+
 
         }
         else if (!npc_sight.DetectPlayer && npc_controller.isChasing) //추격 중 플레이어 놓치면
@@ -101,7 +76,7 @@ public class npcchase : MonoBehaviour
                 npc_controller.StopChasing(); // 추격 중단 후 순찰로 복귀
             }
             npc_controller.isChasing = false;
-            
+            GameManager.Instance.is_detected = false;
 
         }
     }
@@ -225,8 +200,8 @@ public class npcchase : MonoBehaviour
 
     }
 
-   
-    
+
+
 
     Vector2 AlignToGrid(Vector2 position)
     {

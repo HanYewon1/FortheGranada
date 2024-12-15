@@ -34,12 +34,17 @@ public class gamedata : MonoBehaviour
         PlayerPrefs.SetString("AS", GameManager.Instance.is_attacked_speed ? "True" : "False");
         PlayerPrefs.SetString("RS", GameManager.Instance.is_ressurection ? "True" : "False");
         PlayerPrefs.SetString("PR", GameManager.Instance.is_preview ? "True" : "False");
+        PlayerPrefs.SetString("ST", GameManager.Instance.is_stealth ? "True" : "False");
         PlayerPrefs.Save();
         Debug.Log("save");
     }
 
     public void GameLoad()
     {
+        audiomanager.Instance.menusfx.Play();
+        audiomanager.Instance.mainmenubgm.Stop();
+        audiomanager.Instance.ingamebgm.Play();
+        audiomanager.Instance.ingamebgm.loop = true;
         int stage = PlayerPrefs.GetInt("Stage");
         string stage_scene = "";
         GameManager.Instance.key = 0;
@@ -85,12 +90,17 @@ public class gamedata : MonoBehaviour
         GameManager.Instance.health_item = PlayerPrefs.GetInt("HealthItem");
         GameManager.Instance.armor_item = PlayerPrefs.GetInt("ArmorItem");
         GameManager.Instance.stealthTime = PlayerPrefs.GetFloat("StealthTime");
-        GameManager.Instance.stealth_item = PlayerPrefs.GetInt("StealthItem");
         GameManager.Instance.speed_item = PlayerPrefs.GetInt("SpeedItem");
+
         GameManager.Instance.haste_item = PlayerPrefs.GetInt("HasteItem");
         if (GameManager.Instance.haste_item == 1)
         {
             GameManager.Instance.is_attacked_speed = true;
+        }
+        GameManager.Instance.stealth_item = PlayerPrefs.GetInt("StealthItem");
+        if (GameManager.Instance.stealth_item == 1)
+        {
+            GameManager.Instance.is_stealth = true;
         }
         GameManager.Instance.preview_item = PlayerPrefs.GetInt("PreviewItem");
         if (GameManager.Instance.preview_item == 1)
@@ -106,9 +116,11 @@ public class gamedata : MonoBehaviour
         if (PlayerPrefs.GetString("AS") == "True") GameManager.Instance.is_attacked_speed = true;
         if (PlayerPrefs.GetString("RS") == "True") GameManager.Instance.is_ressurection = true;
         if (PlayerPrefs.GetString("PR") == "True") GameManager.Instance.is_preview = true;
+        if (PlayerPrefs.GetString("ST") == "True") GameManager.Instance.is_stealth = true;
 
         GameManager.Instance.updatehealth();
         GameManager.Instance.SetItemIcon();
+        GameManager.Instance.updateitemui();
 
         Debug.Log("load");
     }

@@ -41,6 +41,8 @@ public class GameManager : MonoBehaviour
     public KeyCode interactKey = KeyCode.F;
 
     [Header("Game Settings")]
+    public Dictionary<string, KeyCode> keyBindings;
+    public Dictionary<string, Text> keyDisplayTexts;
     [SerializeField] private float _boss_health;
     public float boss_health
     {
@@ -76,6 +78,8 @@ public class GameManager : MonoBehaviour
     [Header("Flags")]
     public bool is_ressurection;
     public bool is_attacked_speed;
+    public bool is_stealth;
+    public bool is_detected;
     public bool is_preview;
     public bool is_running;
     public bool is_closebox = false;
@@ -163,6 +167,9 @@ public class GameManager : MonoBehaviour
         interactKey = KeyCode.F;
 
         stealthTime = 0f;
+
+        if (keyBindings == null) keyBindings = new Dictionary<string, KeyCode>();
+        if (keyDisplayTexts == null) keyDisplayTexts = new Dictionary<string, Text>();
     }
 
     private void OnEnable()
@@ -193,9 +200,32 @@ public class GameManager : MonoBehaviour
         originspeed = 4f;
         speed_for_boss_stage = 4f;
 
+        // MainMenu Scene
+        if (!is_running)
+        {
+            audiomanager.Instance.bossdash.Stop();
+            ui_list = new RectTransform[11];
+            tmp = GameObject.Find("SettingsUI");
+            if (tmp != null) ui_list[10] = tmp.GetComponent<RectTransform>();
+            if (ui_list[10] != null) ui_list[10].gameObject.SetActive(false);
+            tmp = GameObject.Find("LevelUI");
+            if (tmp != null) ui_list[1] = tmp.GetComponent<RectTransform>();
+            if (ui_list[1] != null) ui_list[1].gameObject.SetActive(false);
+            tmp = GameObject.Find("MainMenuUI");
+            if (tmp != null) ui_list[0] = tmp.GetComponent<RectTransform>();
+            //if (ui_list[0] != null) ui_list[1].gameObject.SetActive(false);
+            /*tmp = GameObject.Find("ChatUI");
+            if (tmp != null)
+            {
+                ui_list[6] = tmp.GetComponent<RectTransform>();
+                ui_list[6].gameObject.SetActive(false);
+            }*/
+        }
+
         // Ingame 들어가면 초기화 작업 실행
         if (is_ingame == true)
         {
+            audiomanager.Instance.bossdash.Stop();
             // API 관련 변수들 초기화
             maxtokens = 6;
             promptmessage = "3개의 이미지 공통점을 너무 포괄적이지 않은 단어로 단 1개만 출력해! 뒤에 입니다 붙이지 마! 판타지, 픽셀아트 금지!";
@@ -288,7 +318,7 @@ public class GameManager : MonoBehaviour
             if (player != null) pc = player.GetComponent<playercontroller>();
 
             // ui_list에 필요한 UI들 미리 가져오기
-            ui_list = new RectTransform[10];
+            ui_list = new RectTransform[11];
             tmp = GameObject.Find("InGameUI");
             if (tmp != null) ui_list[0] = tmp.GetComponent<RectTransform>();
             tmp = GameObject.Find("MiniGameUI");
@@ -313,6 +343,9 @@ public class GameManager : MonoBehaviour
             if (ui_list[8] != null) pu = ui_list[8].GetComponent<popupUI>();
             if (pu != null) pu.GetText();
             if (ui_list[8] != null) ui_list[8].gameObject.SetActive(false);
+            tmp = GameObject.Find("SettingsUI");
+            if (tmp != null) ui_list[10] = tmp.GetComponent<RectTransform>();
+            if (ui_list[10] != null) ui_list[10].gameObject.SetActive(false);
 
             // 체력과 아이템 UI 자식들 가져오기
             tmp = GameObject.Find("HPUI");
@@ -324,6 +357,10 @@ public class GameManager : MonoBehaviour
 
             //스피드 카운트 렌더러
             if (item_list != null) speedcount = item_list[3].GetComponent<Image>();
+
+            // 아이템 UI들 업데이트
+            updateshoe();
+            updateitemui();
 
             // Find로 찾았으니 UI List들 다시 비활성화
             if (ui_list != null) ui_list[1].gameObject.SetActive(false);
@@ -363,6 +400,7 @@ public class GameManager : MonoBehaviour
         // 보스전이면
         if (is_boss)
         {
+            audiomanager.Instance.bossdash.Stop();
             tmp = GameObject.Find("Player");
             if (tmp != null) player = tmp.GetComponent<Transform>();
             if (player != null) pc = player.GetComponent<playercontroller>();
@@ -370,7 +408,7 @@ public class GameManager : MonoBehaviour
             if (tmp != null) healthSlider = tmp.GetComponent<Slider>();
             tmp = GameObject.Find("BOSS");
             if (tmp != null) boscon = tmp.GetComponent<bosscontroller>();
-            ui_list = new RectTransform[10];
+            ui_list = new RectTransform[11];
             tmp = GameObject.Find("PauseMenuUI");
             if (tmp != null) ui_list[2] = tmp.GetComponent<RectTransform>();
             tmp = GameObject.Find("ChatUI");
@@ -379,11 +417,16 @@ public class GameManager : MonoBehaviour
             if (tmp != null) ui_list[7] = tmp.GetComponent<RectTransform>();
             tmp = GameObject.Find("EndingUI");
             if (tmp != null) ui_list[9] = tmp.GetComponent<RectTransform>();
+            tmp = GameObject.Find("SettingsUI");
+            if (tmp != null) ui_list[10] = tmp.GetComponent<RectTransform>();
+
             // UI 찾은 후 비활성화
-            if (ui_list != null) ui_list[2].gameObject.SetActive(false);
-            if (ui_list != null) ui_list[6].gameObject.SetActive(false);
-            if (ui_list != null) ui_list[7].gameObject.SetActive(false);
-            if (ui_list != null) ui_list[9].gameObject.SetActive(false);
+            if (ui_list[10] != null) ui_list[10].gameObject.SetActive(false);
+            if (ui_list[2] != null) ui_list[2].gameObject.SetActive(false);
+            if (ui_list[6] != null) ui_list[6].gameObject.SetActive(false);
+            if (ui_list[7] != null) ui_list[7].gameObject.SetActive(false);
+            if (ui_list[9] != null) ui_list[9].gameObject.SetActive(false);
+
             // 블럭 수가 난이도가 이지면 18개, 노말이면 12개, 도전이면 6개
             tmp = GameObject.Find("Block1_03");
             if (tmp != null && diff == 3) tmp.SetActive(false);
@@ -440,17 +483,6 @@ public class GameManager : MonoBehaviour
                     break;
                 default:
                     break;
-            }
-        }
-
-        if (!is_running)
-        {
-            ui_list = new RectTransform[10];
-            tmp = GameObject.Find("ChatUI");
-            if (tmp != null)
-            {
-                ui_list[6] = tmp.GetComponent<RectTransform>();
-                ui_list[6].gameObject.SetActive(false);
             }
         }
     }
@@ -512,9 +544,9 @@ public class GameManager : MonoBehaviour
                     }
                     else
                     {
-                        Time.timeScale = 1;
+                        if (!ui_list[1].gameObject.activeSelf) Time.timeScale = 1;
                     }
-
+                    audiomanager.Instance.menusfx.Play();
                     ui_list[2].gameObject.SetActive(!ui_list[2].gameObject.activeSelf);
                 }
             }
@@ -569,13 +601,14 @@ public class GameManager : MonoBehaviour
                         Debug.LogError("Out of Diff!");
                         break;
                 }
+                audiomanager.Instance.menusfx.Play();
             }
 
             if (is_closebox == true && is_delay == false && is_mgset == true && is_catch == true && !currentbox.isOpen && currentbox.ii.is_set)
             {
-                if (Input.GetKeyDown(KeyCode.F))
+                if (Input.GetKeyDown(interactKey))
                 {
-                    //is_running = false;
+                    audiomanager.Instance.menusfx.Play();
                     ui_list[1].gameObject.SetActive(true);
                 }
             }
@@ -607,7 +640,7 @@ public class GameManager : MonoBehaviour
                     {
                         Time.timeScale = 1;
                     }
-
+                    audiomanager.Instance.menusfx.Play();
                     ui_list[2].gameObject.SetActive(!ui_list[2].gameObject.activeSelf);
                 }
             }
@@ -615,7 +648,7 @@ public class GameManager : MonoBehaviour
             if (boss_health <= 0) StartCoroutine(EndingCoroutine());
         }
 
-        if (Input.GetKeyDown(KeyCode.T))
+        /*if (Input.GetKeyDown(KeyCode.T))
         {
             if (!is_ingame)
             {
@@ -633,6 +666,14 @@ public class GameManager : MonoBehaviour
             Time.timeScale = 1;
             speed = originspeed;
             SceneManager.LoadScene("Test");
+        }*/
+
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            is_running = false;
+            is_ingame = false;
+            is_boss = false;
+            SceneManager.LoadScene("SampleScene");
         }
 
         if (Input.GetKeyDown(KeyCode.B) && Input.GetKeyDown(KeyCode.Alpha1))
@@ -653,6 +694,7 @@ public class GameManager : MonoBehaviour
             Time.timeScale = 1;
             is_running = true;
             speed = speed_for_boss_stage;
+            audiomanager.Instance.mainmenubgm.Stop();
             SceneManager.LoadScene("Stage_Boss");
         }
         if (Input.GetKeyDown(KeyCode.B) && Input.GetKeyDown(KeyCode.Alpha2))
@@ -673,6 +715,7 @@ public class GameManager : MonoBehaviour
             Time.timeScale = 1;
             is_running = true;
             speed = speed_for_boss_stage;
+            audiomanager.Instance.mainmenubgm.Stop();
             SceneManager.LoadScene("Stage_Boss");
         }
         if (Input.GetKeyDown(KeyCode.B) && Input.GetKeyDown(KeyCode.Alpha3))
@@ -693,10 +736,11 @@ public class GameManager : MonoBehaviour
             Time.timeScale = 1;
             is_running = true;
             speed = speed_for_boss_stage;
+            audiomanager.Instance.mainmenubgm.Stop();
             SceneManager.LoadScene("Stage_Boss");
         }
 
-        if (Input.GetKeyDown(KeyCode.U))
+        /*if (Input.GetKeyDown(KeyCode.U))
         {
             if (!is_ingame)
             {
@@ -714,7 +758,7 @@ public class GameManager : MonoBehaviour
             Time.timeScale = 1;
             speed = originspeed;
             SceneManager.LoadScene("PlayScene");
-        }
+        }*/
     }
 
     private IEnumerator LLMAPIRequest(string prompt, int maxTokens)
@@ -855,30 +899,30 @@ public class GameManager : MonoBehaviour
             itemnum = 1;
             //Debug.Log("체력 회복");
         }
-        else if (rannum1 >= 51 && rannum1 <= 69)
+        else if (rannum1 >= 51 && rannum1 <= 75)
         {
             itemnum = 2;
             //Debug.Log("쉴드 획득");
         }
-        else if (rannum1 >= 70 && rannum1 <= 79)
+        else if (rannum1 >= 76 && rannum1 <= 82)
         {
             itemnum = 3;
             //Debug.Log("이속 증가");
         }
-        else if (rannum1 >= 80 && rannum1 <= 84)
+        else if (rannum1 >= 83 && rannum1 <= 87)
         {
             itemnum = 0;
             //Debug.Log("최대 체력 증가");
         }
-        else if (rannum1 >= 85 && rannum1 <= 89)
+        else if (rannum1 >= 88 && rannum1 <= 92)
         {
             itemnum = 5;
             //Debug.Log("피격 시 이속 증가");
         }
-        else if (rannum1 >= 90 && rannum1 <= 94)
+        else if (rannum1 >= 93 && rannum1 <= 94)
         {
             itemnum = 6;
-            //Debug.Log("감지 시간 지연");
+            //Debug.Log("감지 시 이속 증가");
         }
         else if (rannum1 >= 95 && rannum1 <= 99)
         {
@@ -997,6 +1041,7 @@ public class GameManager : MonoBehaviour
     {
         if (is_ressurection)
         {
+            audiomanager.Instance.reserrection.Play();
             health = 1;
             ressurection_item--;
             is_ressurection = false;
@@ -1004,8 +1049,15 @@ public class GameManager : MonoBehaviour
         }
         else if (is_running)
         {
+            //StartCoroutine(WaitPointSecond());
+            updatehealth();
+            audiomanager.Instance.ingamebgm.Stop();
+            audiomanager.Instance.bossstagebgm.Stop();
+            audiomanager.Instance.bossdash.Stop();
+            audiomanager.Instance.gameover.Play();
             if (pc != null) pc.Dead();
             is_running = false;
+            is_ingame = false;
             Debug.Log("캐릭터 사망!");
             if (ui_list != null && ui_list.Length != 0) ui_list[7].gameObject.SetActive(true);
             //Time.timeScale = 0;
@@ -1026,6 +1078,11 @@ public class GameManager : MonoBehaviour
     {
         yield return new WaitForSeconds(1f);
         if (sc != null) sc.UpdateBorder();
+    }
+
+    public IEnumerator WaitPointSecond()
+    {
+        yield return new WaitForSeconds(0.5f);
     }
 
     public IEnumerator WaitThreeSecond()
@@ -1093,6 +1150,15 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void updateitemui()
+    {
+        if (armor_item >= 1 && health_list != null) health_list[8].gameObject.SetActive(true);
+        if (is_ressurection && item_list != null) item_list[4].gameObject.SetActive(true);
+        if (is_attacked_speed && item_list != null) item_list[5].gameObject.SetActive(true);
+        if (is_stealth && item_list != null) item_list[6].gameObject.SetActive(true);
+        if (is_preview && item_list != null) item_list[7].gameObject.SetActive(true);
+    }
+
     public IEnumerator EndingCoroutine()
     {
         yield return new WaitForSeconds(1.2f);
@@ -1108,5 +1174,14 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(3f);
         speed = tmpspeed;
         pc.ASCoroutine = null; // 코루틴이 끝난 후 null로 초기화
+    }
+
+    public IEnumerator STCoroutine()
+    {
+        tmpspeed = speed;
+        speed *= is_attacked_speed ? 1.3f : 1.2f;
+        yield return new WaitForSeconds(1f);
+        speed = tmpspeed;
+        pc.STCoroutine = null; // 코루틴이 끝난 후 null로 초기화
     }
 }
