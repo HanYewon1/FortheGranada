@@ -238,7 +238,9 @@ public class GameManager : MonoBehaviour
             {
                 case 1:
                     health = 5;
-                    maxHealth = 5;
+                    if (stage == 1) maxHealth = 5;
+                    if (stage == 1) health_item = 0;
+                    if (stage != 1) health = maxHealth;
                     switch (stage)
                     {
                         case 1:
@@ -257,7 +259,9 @@ public class GameManager : MonoBehaviour
                     break;
                 case 2:
                     health = 3;
-                    maxHealth = 3;
+                    if (stage == 1) maxHealth = 3;
+                    if (stage == 1) health_item = 0;
+                    if (stage != 1) health = maxHealth;
                     switch (stage)
                     {
                         case 1:
@@ -276,7 +280,9 @@ public class GameManager : MonoBehaviour
                     break;
                 case 3:
                     health = 1;
-                    maxHealth = 1;
+                    if (stage == 1) maxHealth = 1;
+                    if (stage == 1) health_item = 0;
+                    if (stage != 1) health = maxHealth;
                     switch (stage)
                     {
                         case 1:
@@ -472,14 +478,17 @@ public class GameManager : MonoBehaviour
                 case 1:
                     health = 5;
                     maxHealth = 5;
+                    health_item = 0;
                     break;
                 case 2:
                     health = 3;
                     maxHealth = 3;
+                    health_item = 0;
                     break;
                 case 3:
                     health = 1;
                     maxHealth = 1;
+                    health_item = 0;
                     break;
                 default:
                     break;
