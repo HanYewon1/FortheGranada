@@ -7,7 +7,7 @@ public class npcattack : MonoBehaviour
 {
     public GameObject weaponPrefab;
     public float weaponSpeed = 8f;
-    public float attackRange = 4f;
+    public float attackRange = 3f;
     public float Cooltime = 1f;
 
     private npcsight npc_sight;

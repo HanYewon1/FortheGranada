@@ -8,14 +8,13 @@ public class npcsight : MonoBehaviour
     public LayerMask obstructionLayer;
     public MeshFilter viewMeshFilter;
     public int segments = 50;
+    public float radius = 5f;
 
     npccontroller npc_controller;
-    MeshRenderer mesh_renderer;
 
     public Transform Target { get; private set; }
     public bool DetectPlayer { get; private set; }
 
-    private float radius = 5f;
 
 
     private Mesh viewMesh;
@@ -26,7 +25,6 @@ public class npcsight : MonoBehaviour
         if (viewMeshFilter == null)
             viewMeshFilter = GetComponentInChildren<MeshFilter>();
 
-        mesh_renderer = viewMeshFilter.GetComponent<MeshRenderer>();
 
         viewMesh = new Mesh();
         viewMesh.name = "View Mesh";
