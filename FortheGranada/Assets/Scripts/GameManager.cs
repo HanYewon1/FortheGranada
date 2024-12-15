@@ -909,17 +909,17 @@ public class GameManager : MonoBehaviour
             itemnum = 1;
             //Debug.Log("체력 회복");
         }
-        else if (rannum1 >= 51 && rannum1 <= 75)
+        else if (rannum1 >= 51 && rannum1 <= 70)
         {
             itemnum = 2;
             //Debug.Log("쉴드 획득");
         }
-        else if (rannum1 >= 76 && rannum1 <= 82)
+        else if (rannum1 >= 71 && rannum1 <= 81)
         {
             itemnum = 3;
             //Debug.Log("이속 증가");
         }
-        else if (rannum1 >= 83 && rannum1 <= 87)
+        else if (rannum1 >= 82 && rannum1 <= 87)
         {
             itemnum = 0;
             //Debug.Log("최대 체력 증가");
