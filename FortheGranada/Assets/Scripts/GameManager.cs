@@ -749,10 +749,6 @@ public class GameManager : MonoBehaviour
             SceneManager.LoadScene("Stage_Boss");
         }
 
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            SceneManager.LoadScene("SampleScene");
-        }
         /*if (Input.GetKeyDown(KeyCode.U))
         {
             if (!is_ingame)
