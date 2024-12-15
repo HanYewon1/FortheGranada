@@ -494,6 +494,12 @@ public class GameManager : MonoBehaviour
                 default:
                     break;
             }
+            tmp = GameObject.Find("ITEMUI");
+            item_list = tmp.GetComponentsInChildren<RectTransform>();
+            //스피드 카운트 렌더러
+            if (item_list != null) speedcount = item_list[3].GetComponent<Image>();
+            updateitemui();
+            updateshoe();
         }
     }
 
@@ -1162,11 +1168,11 @@ public class GameManager : MonoBehaviour
 
     public void updateitemui()
     {
-        if (armor_item >= 1 && health_list != null) health_list[8].gameObject.SetActive(true);
-        if (is_ressurection && item_list != null) item_list[4].gameObject.SetActive(true);
-        if (is_attacked_speed && item_list != null) item_list[5].gameObject.SetActive(true);
-        if (is_stealth && item_list != null) item_list[6].gameObject.SetActive(true);
-        if (is_preview && item_list != null) item_list[7].gameObject.SetActive(true);
+        if (armor_item >= 1 && health_list != null) health_list[8].gameObject.SetActive(true); else health_list[8].gameObject.SetActive(false);
+        if (is_ressurection && item_list != null) item_list[4].gameObject.SetActive(true); else item_list[4].gameObject.SetActive(false);
+        if (is_attacked_speed && item_list != null) item_list[5].gameObject.SetActive(true); else item_list[5].gameObject.SetActive(false);
+        if (is_stealth && item_list != null) item_list[6].gameObject.SetActive(true); else item_list[6].gameObject.SetActive(false);
+        if (is_preview && item_list != null) item_list[7].gameObject.SetActive(true); else item_list[7].gameObject.SetActive(false);
     }
 
     public IEnumerator EndingCoroutine()

@@ -73,6 +73,7 @@ public class itemmanager : MonoBehaviour
                 {
                     GameManager.Instance.maxHealth++;
                     GameManager.Instance.health++;
+                    GameManager.Instance.health_item++;
                     GameManager.Instance.health_lose_list[GameManager.Instance.maxHealth].gameObject.SetActive(true);
                 }
                 else if (GameManager.Instance.maxHealth > GameManager.Instance.health)//�ִ� ���� �ʰ��� ȸ�� �����۰� ���� ȿ��
