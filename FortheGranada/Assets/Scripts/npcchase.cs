@@ -13,6 +13,7 @@ public class npcchase : MonoBehaviour
     private Vector2 lastPlayerPosition; // 이전 플레이어 위치
     private bool isSearching = false; // 탐색 중인지 여부
     private float lastSearchTime = 0f; // 마지막 탐색 시간
+    private float epsilon = 0.1f; // 허용 오차 거리 
 
     npcsight npc_sight;
     npccontroller npc_controller;
@@ -36,36 +37,24 @@ public class npcchase : MonoBehaviour
             Vector2 currentPlayerPosition = AlignToGrid(npc_sight.Target.position);
             float distanceToPlayer = Vector2.Distance(transform.position, npc_sight.Target.position);
 
-
-            // 플레이어 위치가 변하지 않으면 이전 경로 사용
-            /*if (currentPlayerPosition == lastPlayerPosition && path.Count > 0)
-            {
-                MoveTo(); // 이전 경로 사용
-                return;
-            }*/
-            lastPlayerPosition = currentPlayerPosition;
-
             npc_controller.StartChasing();
-
-            if (distanceToPlayer <= npc_attack.attackRange)
+            
+            if (distanceToPlayer <= npc_attack.attackRange -  epsilon)
             {
                 // 공격 범위 안에서는 추격 중단
                 npc_controller.movement = Vector2.zero; //멈춤
+                Debug.Log("NPC: 공격 범위 내, 추격 중단");
             }
             else
             {
-                if (!isSearching && Time.time - lastSearchTime >= 1f && (currentPlayerPosition != lastPlayerPosition || path.Count == 0))
+                if (!isSearching && Time.time - lastSearchTime >= 0.1f && (currentPlayerPosition != lastPlayerPosition || path.Count == 0))
                 {
                     PerformDFS(); // DFS 탐색 시작
+                    lastPlayerPosition = currentPlayerPosition;
                     lastSearchTime = Time.time;
                 }
-                //npc_controller.movement = directionToPlayer;
                 MoveTo(); // DFS 탐색 결과로 이동
-
-
             }
-
-
         }
         else if (!npc_sight.DetectPlayer && npc_controller.isChasing) //추격 중 플레이어 놓치면
         {
@@ -95,6 +84,9 @@ public class npcchase : MonoBehaviour
         if (!IsWithinSearchRadius(goal, start))
         {
             Debug.LogWarning($"DFS 중단 - 목표가 탐색 반경을 벗어남: {goal}");
+            Debug.Log($"Goal: {goal}, Start: {start}, Distance: {Vector2.Distance(goal, start)}, Radius: {npc_sight.radius}");
+
+
             return;
         }
 
@@ -160,23 +152,21 @@ public class npcchase : MonoBehaviour
         }
 
         Vector2 currentTarget = path.Peek(); // 현재 목표 가져오기
-        float distanceToTarget = Vector2.Distance(transform.position, currentTarget);
-        
+        float distanceToTarget = Vector2.Distance(transform.position, npc_sight.Target.position);
+
         // 목표 위치에 도달하면 다음 노드로 이동
         if (distanceToTarget < cellSize * 0.1f)
         {
             path.Pop();
-            if (path.Count > 0) // 다음 목표 설정
+            if (path.Count == 0)
             {
-                currentTarget = path.Peek();
-            }
-            else
-            {
-                npc_controller.movement = Vector2.zero; // 더 이상 경로가 없으면 멈춤
+                npc_controller.movement = Vector2.zero;
                 Debug.Log("NPC: 최종 목표에 도달");
                 return;
             }
+            currentTarget = path.Peek();
         }
+        distanceToTarget = Vector2.Distance(transform.position, currentTarget);
 
         if (distanceToTarget > npc_attack.attackRange)
         {
@@ -191,10 +181,10 @@ public class npcchase : MonoBehaviour
             npc_controller.movement = (currentTarget - (Vector2)transform.position).normalized;
 
         }
-        else
+        else if (distanceToTarget <= npc_attack.attackRange)
         {
-
             npc_controller.movement = Vector2.zero;
+            Debug.Log($"distanceToTarget: {distanceToTarget}, attackRange: {npc_attack.attackRange}");
             Debug.Log("NPC: 공격 범위 내 도달, 멈춤");
         }
 
@@ -207,8 +197,8 @@ public class npcchase : MonoBehaviour
     {
         // 寃⑹옄???뺣젹???꾩튂 諛섑솚
         return new Vector2(
-            Mathf.Floor(position.x / cellSize) * cellSize,
-            Mathf.Floor(position.y / cellSize) * cellSize
+            Mathf.Round(position.x / cellSize) * cellSize,
+            Mathf.Round(position.y / cellSize) * cellSize
         );
 
     }
@@ -229,8 +219,9 @@ public class npcchase : MonoBehaviour
     }
     bool IsWithinSearchRadius(Vector2 position, Vector2 start)
     {
-        float radius = npc_sight.radius;
-        return Vector2.Distance(position, start) <= radius;
+        float distance = Vector2.Distance(position, start);
+        bool isWithin = distance <= npc_sight.radius;
+        return isWithin;
     }
     bool IsValidPosition(Vector2 position)
     {
