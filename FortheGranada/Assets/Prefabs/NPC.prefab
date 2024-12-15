@@ -224,9 +224,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39f3f82a8f828a84da046cdf45ce7c43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 4
-  chaseSpeed: 6
-  currentSpeed: 4
+  moveSpeed: 3
+  chaseSpeed: 4
+  currentSpeed: 3
   isChasing: 0
   points: []
   movement: {x: 0, y: 0}
