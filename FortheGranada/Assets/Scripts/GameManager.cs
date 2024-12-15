@@ -232,13 +232,16 @@ public class GameManager : MonoBehaviour
             is_rannum = true;
             is_rannum2 = true;
             is_mgset = false;
+            StartCoroutine(ResetCoroutine());
 
             // 난이도 선택에 따라 게임 설정들 변경
             switch (diff)
             {
                 case 1:
                     health = 5;
-                    maxHealth = 5;
+                    if (stage == 1) maxHealth = 5;
+                    if (stage == 1) health_item = 0;
+                    if (stage != 1) health = maxHealth;
                     switch (stage)
                     {
                         case 1:
@@ -257,7 +260,9 @@ public class GameManager : MonoBehaviour
                     break;
                 case 2:
                     health = 3;
-                    maxHealth = 3;
+                    if (stage == 1) maxHealth = 3;
+                    if (stage == 1) health_item = 0;
+                    if (stage != 1) health = maxHealth;
                     switch (stage)
                     {
                         case 1:
@@ -276,7 +281,9 @@ public class GameManager : MonoBehaviour
                     break;
                 case 3:
                     health = 1;
-                    maxHealth = 1;
+                    if (stage == 1) maxHealth = 1;
+                    if (stage == 1) health_item = 0;
+                    if (stage != 1) health = maxHealth;
                     switch (stage)
                     {
                         case 1:
@@ -472,14 +479,17 @@ public class GameManager : MonoBehaviour
                 case 1:
                     health = 5;
                     maxHealth = 5;
+                    health_item = 0;
                     break;
                 case 2:
                     health = 3;
                     maxHealth = 3;
+                    health_item = 0;
                     break;
                 case 3:
                     health = 1;
                     maxHealth = 1;
+                    health_item = 0;
                     break;
                 default:
                     break;
@@ -1165,6 +1175,12 @@ public class GameManager : MonoBehaviour
         ui_list[9].gameObject.SetActive(true);
         boss_health = 1;
         Debug.Log("Ending!");
+    }
+
+    public IEnumerator ResetCoroutine()
+    {
+        yield return new WaitForSeconds(0.1f);
+        is_detected = false;
     }
 
     public IEnumerator ASCoroutine()

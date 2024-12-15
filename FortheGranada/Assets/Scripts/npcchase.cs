@@ -76,7 +76,7 @@ public class npcchase : MonoBehaviour
         {
             Debug.LogWarning($"DFS 중단 - 목표가 탐색 반경을 벗어남: {goal}");
             Debug.Log($"Goal: {goal}, Start: {start}, Distance: {Vector2.Distance(goal, start)}, Radius: {npc_sight.radius}");
-
+            GameManager.Instance.is_detected = false;
 
             return;
         }
@@ -121,12 +121,13 @@ public class npcchase : MonoBehaviour
         }
 
         isSearching = false;
+        GameManager.Instance.is_detected = false;
     }
 
     void BuildPath(Vector2 current)
     {
         path.Clear();
-        
+
         while (current != AlignToGrid(transform.position))
         {
             path.Push(current);
