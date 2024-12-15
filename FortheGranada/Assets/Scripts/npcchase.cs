@@ -77,7 +77,8 @@ public class npcchase : MonoBehaviour
             Debug.LogWarning($"DFS 중단 - 목표가 탐색 반경을 벗어남: {goal}");
             Debug.Log($"Goal: {goal}, Start: {start}, Distance: {Vector2.Distance(goal, start)}, Radius: {npc_sight.radius}");
             GameManager.Instance.is_detected = false;
-
+            isSearching = false; // DFS 종료
+            npc_controller.StopChasing(); // 추격 중단 후 순찰로 복귀
             return;
         }
 
@@ -212,7 +213,7 @@ public class npcchase : MonoBehaviour
     bool IsWithinSearchRadius(Vector2 position, Vector2 start)
     {
         float distance = Vector2.Distance(position, start);
-        bool isWithin = distance <= npc_sight.radius;
+        bool isWithin = distance <= npc_sight.radius+ epsilon;
         return isWithin;
     }
     bool IsValidPosition(Vector2 position)
