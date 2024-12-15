@@ -30,6 +30,7 @@ public class npccontroller : MonoBehaviour
     {
         if (isChasing)
         {
+            UpdateAnimation();
             // 추격 중일 때 다른 동작 중단
             return;
         }
@@ -74,9 +75,7 @@ public class npccontroller : MonoBehaviour
             nextPoint = (nextPoint + 1) % points.Length;
         }
 
-        // 애니메이션 업데이트
-        animator.SetInteger("npc_x", Mathf.RoundToInt(movement.x));
-        animator.SetInteger("npc_y", Mathf.RoundToInt(movement.y));
+        UpdateAnimation();
     }
 
     public void StartChasing()
@@ -85,6 +84,7 @@ public class npccontroller : MonoBehaviour
         isChasing = true;
         currentSpeed = chaseSpeed;
         returnDefault = false;
+        UpdateAnimation();
     }
 
     public void StopChasing()
@@ -139,6 +139,11 @@ public class npccontroller : MonoBehaviour
             returnDefault = false;
         }
 
+        UpdateAnimation();
+    }
+
+    void UpdateAnimation()
+    {
         // 애니메이션 업데이트
         animator.SetInteger("npc_x", Mathf.RoundToInt(movement.x));
         animator.SetInteger("npc_y", Mathf.RoundToInt(movement.y));
