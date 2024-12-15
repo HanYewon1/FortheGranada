@@ -9,9 +9,8 @@ public class npccontroller : MonoBehaviour
     public GameObject[] points; // 순찰 포인트
     public Vector2 movement = Vector2.zero;
     public float currentSpeed;
-
-    public float moveSpeed = 3f;
-    public float chaseSpeed = 4f;
+    public float moveSpeed;
+    public float chaseSpeed;
     
 
     private int nextPoint = 0;
@@ -22,7 +21,7 @@ public class npccontroller : MonoBehaviour
     void Start()
     {
         moveSpeed = GameManager.Instance.originspeed * 0.75f;
-        chaseSpeed = GameManager.Instance.originspeed * 1.5f;
+        chaseSpeed = GameManager.Instance.originspeed * 0.75f;
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         currentSpeed = moveSpeed;
@@ -101,6 +100,7 @@ public class npccontroller : MonoBehaviour
         isChasing = false;
         currentSpeed = moveSpeed;
         returnDefault = true; // 순찰 복귀 상태 활성화
+        UpdateAnimation();
 
     }
 
