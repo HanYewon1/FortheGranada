@@ -3,12 +3,12 @@ using UnityEngine;
 
 public class npcsight : MonoBehaviour
 {
-    [Range(1, 360)] public float angle = 90f;
+    [Range(1, 360)] public float angle = 60f;
     public LayerMask targetLayer;
     public LayerMask obstructionLayer;
     public MeshFilter viewMeshFilter;
     public int segments = 50;
-    public float radius = 5f;
+    public float radius = 6f;
 
     npccontroller npc_controller;
 
