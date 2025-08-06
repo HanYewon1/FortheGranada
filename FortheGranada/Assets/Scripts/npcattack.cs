@@ -17,12 +17,15 @@ public class npcattack : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        //난이도마다 다른 공격 속도, 쿨타임 차이
         if (GameManager.Instance.diff == 1)
         {
             weaponSpeed = 6f;
             Cooltime = 2f;
         }
         npc_sight = GetComponent<npcsight>();
+
+        //무기 프리팹 없는 경우 오류
         if (weaponPrefab == null)
         {
             Debug.LogError("Weapon prefab could not be loaded from Resources folder. Check the path and filename.");
@@ -40,8 +43,9 @@ public class npcattack : MonoBehaviour
 
 
 
-    void Attack() //°ø°Ý
+    void Attack() //공격
     {
+        //쿨타임 안지났거나, 무기 프리팹 없으면 공격 안함
         if (Time.time - lastAttackTime < Cooltime || weaponPrefab == null) return;
 
         if (target == null)
@@ -49,6 +53,8 @@ public class npcattack : MonoBehaviour
 
         GameObject weapon = Instantiate(weaponPrefab, transform.position, Quaternion.identity);
         audiomanager.Instance.npcattack.Play();
+
+        //플레이어 방향 계산, 발사체 회전
         Vector2 playerDirection = (target.position - transform.position).normalized;
         float angle = Mathf.Atan2(playerDirection.y, playerDirection.x) * Mathf.Rad2Deg;
 
@@ -62,6 +68,7 @@ public class npcattack : MonoBehaviour
         lastAttackTime = Time.time;
     }
 
+    //공격 범위 확인
     bool targetInRange()
     {
         if (target == null)
